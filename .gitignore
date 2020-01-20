@@ -1,2 +1,4 @@
 venv
 .idea
+TFG/_pycache_
+tfgApp/_pycache_
