@@ -38,5 +38,9 @@ def postsign(request):
     return render(request, "index.html", {"user": email,"messg":"logged successfully"})
 
 def logout(request):
-    auth.logout(request)
     return render(request,"signIn.html")
+    auth.logout(request)
+
+
+def canvasDemo(request):
+    return render(request, "canvasDemo.html")

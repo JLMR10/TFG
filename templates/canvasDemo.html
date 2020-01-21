@@ -2,9 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <!--External references-->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    <!--Internal references-->
+    {% load static %}
+    <script src='{% static "canvasDemo.js" %}'></script>
+    <link rel='stylesheet' href='{% static "css/canvasDemo.css" %}'>
+
+    <title>Canvas Demo</title>
+
 </head>
 <body>
-
+    <canvas></canvas>
 </body>
 </html>
