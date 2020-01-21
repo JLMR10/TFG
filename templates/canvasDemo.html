@@ -2,9 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <--Internal references--!>
+    {% load static %}
+    <link rel='stylesheet' href='{% static "css/canvasDemo.css" %}'>
+    <script src='{% static "canvasDemo.js" %}'></script>
+
+    <title>Canvas Demo</title>
+
 </head>
 <body>
-
+    <canvas></canvas>
 </body>
 </html>
