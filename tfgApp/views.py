@@ -1,9 +1,10 @@
 from django.shortcuts import render
 import pyrebase
+from django.contrib import auth
 
 # Create your views here.
 config = {
-'apiKey': "AIzaSyAYZN2yUGa5qE3xYIEZ3eumIrWI-wkJfHI",
+    'apiKey': "AIzaSyAYZN2yUGa5qE3xYIEZ3eumIrWI-wkJfHI",
     'authDomain': "tfg-jlmrarl.firebaseapp.com",
     'databaseURL': "https://tfg-jlmrarl.firebaseio.com",
     'projectId': "tfg-jlmrarl",
@@ -15,15 +16,27 @@ config = {
 
 firebase = pyrebase.initialize_app(config)
 
-auth = firebase.auth()
+authFirebase = firebase.auth()
+
 
 def signIn(request):
-    return render(request,"signIn.html")
+    return render(request, "signIn.html")
+
 
 def postsign(request):
     email = request.POST.get("email")
     password = request.POST.get("password")
 
-    user = auth.sign_in_with_email_and_password(email,password)
+    try:
+        user = authFirebase.sign_in_with_email_and_password(email, password)
+    except:
+        message = "invalid credentials"
+        return render(request, "signIn.html", {"messg": message})
 
-    return render(request,"index.html",{"user":email})
+    request.session["uid"] = authFirebase.current_user["idToken"]
+
+    return render(request, "index.html", {"user": email,"messg":"logged successfully"})
+
+def logout(request):
+    auth.logout(request)
+    return render(request,"signIn.html")

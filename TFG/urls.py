@@ -19,6 +19,7 @@ from tfgApp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path(r'^$',views.signIn),
-    re_path(r'^postsign',views.postsign)
+    re_path(r'^$', views.signIn),
+    path("postsign/", views.postsign),
+    path("logout/", views.logout, name = "log"),
 ]
