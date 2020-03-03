@@ -22,14 +22,12 @@ authFirebase = firebase.auth()
 def signIn(request):
     database = firebase.database()
     print("=====================")
-    ##print(database.child("grupos").order_by_child("nombre").equal_to("Desarrolladores").get().val())
-    print(database.child("grupos").child("miembros").order_by_value().limit_to_first(1).get().val())
-    ##print(database.child("grupos").order_by_child("nombre").equal_to("Desarrolladores").child("miembros").order_by_value().limit_to_first(1).get().val())
-    ##jgarcia = database.child("miembros").order_by_key().limit_to_first(1).get().val()
-    ##print(jgarcia)
-    ##print(database.child("grupos").order_by_child("miembros").child("miembros").order_by_value().limit_to_first(1).get().val())
+    chipsGame = database.child("Chip").get().val()
+    print(chipsGame)
+    for x,y in chipsGame.items():
+        if y["Game"] == "All" or y["Game"] == "testGameName": ## caso para encontrar todos los chips que se pueden usar en una partida
+            print(x,y["Name"])
     print("=====================")
-
     return render(request, "signIn.html")
 
 
