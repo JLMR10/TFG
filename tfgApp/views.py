@@ -1,6 +1,9 @@
 from django.shortcuts import render
 import pyrebase
 from django.contrib import auth
+from tfgApp.models import User
+from tfgApp.services import userServices
+from tfgApp import repository
 ## RolGameAssitant (no players)
 # Create your views here.
 config = {
@@ -21,13 +24,15 @@ authFirebase = firebase.auth()
 
 def signIn(request):
     database = firebase.database()
-    print("=====================")
-    chipsGame = database.child("Chip").get().val()
-    print(chipsGame)
-    for x,y in chipsGame.items():
-        if y["Game"] == "All" or y["Game"] == "testGameName": ## caso para encontrar todos los chips que se pueden usar en una partida
-            print(x,y["Name"])
-    print("=====================")
+    ## PRUEBA DE USER
+    ## CREATE
+    user1 = User("1", "Jose", "jose@pueba.com", "JGJG75F", [], [])
+    user1Json = userServices.userToJson(user1)
+    repository.create(user1Json, "User")
+
+    print(user1Json)
+    database.child("User").update(user1Json)
+
     return render(request, "signIn.html")
 
 

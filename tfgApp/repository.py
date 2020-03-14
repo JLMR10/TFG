@@ -16,6 +16,7 @@ firebase = pyrebase.initialize_app(config)
 database = firebase.database()
 
 def create(json, object):
+    print(json)
     database.child(object).update(json)
 
 def update(json,object, property):

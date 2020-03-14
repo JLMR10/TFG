@@ -2,8 +2,9 @@ from django.db import models
 
 # Create your modelClasses here.
 
+
 class User:
-    def __init__(self,id,name,email,password,maps,games):
+    def __init__(self, id, name, email, password, maps, games):
         self.id = id
         self.name = name
         self.email = email
