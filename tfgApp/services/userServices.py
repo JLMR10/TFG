@@ -2,15 +2,13 @@ from tfgApp.models import User
 
 
 def userToJson(user):
-    maps = {}
-    games = {}
+    maps = {map: True for map in user.maps}
+    games = {game: True for game in user.games}
     json = {
-        user.id : {
             "Name" : user.name,
             "Email" : user.email,
             "Password" : user.password,
             "Maps" : maps,
             "Games": games
         }
-    }
     return json

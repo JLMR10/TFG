@@ -26,13 +26,9 @@ def signIn(request):
     database = firebase.database()
     ## PRUEBA DE USER
     ## CREATE
-    user1 = User("1", "Jose", "jose@pueba.com", "JGJG75F", [], [])
+    user1 = User("1", "Jose", "jose@pueba.com", "JGJG75F", ["DefaultMap1","DefaultMap2","DefaultMap3"], ["testGame"])
     user1Json = userServices.userToJson(user1)
     repository.create(user1Json, "User")
-
-    print(user1Json)
-    database.child("User").update(user1Json)
-
     return render(request, "signIn.html")
 
 

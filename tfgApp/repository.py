@@ -17,7 +17,7 @@ database = firebase.database()
 
 def create(json, object):
     print(json)
-    database.child(object).update(json)
+    database.child(object).push(json)
 
 def update(json,object, property):
     database.child(object + "/" + property).update(json)
