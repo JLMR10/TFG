@@ -1,7 +1,7 @@
 from django.shortcuts import render
 import pyrebase
 from django.contrib import auth
-
+## RolGameAssitant (no players)
 # Create your views here.
 config = {
     'apiKey': "AIzaSyAYZN2yUGa5qE3xYIEZ3eumIrWI-wkJfHI",
