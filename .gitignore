@@ -2,3 +2,4 @@ venv
 .idea
 TFG/__pycache__
 tfgApp/__pycache__
+__pycache__/

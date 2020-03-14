@@ -10,7 +10,7 @@ config = {
     'projectId': "tfg-jlmrarl",
     'storageBucket': "tfg-jlmrarl.appspot.com",
     'messagingSenderId': "1056067153172",
-    'appId': "1:1056067153172:web:22af98ea407a5dc2af6601",
+    'appId': "1:1056067153172:web:22af098ea407a5dc2af6601",
     'measurementId': "G-N0Q4EK399K"
 }
 
