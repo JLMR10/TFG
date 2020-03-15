@@ -2,7 +2,7 @@ from django.shortcuts import render
 import pyrebase
 from django.contrib import auth
 from tfgApp.models import User
-from tfgApp.services import userServices
+from tfgApp.services import userServices, mapServices, tileListServices, tileServices, versionServices
 from tfgApp.repositories import userRepository
 ## RolGameAssitant (no players)
 # Create your views here.
@@ -25,7 +25,11 @@ authFirebase = firebase.auth()
 def signIn(request):
     database = firebase.database()
 
-    userServices.test()
+    ##userServices.test()
+    ##versionServices.test()
+    ##tileListServices.test()
+    ##tileServices.test()
+    ##mapServices.test()
     return render(request, "signIn.html")
 
 

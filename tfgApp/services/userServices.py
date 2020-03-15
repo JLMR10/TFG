@@ -32,7 +32,6 @@ def testUpdate():
 
 def testDelete():
     user1 = User("Guille", "Guille@pueba.com", "JGJG75F", ["DefaultMap1", "DefaultMap2", "DefaultMap3"], ["testGame"])
-    user1.email = "232323@prueba.com"
     user1Json = userToJson(user1)
     message = userRepository.delete(user1Json)
     return message
