@@ -53,7 +53,8 @@ class TileList:
 
 
 class Version:
-    def __init__(self, map, order, tileList):
+    def __init__(self, name, map, order, tileList):
+        self.name = name
         self.map = map
         self.order = order
         self.tileList = tileList
