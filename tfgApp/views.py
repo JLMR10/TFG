@@ -28,15 +28,15 @@ def signIn(request):
     ## CREATE
     user1 = User("Arturo", "Guille@pueba.com", "JGJG75F", ["DefaultMap1","DefaultMap2","DefaultMap3"], ["testGame"])
     user1Json = userServices.userToJson(user1)
-    ##message = userRepository.create(user1Json, "User")
+    ##message = userRepository.create(user1Json)
     ##print(message)
 
     user1.email = "232323@prueba.com"
     user1Json = userServices.userToJson(user1)
-    ##message2 = userRepository.update(user1Json, "User")
+    ##message2 = userRepository.update(user1Json)
     ##print(message2)
 
-    message3 = userRepository.delete(user1Json, "User")
+    message3 = userRepository.delete(user1Json)
     print(message3)
 
     return render(request, "signIn.html")

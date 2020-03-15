@@ -15,39 +15,39 @@ firebase = pyrebase.initialize_app(config)
 
 database = firebase.database()
 
-ref = "User"
+ref = "Version"
 
 
 def create(json):
-    message = "The user already exists"
-    listOfUsers = []
+    message = "The version already exists"
+    listOfVersions = []
 
-    for id, user in database.child(ref).get().val().items():
-        listOfUsers.append(user["Name"])
+    for id, version in database.child(ref).get().val().items():
+        listOfVersions.append(version["Name"])
 
-    if json["Name"] not in listOfUsers:
+    if json["Name"] not in listOfVersions:
         database.child(ref).push(json)
-        message = "The user has been created successfully"
+        message = "The version has been created successfully"
 
     return message
 
 
 def update(json):
-    message = "The user hasn't been edited"
-    for id, user in database.child(ref).get().val().items():
-        if user["Name"] == json["Name"]:
+    message = "The version hasn't been edited"
+    for id, version in database.child(ref).get().val().items():
+        if version["Name"] == json["Name"]:
             database.child(ref + "/" + id).update(json)
-            message = "The user has been edited successfully"
+            message = "The version has been edited successfully"
             break
     return message
 
 
 def delete(json):
-    message = "The user hasn't been deleted"
-    for id, user in database.child(ref).get().val().items():
-        if user["Name"] == json["Name"]:
+    message = "The version hasn't been deleted"
+    for id, version in database.child(ref).get().val().items():
+        if version["Name"] == json["Name"]:
             database.child(ref + "/" + id).remove()
-            message = "The user has been deleted successfully"
+            message = "The version has been deleted successfully"
             break
     return message
 

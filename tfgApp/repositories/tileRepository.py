@@ -15,39 +15,39 @@ firebase = pyrebase.initialize_app(config)
 
 database = firebase.database()
 
-ref = "User"
+ref = "Tile"
 
 
 def create(json):
-    message = "The user already exists"
-    listOfUsers = []
+    message = "The tile already exists"
+    listOfTiles = []
 
-    for id, user in database.child(ref).get().val().items():
-        listOfUsers.append(user["Name"])
+    for id, tile in database.child(ref).get().val().items():
+        listOfTiles.append(tile["Name"])
 
-    if json["Name"] not in listOfUsers:
+    if json["Name"] not in listOfTiles:
         database.child(ref).push(json)
-        message = "The user has been created successfully"
+        message = "The tileList has been created successfully"
 
     return message
 
 
 def update(json):
-    message = "The user hasn't been edited"
-    for id, user in database.child(ref).get().val().items():
-        if user["Name"] == json["Name"]:
+    message = "The tile hasn't been edited"
+    for id, tile in database.child(ref).get().val().items():
+        if tile["Name"] == json["Name"]:
             database.child(ref + "/" + id).update(json)
-            message = "The user has been edited successfully"
+            message = "The tile has been edited successfully"
             break
     return message
 
 
 def delete(json):
-    message = "The user hasn't been deleted"
-    for id, user in database.child(ref).get().val().items():
-        if user["Name"] == json["Name"]:
+    message = "The tile hasn't been deleted"
+    for id, tile in database.child(ref).get().val().items():
+        if tile["Name"] == json["Name"]:
             database.child(ref + "/" + id).remove()
-            message = "The user has been deleted successfully"
+            message = "The tile has been deleted successfully"
             break
     return message
 
