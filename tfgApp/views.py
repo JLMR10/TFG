@@ -3,7 +3,7 @@ import pyrebase
 from django.contrib import auth
 from tfgApp.models import User
 from tfgApp.services import userServices
-from tfgApp import repository
+from tfgApp.repositories import userRepository
 ## RolGameAssitant (no players)
 # Create your views here.
 config = {
@@ -26,11 +26,19 @@ def signIn(request):
     database = firebase.database()
     ## PRUEBA DE USER
     ## CREATE
-    user1 = User("Jose", "jose@pueba.com", "JGJG75F", ["DefaultMap1","DefaultMap2","DefaultMap3"], ["testGame"])
+    user1 = User("Arturo", "Guille@pueba.com", "JGJG75F", ["DefaultMap1","DefaultMap2","DefaultMap3"], ["testGame"])
     user1Json = userServices.userToJson(user1)
-    yque = database.child("User").get().val()
-    print(yque)
-    repository.create(user1Json, "User")
+    ##message = userRepository.create(user1Json, "User")
+    ##print(message)
+
+    user1.email = "232323@prueba.com"
+    user1Json = userServices.userToJson(user1)
+    ##message2 = userRepository.update(user1Json, "User")
+    ##print(message2)
+
+    message3 = userRepository.delete(user1Json, "User")
+    print(message3)
+
     return render(request, "signIn.html")
 
 
