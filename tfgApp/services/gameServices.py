@@ -1,10 +1,41 @@
-from tfgApp.models import Chip
+from tfgApp.models import Game
+from tfgApp.repositories import gameRepository
 
 
-def chipToJson(chip):
+def gameToJson(game):
     json = {
-            "Game" : chip.game,
-            "MoveStat" : chip.moveStat,
-            "Name" : chip.name
+            "GameName" : game.name,
+            "GameCode" : game.code,
+            "Map" : game.map,
+            "ChipList" : game.chipList
         }
     return json
+
+
+def testCreate():
+    game1 = Game("autoTestGame", "01", "autoTestMap", "autoTestChipList")
+    game1Json = gameToJson(game1)
+    message = gameRepository.create(game1Json)
+    return message
+
+
+def testUpdate():
+    game1 = Game("autoTestGame", "01", "autoTestMap", "autoTestChipList")
+    game1.code = 2
+    game1Json = gameToJson(game1)
+    message = gameRepository.update(game1Json)
+    return message
+
+
+def testDelete():
+    game1 = Game("autoTestGame", "01", "autoTestMap", "autoTestChipList")
+    game1Json = gameToJson(game1)
+    message = gameRepository.delete(game1Json)
+    return message
+
+
+def test():
+    print("== Caso positivo crear == ", testCreate())
+    print("== Caso negativo crear == ", testCreate())
+    print("== Caso positivo editar == ", testUpdate())
+    print("== Caso positivo eliminar == ", testDelete())
