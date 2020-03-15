@@ -4,8 +4,7 @@ from django.db import models
 
 
 class User:
-    def __init__(self, id, name, email, password, maps, games):
-        self.id = id
+    def __init__(self, name, email, password, maps, games):
         self.name = name
         self.email = email
         self.password = password

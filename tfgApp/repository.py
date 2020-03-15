@@ -15,13 +15,18 @@ firebase = pyrebase.initialize_app(config)
 
 database = firebase.database()
 
-def create(json, object):
-    print(json)
-    database.child(object).push(json)
 
-def update(json,object, property):
+def create(json, object):
+    print(json["Name"])
+    if object == "User":
+        database.child("username_lookup").push({"Name": json["Name"]})
+        database.child(object).push(json)
+
+
+def update(json, object, property):
     database.child(object + "/" + property).update(json)
 
-def delete(child):
-    database.child(child).remove()
+
+def delete(object):
+    database.child(object).remove()
 

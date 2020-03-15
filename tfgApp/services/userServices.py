@@ -12,3 +12,5 @@ def userToJson(user):
             "Games": games
         }
     return json
+
+
