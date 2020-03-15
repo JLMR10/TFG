@@ -9,3 +9,6 @@ def chipListToJson(chipList):
             "Name": chipList.name
         }
     return json
+
+
+##[("1-1", "NPC"), ("1-1", "NPC"), ("1-1", "NPC")]

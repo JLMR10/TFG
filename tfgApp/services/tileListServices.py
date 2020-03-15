@@ -1,8 +1,9 @@
 
 
 def tileListServices(tileList):
+    position = {pos: name for pos, name in tileList.position}
     json = {
             "Name": tileList.name,
-            "Position": tileList.position
+            "Position": position
         }
     return json
