@@ -18,15 +18,15 @@ database = firebase.database()
 ref = "User"
 
 
-def create(json):
+def create(json, uid):
     message = "The user already exists"
     listOfUsers = []
 
     for id, user in database.child(ref).get().val().items():
-        listOfUsers.append(user["Name"])
+        listOfUsers.append(user["Email"])
 
-    if json["Name"] not in listOfUsers:
-        database.child(ref).push(json)
+    if json["Email"] not in listOfUsers:
+        database.child(ref).child(uid).set(json)
         message = "The user has been created successfully"
 
     return message

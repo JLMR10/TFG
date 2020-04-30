@@ -24,9 +24,11 @@ from tfgApp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^canvasDemo', views.canvasDemo),
-    path("postsign/", views.postsign),
+    path('signup/', views.signUp, name='signup'),
+    path('postsignup/', views.postsignup),
+    path('postsign/', views.postsign),
     re_path(r'^$', views.signIn),
-    path("logout/", views.logout, name = "log"),
+    path('logout/', views.logout, name="log"),
 ]
 """+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)"""
 

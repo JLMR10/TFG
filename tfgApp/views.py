@@ -4,6 +4,7 @@ from django.contrib import auth
 from tfgApp.models import User
 from tfgApp.services import userServices, mapServices, tileListServices, tileServices, versionServices
 from tfgApp.repositories import userRepository
+
 ## RolGameAssitant (no players)
 # Create your views here.
 config = {
@@ -20,16 +21,10 @@ config = {
 firebase = pyrebase.initialize_app(config)
 
 authFirebase = firebase.auth()
+database = firebase.database()
 
 
 def signIn(request):
-    database = firebase.database()
-
-    ##userServices.test()
-    ##versionServices.test()
-    ##tileListServices.test()
-    ##tileServices.test()
-    ##mapServices.test()
     return render(request, "signIn.html")
 
 
@@ -45,12 +40,35 @@ def postsign(request):
 
     request.session["uid"] = authFirebase.current_user["idToken"]
 
-    return render(request, "index.html", {"user": email,"messg":"logged successfully"})
+    return render(request, "index.html", {"user": email, "messg": "logged successfully"})
+
 
 def logout(request):
-    return render(request,"signIn.html")
+    return render(request, "signIn.html")
     auth.logout(request)
 
+
+def signUp(request):
+    return render(request, "signUp.html")
+
+
+def postsignup(request):
+    name = request.POST.get("name")
+    email = request.POST.get("email")
+    password = request.POST.get("password")
+
+    try:
+        user = authFirebase.create_user_with_email_and_password(email, password)
+    except:
+        message = "This is user is register already"
+        return render(request, "signUp.html", {"messg": message})
+
+    uid = user['localId']
+    userDB = User(name, email, "", ["DefaultMap1", "DefaultMap2", "DefaultMap3"], [])
+    userJson = userServices.userToJson(userDB)
+    message = userRepository.create(userJson, uid)
+
+    return render(request, "signUp.html", {"messg": message})
 
 def canvasDemo(request):
     return render(request, "canvasDemo.html")
