@@ -1,9 +1,10 @@
 from django.shortcuts import render
 import pyrebase
-from django.contrib import auth
 from tfgApp.models import User
 from tfgApp.services import userServices, mapServices, tileListServices, tileServices, versionServices
 from tfgApp.repositories import userRepository
+from requests.exceptions import HTTPError
+import json
 
 ## RolGameAssitant (no players)
 # Create your views here.
@@ -34,8 +35,9 @@ def postsign(request):
 
     try:
         user = authFirebase.sign_in_with_email_and_password(email, password)
-    except:
-        message = "invalid credentials"
+    except HTTPError as e:
+        error_json = e.args[1]
+        message = json.loads(error_json)["error"]["message"]
         return render(request, "signIn.html", {"messg": message})
 
     request.session["uid"] = authFirebase.current_user["idToken"]
@@ -59,8 +61,9 @@ def postsignup(request):
 
     try:
         user = authFirebase.create_user_with_email_and_password(email, password)
-    except:
-        message = "This is user is register already"
+    except HTTPError as e:
+        error_json = e.args[1]
+        message = json.loads(error_json)["error"]["message"]
         return render(request, "signUp.html", {"messg": message})
 
     uid = user['localId']
