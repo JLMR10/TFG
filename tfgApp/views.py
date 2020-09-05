@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import pyrebase
 from tfgApp.models import User
 from tfgApp.services import userServices, mapServices, tileListServices, tileServices, versionServices
@@ -26,23 +26,22 @@ database = firebase.database()
 
 
 def signIn(request):
+    if request.method == 'POST':
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+
+        try:
+            user = authFirebase.sign_in_with_email_and_password(email, password)
+        except HTTPError as e:
+            error_json = e.args[1]
+            message = json.loads(error_json)["error"]["message"]
+            return render(request, "signIn.html", {"messg": message})
+
+        request.session["uid"] = authFirebase.current_user["idToken"]
+
+        return render(request, "index.html", {"user": email, "messg": "logged successfully"})
+
     return render(request, "signIn.html")
-
-
-def postsign(request):
-    email = request.POST.get("email")
-    password = request.POST.get("password")
-
-    try:
-        user = authFirebase.sign_in_with_email_and_password(email, password)
-    except HTTPError as e:
-        error_json = e.args[1]
-        message = json.loads(error_json)["error"]["message"]
-        return render(request, "signIn.html", {"messg": message})
-
-    request.session["uid"] = authFirebase.current_user["idToken"]
-
-    return render(request, "index.html", {"user": email, "messg": "logged successfully"})
 
 
 def logout(request):
@@ -51,27 +50,31 @@ def logout(request):
 
 
 def signUp(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        confirmPassword = request.POST.get("confirmPassword")
+
+        if password == confirmPassword:
+            try:
+                user = authFirebase.create_user_with_email_and_password(email, password)
+            except HTTPError as e:
+                error_json = e.args[1]
+                message = json.loads(error_json)["error"]["message"]
+                return render(request, "signUp.html", {"messg": message})
+
+            uid = user['localId']
+            userDB = User(name, email, "", ["DefaultMap1", "DefaultMap2", "DefaultMap3"], [])
+            userJson = userServices.userToJson(userDB)
+            message = userRepository.create(userJson, uid)
+
+            return render(request, "signIn.html", {"messg": message})
+
+        else:
+            return render(request, "signUp.html", {"passwordError": "Passwords didn't match."})
+
     return render(request, "signUp.html")
-
-
-def postsignup(request):
-    name = request.POST.get("name")
-    email = request.POST.get("email")
-    password = request.POST.get("password")
-
-    try:
-        user = authFirebase.create_user_with_email_and_password(email, password)
-    except HTTPError as e:
-        error_json = e.args[1]
-        message = json.loads(error_json)["error"]["message"]
-        return render(request, "signUp.html", {"messg": message})
-
-    uid = user['localId']
-    userDB = User(name, email, "", ["DefaultMap1", "DefaultMap2", "DefaultMap3"], [])
-    userJson = userServices.userToJson(userDB)
-    message = userRepository.create(userJson, uid)
-
-    return render(request, "signUp.html", {"messg": message})
 
 def canvasDemo(request):
     return render(request, "canvasDemo.html")
