@@ -9,14 +9,15 @@ var mouse = {
 $(function init() {
     canvas = document.querySelector('canvas');
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth/2;
+    canvas.height = window.innerHeight/2;
 
     c = canvas.getContext('2d');
 
-    window.addEventListener('click', function (event) {
-        mouse.x = event.x;
-        mouse.y = event.y;
+    canvas.addEventListener('click', function (event) {
+        mouse.x = event.x - $("canvas").position().left;
+        mouse.y = event.y - $("canvas").position().top;
+
     });
 
     initTiles();
@@ -32,15 +33,19 @@ function Tile(x, y, h, w, img) {
     this.color = getRandomColor();
     this.draw = function () {
         //c.fillRect(this.x, this.y, this.h, this.w);
-        c.drawImage(this.img ,this.x, this.y, this.h, this.w);
+        var htmlImg = new Image();
+        htmlImg.src = this.img;
+        c.drawImage(htmlImg ,this.x, this.y, this.h, this.w);
         c.fillStyle = this.color;
         c.strokeStyle = 'black';
         c.stroke();
     };
     this.update = function () {
-        if(mouse.x != undefined && Math.abs(mouse.x - this.x) < this.w/2 && Math.abs(mouse.y - this.y) < this.h/2) {
+        if(mouse.x != undefined && Math.abs(this.x + this.w) > mouse.x && this.x < mouse.x  && Math.abs(this.y + this.h) > mouse.y && this.y < mouse.y) {
+        //if(mouse.x != undefined && Math.abs(mouse.x - this.x) < this.w/2 && Math.abs(mouse.y - this.y) < this.h/2) {
         //if(mouse.x - this.x < this.x/2 && this.x - mouse.x > -this.x/2 && mouse.y - this.y < this.y/2 && this.y - mouse.y > -this.y/2) {
-            this.color = getRandomColor();
+            //this.color = getRandomColor();
+            this.img = '/static/Media/hill.jpg'
             mouse.x = undefined;
             mouse.y = undefined;
         }
@@ -50,30 +55,39 @@ function Tile(x, y, h, w, img) {
 }
 
 function initTiles() {
-    var initial = Math.floor(innerWidth / 4);
+    var initial = Math.floor(innerWidth / 10);
     var x = 0;
     var y = 0;
     var w = initial;
     var h = initial;
-    var img = new Image();
-    img.src = 'Zaen.jpg';
+    var img = '/static/Media/Zaen.jpg';
+
+
     for(var i=0;i<4;i++){
         for(var j = 0; j < 4; j++){
-            tilesArr.push(new Tile(img, x, y, h, w));
+            tilesArr.push(new Tile(x, y, h, w, img));
             x += initial;
         }
         x = 0;
         y += initial;
     }
 }
-
+var i;
 function animate() {
     requestAnimationFrame(animate);
-    c.clearRect(0,0,innerWidth,innerHeight);
-    tilesArr.forEach(tile => {
-        tile.draw();
-    })
-
+    if(i == undefined) {
+        i=1
+        c.clearRect(0,0,innerWidth,innerHeight);
+        tilesArr.forEach(tile => {
+            tile.draw();
+        })
+    }else{
+        i=1
+        c.clearRect(0,0,innerWidth,innerHeight);
+        tilesArr.forEach(tile => {
+            tile.update();
+        })
+    }
 }
 
 function getRandomColor() {
