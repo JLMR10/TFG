@@ -1,17 +1,7 @@
-{% if messg %}
-    <script>
-        alert('{{ messg }}')
-    </script>
-{% endif %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Sign</title>
-</head>
-<body>
-
-<form action="" method="post">
+{% extends 'header.html' %}
+{% block titulo %} <title>Sign</title> {% endblock %}
+{% block content %}
+  <form action="" method="post">
     {% csrf_token %}
     Email:
     <input type="email"  name="email"><br><br>
@@ -19,7 +9,6 @@
     <input type="password" name="password"><br><br>
     <input type="submit" value="SignIn">
     <button type="button" onclick="location.href='{% url 'signUp' %}'">SingUp</button>
-</form>
+  </form>
+{% endblock %}
 
-</body>
-</html>

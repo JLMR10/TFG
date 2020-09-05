@@ -1,17 +1,7 @@
-{% if messg %}
-    <script>
-        alert('{{ messg }}')
-    </script>
-{% endif %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Index</title>
-</head>
-<body>
-{% csrf_token %}
-Hello {{user}}
-<button type="button" onclick="location.href='{% url 'log' %}'"> Logout</button>
-</body>
-</html>
+{% extends 'header.html' %}
+{% block titulo %} <title>Index</title> {% endblock %}
+{% block content %}
+    {% csrf_token %}
+    Hello {{user}}
+    <button type="button" onclick="location.href='{% url 'log' %}'"> Logout</button>
+{% endblock %}

@@ -1,4 +1,6 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.contrib import messages
 import pyrebase
 from tfgApp.models import User
 from tfgApp.services import userServices, mapServices, tileListServices, tileServices, versionServices
@@ -35,18 +37,18 @@ def signIn(request):
         except HTTPError as e:
             error_json = e.args[1]
             message = json.loads(error_json)["error"]["message"]
-            return render(request, "signIn.html", {"messg": message})
+            messages.error(request, message)
+            return render(request, "signIn.html", {})
 
         request.session["uid"] = authFirebase.current_user["idToken"]
 
         return render(request, "index.html", {"user": email, "messg": "logged successfully"})
-
     return render(request, "signIn.html")
 
 
 def logout(request):
-    return render(request, "signIn.html")
-    auth.logout(request)
+    authFirebase.current_user = None
+    return HttpResponseRedirect('../')
 
 
 def signUp(request):
@@ -62,19 +64,22 @@ def signUp(request):
             except HTTPError as e:
                 error_json = e.args[1]
                 message = json.loads(error_json)["error"]["message"]
-                return render(request, "signUp.html", {"messg": message})
+                messages.error(request, message)
+                return render(request, "signUp.html", {})
 
             uid = user['localId']
             userDB = User(name, email, "", ["DefaultMap1", "DefaultMap2", "DefaultMap3"], [])
             userJson = userServices.userToJson(userDB)
             message = userRepository.create(userJson, uid)
-
-            return render(request, "signIn.html", {"messg": message})
+            messages.success(request, message)
+            return HttpResponseRedirect('../')
 
         else:
-            return render(request, "signUp.html", {"passwordError": "Passwords didn't match."})
+            messages.error(request,"Passwords didn't match.")
+            return render(request, "signUp.html", {})
 
     return render(request, "signUp.html")
+
 
 def canvasDemo(request):
     return render(request, "canvasDemo.html")

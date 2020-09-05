@@ -1,32 +1,20 @@
-{% if messg %}
-    <script>
-        alert('{{ messg }}')
-    </script>
-{% endif %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>SignUp</title>
-</head>
-<body>
-
-<form action="/signUp/" method="post">
-    {% csrf_token %}
-    Name:
-    <input type="text" name="name":><br><br>
-    Email:
-    <input type="email"  name="email"><br><br>
-    Password:
-    <input type="password" name="password"><br><br>
-    Confirm Password:
-    <input type="password" name="confirmPassword"><br>
-    {% if passwordError %}
-        <a> {{ passwordError }}</a><br>
-    {% endif %}
-    <br>
-    <input type="submit" value="SignUp">
-</form>
-
-</body>
-</html>
+{% extends 'header.html' %}
+{% block titulo %} <title>Sign</title> {% endblock %}
+{% block content %}
+    <form action="/signUp/" method="post">
+        {% csrf_token %}
+        Name:
+        <input type="text" name="name":><br><br>
+        Email:
+        <input type="email"  name="email"><br><br>
+        Password:
+        <input type="password" name="password"><br><br>
+        Confirm Password:
+        <input type="password" name="confirmPassword"><br>
+        {% if passwordError %}
+            <a> {{ passwordError }}</a><br>
+        {% endif %}
+        <br>
+        <input type="submit" value="SignUp">
+    </form>
+{% endblock %}
