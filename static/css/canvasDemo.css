@@ -7,3 +7,37 @@ canvas {
 body {
     margin: 0;
 }
+
+.map-menu {
+    width: 20%;
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-title{
+    display: flex;
+}
+
+.menu-img {
+    height: 100px;
+    width: 100px;
+    margin-left: 3.5%;
+    margin-bottom: 3.5%;
+}
+
+.menu-img-over {
+    box-shadow: 0 0 11px aqua;
+}
+
+.menu-img-selected {
+    box-shadow: 0 0 11px blue;
+}
+
+.img-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    flex-wrap: wrap;
+}

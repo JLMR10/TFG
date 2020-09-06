@@ -8,7 +8,7 @@
     <!--Internal references-->
     {% load static %}
     <script src='{% static "canvasDemo.js" %}'></script>
-    <link rel='stylesheet' href='{% static "css/canvasDemo.css" %}'>
+    <link rel='stylesheet' href='{% static "/css/canvasDemo.css" %}'>
 
     <title>Canvas Demo</title>
     <!--<img id="scream" width="220" height="277" src="../static/Media/Zaen.jpg" alt="The Scream">-->
@@ -16,11 +16,30 @@
 </head>
 <body>
 
-    <div style="display: flex;">
-    <div style="height: 100%;width: 25%;padding: 0px;margin: 0px;">
-        menu
-    </div>
-    <canvas></canvas>
+    <div style="display: flex;justify-content: space-around">
+        <div class="map-menu">
+             <div class="menu-title">
+                 menu
+            </div>
+            <div class="img-container">
+                <img class="menu-img" src="/static/Media/grass.jpg">
+                <img class="menu-img" src="/static/Media/floor.jpg">
+                <img class="menu-img" src="/static/Media/rock.jpg">
+                <img class="menu-img" src="/static/Media/ground.jpg">
+                <img class="menu-img" src="/static/Media/brick.jpg">
+                <img class="menu-img" src="/static/Media/metal.jpg">
+                <img class="menu-img" src="/static/Media/water.jpg">
+                <img class="menu-img" src="/static/Media/wood.jpg">
+                <img class="menu-img" src="/static/Media/magma.jpg">
+                <img class="menu-img" src="/static/Media/door.jpg">
+            </div>
+        </div>
+
+        <canvas></canvas>
+
+        <div class="map-menu">
+            menu2
+        </div>
     </div>
 
 </body>
