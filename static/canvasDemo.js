@@ -5,12 +5,13 @@ var mouse = {
     x: undefined,
     y: undefined
 };
+var selectedImg;
 
 $(function init() {
     canvas = document.querySelector('canvas');
 
     canvas.width = window.innerWidth/2;
-    canvas.height = window.innerHeight/2;
+    canvas.height =  canvas.width/2;
 
     c = canvas.getContext('2d');
 
@@ -19,7 +20,26 @@ $(function init() {
         mouse.y = event.y - $("canvas").position().top;
 
     });
-
+    $('img.menu-img').click(function() {
+        if(selectedImg == this.src) {
+            $('img.menu-img-selected')[0].classList.remove("menu-img-selected");
+            selectedImg = undefined;
+        }else{
+            mouse.x = undefined;
+            mouse.y = undefined;
+            if($('img.menu-img-selected')[0] != undefined) {
+                $('img.menu-img-selected')[0].classList.remove("menu-img-selected");
+            }
+            this.classList.add("menu-img-selected");
+            selectedImg = this.src;
+        }
+    });
+    $('img.menu-img').mouseover(function() {
+        this.classList.add("menu-img-over");
+    });
+    $('img.menu-img').mouseleave(function() {
+        this.classList.remove("menu-img-over");
+    });
     initTiles();
     animate();
 })
@@ -41,11 +61,11 @@ function Tile(x, y, h, w, img) {
         c.stroke();
     };
     this.update = function () {
-        if(mouse.x != undefined && Math.abs(this.x + this.w) > mouse.x && this.x < mouse.x  && Math.abs(this.y + this.h) > mouse.y && this.y < mouse.y) {
+        if(selectedImg != undefined && mouse.x != undefined && Math.abs(this.x + this.w) > mouse.x && this.x < mouse.x  && Math.abs(this.y + this.h) > mouse.y && this.y < mouse.y) {
         //if(mouse.x != undefined && Math.abs(mouse.x - this.x) < this.w/2 && Math.abs(mouse.y - this.y) < this.h/2) {
         //if(mouse.x - this.x < this.x/2 && this.x - mouse.x > -this.x/2 && mouse.y - this.y < this.y/2 && this.y - mouse.y > -this.y/2) {
             //this.color = getRandomColor();
-            this.img = '/static/Media/hill.jpg'
+            this.img = selectedImg;
             mouse.x = undefined;
             mouse.y = undefined;
         }
@@ -55,16 +75,17 @@ function Tile(x, y, h, w, img) {
 }
 
 function initTiles() {
-    var initial = Math.floor(innerWidth / 10);
+    var rowTiles = 32;
+    var initial = Math.floor(innerWidth / rowTiles);
     var x = 0;
     var y = 0;
     var w = initial;
     var h = initial;
-    var img = '/static/Media/Zaen.jpg';
+    var img = '/static/Media/grass.jpg';
 
 
-    for(var i=0;i<4;i++){
-        for(var j = 0; j < 4; j++){
+    for(var i=0;i<rowTiles/4;i++){
+        for(var j = 0; j < rowTiles/2; j++){
             tilesArr.push(new Tile(x, y, h, w, img));
             x += initial;
         }
