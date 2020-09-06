@@ -1,5 +1,8 @@
 {% extends 'header.html' %}
 {% block titulo %} <title>Sign</title> {% endblock %}
+{% block breadcrumbschild %}
+    <li><a href='{% url 'signUp' %}'>SignUp</a> </li>
+{% endblock %}
 {% block content %}
     <form action="/signUp/" method="post">
         {% csrf_token %}
@@ -11,9 +14,6 @@
         <input type="password" name="password"><br><br>
         Confirm Password:
         <input type="password" name="confirmPassword"><br>
-        {% if passwordError %}
-            <a> {{ passwordError }}</a><br>
-        {% endif %}
         <br>
         <input type="submit" value="SignUp">
     </form>

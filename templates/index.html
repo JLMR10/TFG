@@ -1,7 +1,5 @@
 {% extends 'header.html' %}
 {% block titulo %} <title>Index</title> {% endblock %}
 {% block content %}
-    {% csrf_token %}
-    Hello {{user}}
-    <button type="button" onclick="location.href='{% url 'log' %}'"> Logout</button>
+
 {% endblock %}

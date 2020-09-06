@@ -1,0 +1,10 @@
+{% extends 'header.html' %}
+{% block titulo %} <title>Main Menu</title> {% endblock %}
+{% block content %}
+    <ul>
+        <li><a href='{% url 'myMaps' %}'>My Maps</a></li>
+        <li>Create Game</li>
+        <li>Resume Game</li>
+        <li>Join Game</li>
+    </ul>
+{% endblock %}

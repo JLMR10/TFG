@@ -28,58 +28,81 @@ database = firebase.database()
 
 
 def signIn(request):
-    if request.method == 'POST':
-        email = request.POST.get("email")
-        password = request.POST.get("password")
+    if "user" in request.session:
+        return render(request, "mainMenu.html")
+    else:
+        if request.method == 'POST':
+            email = request.POST.get("email")
+            password = request.POST.get("password")
 
-        try:
-            user = authFirebase.sign_in_with_email_and_password(email, password)
-        except HTTPError as e:
-            error_json = e.args[1]
-            message = json.loads(error_json)["error"]["message"]
-            messages.error(request, message)
-            return render(request, "signIn.html", {})
-
-        request.session["uid"] = authFirebase.current_user["idToken"]
-
-        return render(request, "index.html", {"user": email, "messg": "logged successfully"})
-    return render(request, "signIn.html")
-
-
-def logout(request):
-    authFirebase.current_user = None
-    return HttpResponseRedirect('../')
-
-
-def signUp(request):
-    if request.method == 'POST':
-        name = request.POST.get("name")
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-        confirmPassword = request.POST.get("confirmPassword")
-
-        if password == confirmPassword:
             try:
-                user = authFirebase.create_user_with_email_and_password(email, password)
+                user = authFirebase.sign_in_with_email_and_password(email, password)
             except HTTPError as e:
                 error_json = e.args[1]
                 message = json.loads(error_json)["error"]["message"]
                 messages.error(request, message)
-                return render(request, "signUp.html", {})
+                return render(request, "signIn.html")
 
-            uid = user['localId']
-            userDB = User(name, email, "", ["DefaultMap1", "DefaultMap2", "DefaultMap3"], [])
-            userJson = userServices.userToJson(userDB)
-            message = userRepository.create(userJson, uid)
-            messages.success(request, message)
-            return HttpResponseRedirect('../')
+            request.session["user"] = authFirebase.current_user
+            messages.success(request, "Logged successfully")
+            return render(request, "mainMenu.html")
+        return render(request, "signIn.html")
 
-        else:
-            messages.error(request,"Passwords didn't match.")
-            return render(request, "signUp.html", {})
 
-    return render(request, "signUp.html")
+def logout(request):
+    authFirebase.current_user = None
+    del request.session["user"]
+    return HttpResponseRedirect('../')
+
+
+def signUp(request):
+    if "user" in request.session:
+        return HttpResponseRedirect('../')
+    else:
+        if request.method == 'POST':
+            name = request.POST.get("name")
+            email = request.POST.get("email")
+            password = request.POST.get("password")
+            confirmPassword = request.POST.get("confirmPassword")
+
+            if password == confirmPassword:
+                try:
+                    user = authFirebase.create_user_with_email_and_password(email, password)
+                except HTTPError as e:
+                    error_json = e.args[1]
+                    message = json.loads(error_json)["error"]["message"]
+                    messages.error(request, message)
+                    return render(request, "signUp.html")
+
+                uid = user['localId']
+                userDB = User(name, email, "", ["DefaultMap1", "DefaultMap2", "DefaultMap3"], [])
+                userJson = userServices.userToJson(userDB)
+                message = userRepository.create(userJson, uid)
+                messages.success(request, message)
+                return HttpResponseRedirect('../')
+
+            else:
+                messages.error(request, "Passwords didn't match.")
+                return render(request, "signUp.html")
+
+        return render(request, "signUp.html")
 
 
 def canvasDemo(request):
     return render(request, "canvasDemo.html")
+
+
+def mainMenu(request):
+    if "user" in request.session:
+        return render(request, 'mainMenu.html')
+    else:
+        return HttpResponseRedirect('../')
+
+
+def myMaps(request):
+    if "user" in request.session:
+        maps = userRepository.get(request.session["user"]["localId"], "Maps")
+        print(maps)
+        return render(request, 'myMaps.html', {"maps": maps})
+    else:
+        return HttpResponseRedirect('../')

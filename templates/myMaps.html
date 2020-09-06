@@ -1,0 +1,12 @@
+{% extends 'header.html' %}
+{% block titulo %} <title>Main Menu</title> {% endblock %}
+{% block breadcrumbschild %}
+    <li><a href='{% url 'myMaps' %}'>My Maps</a> </li>
+{% endblock %}
+{% block content %}
+    <ul>
+        {% for map,value in maps.items %}
+            <li>{{ map }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

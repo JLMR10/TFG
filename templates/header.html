@@ -9,8 +9,18 @@
   	    {% block titulo %} {% endblock %}
     </head>
   	<body>
-
         {% include 'messages.html' %}
+        <a> NOMBRE DE LA APP</a>
+        {% block breadcrumbs %}
+            <ol class="breadcrumb">
+                <li><a href={% url 'mainMenu' %}>Main Menu</a> </li>
+                {% block breadcrumbschild %} {% endblock %}
+                {% if request.session.userEmail %}
+                    <li class="pull-right"><button type="button" onclick="location.href='{% url 'log' %}'"> Logout</button></li>
+                    <li class="pull-right">{{ request.session.user.email }}</li>
+                {% endif %}
+            </ol>
+        {% endblock %}
 		{% block content %} {% endblock %}
 
 

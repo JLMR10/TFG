@@ -32,6 +32,10 @@ def create(json, uid):
     return message
 
 
+def get(id, propierty):
+    return database.child(ref+"/"+id).get().val().get(propierty)
+
+
 def update(json):
     message = "The user hasn't been edited"
     for id, user in database.child(ref).get().val().items():
