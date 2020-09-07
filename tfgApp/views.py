@@ -106,3 +106,11 @@ def myMaps(request):
         return render(request, 'myMaps.html', {"maps": maps})
     else:
         return HttpResponseRedirect('../')
+
+
+def editMap(request, map):
+    if "user" in request.session:
+        print(map)
+        return render(request, "editMap.html", {"map": map})
+    else:
+        return HttpResponseRedirect('../')

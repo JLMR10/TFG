@@ -1,0 +1,6 @@
+{% extends 'header.html' %}
+{% block titulo %} <title>My Maps</title> {% endblock %}
+{% block breadcrumbschild %}
+    <li class="breadcrumb-item active" aria-current="page"><a href='{% url 'myMaps' %}'>My Maps</a> </li>
+    <li class="breadcrumb-item active" aria-current="page"><a href='{% url 'myMaps' %}'>{{ map }}</a> </li>
+{% endblock %}
