@@ -3,3 +3,4 @@ venv
 TFG/__pycache__
 tfgApp/__pycache__
 __pycache__/
+TFG/db.sqlite3
