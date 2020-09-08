@@ -6,6 +6,7 @@ var mouse = {
     y: undefined
 };
 var selectedImg;
+var initial;
 
 $(function init() {
     canvas = document.querySelector('canvas');
@@ -34,15 +35,38 @@ $(function init() {
             selectedImg = this.src;
         }
     });
-    $('img.menu-img').mouseover(function() {
+    $('img.menu-img, img.move-down, img.move-left, img.move-right, img.move-up').mouseover(function() {
         this.classList.add("menu-img-over");
     });
-    $('img.menu-img').mouseleave(function() {
+    $('img.menu-img, img.move-down, img.move-left, img.move-right, img.move-up').mouseleave(function() {
         this.classList.remove("menu-img-over");
+    });
+    $('img.move-down, img.move-left, img.move-right, img.move-up').click(function() {
+        switch (this.classList[0]){
+            case 'move-up':
+                move(0,-1);
+                break;
+            case 'move-left':
+                move(-1,0);
+                break;
+            case 'move-right':
+                move(1,0);
+                break;
+            case 'move-down':
+                move(0,1);
+                break;
+        }
     });
     initTiles();
     animate();
 })
+
+function move(x, y) {
+    tilesArr.forEach(tile => {
+        tile.x += tile.w * x;
+        tile.y += tile.h * y;
+    });
+}
 
 function Tile(x, y, h, w, img) {
     this.x = x;
@@ -93,17 +117,16 @@ function initTiles() {
         y += initial;
     }
 }
-var i;
 function animate() {
     requestAnimationFrame(animate);
-    if(i == undefined) {
-        i=1
+    if(initial == undefined) {
+        initial=1
         c.clearRect(0,0,innerWidth,innerHeight);
         tilesArr.forEach(tile => {
             tile.draw();
         })
     }else{
-        i=1
+        initial=1
         c.clearRect(0,0,innerWidth,innerHeight);
         tilesArr.forEach(tile => {
             tile.update();
