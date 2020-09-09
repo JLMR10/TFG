@@ -16,8 +16,9 @@
         {% block breadcrumbs %}
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item active"><a href={% url 'mainMenu' %}>Main Menu</a> </li>
-                    {% block breadcrumbschild %} {% endblock %}
+                    {% block breadcrumbschild %}
+                        <li class="breadcrumb-item">Main Menu</li>
+                    {% endblock %}
                     {% if request.session.user %}
                         <li class="ml-auto px-2"><h5>{{ request.session.user.email }}</h5></li>
                         <li class="px-2"><button class="btn btn-sm btn-danger float-right" onclick="location.href='{% url 'log' %}'"> Logout</button></li>
