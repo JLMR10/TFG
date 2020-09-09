@@ -1,5 +1,5 @@
-var canvas;
-var c;
+var mapCanvas;
+var mapContext;
 var tilesArr = [];
 var mouse = {
     x: undefined,
@@ -7,20 +7,36 @@ var mouse = {
 };
 var selectedImg;
 var initial;
+const maxSize = 50;
 
 $(function init() {
-    canvas = document.querySelector('canvas');
+    mapCanvas = document.querySelector('#backMap');
 
-    canvas.width = window.innerWidth/2;
-    canvas.height =  canvas.width/2;
+    mapCanvas.width = window.innerWidth/2;
+    mapCanvas.height =  mapCanvas.width*0.75;
 
-    c = canvas.getContext('2d');
+    mapContext = mapCanvas.getContext('2d');
 
-    canvas.addEventListener('click', function (event) {
+    mapCanvas.addEventListener("mousedown", function(event){
         mouse.x = event.x - $("canvas").position().left;
         mouse.y = event.y - $("canvas").position().top;
 
+        mapCanvas.onmousemove = function(event) {
+            mouse.x = event.x - $("canvas").position().left;
+            mouse.y = event.y - $("canvas").position().top;
+        }
     });
+    mapCanvas.addEventListener("mouseup", function(e){
+        mouse.x = undefined;
+        mouse.y = undefined;
+        mapCanvas.onmousemove = null
+    });
+    mapCanvas.addEventListener("mouseleave", function(e){
+        mouse.x = undefined;
+        mouse.y = undefined;
+        mapCanvas.onmousemove = null
+    });
+
     $('img.menu-img').click(function() {
         if(selectedImg == this.src) {
             $('img.menu-img-selected')[0].classList.remove("menu-img-selected");
@@ -44,16 +60,16 @@ $(function init() {
     $('img.move-down, img.move-left, img.move-right, img.move-up').click(function() {
         switch (this.classList[0]){
             case 'move-up':
-                move(0,-1);
+                move(0,3);
                 break;
             case 'move-left':
-                move(-1,0);
+                move(3,0);
                 break;
             case 'move-right':
-                move(1,0);
+                move(-3,0);
                 break;
             case 'move-down':
-                move(0,1);
+                move(0,-3);
                 break;
         }
     });
@@ -79,13 +95,13 @@ function Tile(x, y, h, w, img) {
         //c.fillRect(this.x, this.y, this.h, this.w);
         var htmlImg = new Image();
         htmlImg.src = this.img;
-        c.drawImage(htmlImg ,this.x, this.y, this.h, this.w);
-        c.fillStyle = this.color;
-        c.strokeStyle = 'black';
-        c.stroke();
+        mapContext.drawImage(htmlImg ,this.x, this.y, this.h, this.w);
+        mapContext.fillStyle = this.color;
+        mapContext.strokeStyle = 'black';
+        mapContext.stroke();
     };
     this.update = function () {
-        if(selectedImg != undefined && mouse.x != undefined && Math.abs(this.x + this.w) > mouse.x && this.x < mouse.x  && Math.abs(this.y + this.h) > mouse.y && this.y < mouse.y) {
+        if(selectedImg != undefined && mouse.x != undefined && this.x + this.w > mouse.x && this.x < mouse.x  && this.y + this.h > mouse.y && this.y < mouse.y) {
         //if(mouse.x != undefined && Math.abs(mouse.x - this.x) < this.w/2 && Math.abs(mouse.y - this.y) < this.h/2) {
         //if(mouse.x - this.x < this.x/2 && this.x - mouse.x > -this.x/2 && mouse.y - this.y < this.y/2 && this.y - mouse.y > -this.y/2) {
             //this.color = getRandomColor();
@@ -100,34 +116,34 @@ function Tile(x, y, h, w, img) {
 
 function initTiles() {
     var rowTiles = 32;
-    var initial = Math.floor(innerWidth / rowTiles);
-    var x = 0;
-    var y = 0;
-    var w = initial;
-    var h = initial;
+    var cubeSize = Math.floor(innerWidth / rowTiles);
+    var x = (-1 * maxSize/2 + rowTiles/2) * cubeSize;
+    var y = (-1 * maxSize/2 + rowTiles/2) * cubeSize;
+    var w = cubeSize;
+    var h = cubeSize;
     var img = '/static/Media/grass.jpg';
 
 
-    for(var i=0;i<rowTiles/4;i++){
-        for(var j = 0; j < rowTiles/2; j++){
+    for(var i=0;i<maxSize;i++){
+        for(var j = 0; j < maxSize; j++){
             tilesArr.push(new Tile(x, y, h, w, img));
-            x += initial;
+            x += cubeSize;
         }
-        x = 0;
-        y += initial;
+        x = (-1 * maxSize/2 + rowTiles/2) * cubeSize;
+        y += cubeSize;
     }
 }
 function animate() {
     requestAnimationFrame(animate);
     if(initial == undefined) {
         initial=1
-        c.clearRect(0,0,innerWidth,innerHeight);
+        mapContext.clearRect(0,0,innerWidth,innerHeight);
         tilesArr.forEach(tile => {
             tile.draw();
         })
     }else{
         initial=1
-        c.clearRect(0,0,innerWidth,innerHeight);
+        mapContext.clearRect(0,0,innerWidth,innerHeight);
         tilesArr.forEach(tile => {
             tile.update();
         })
@@ -149,29 +165,29 @@ function getRandomColor() {
 function createCanvas() {
 
     // Rectangle
-    c.fillStyle = 'blue';
-    c.fillRect(100,100,100,100);
-    c.fillStyle = 'pink';
-    c.fillRect(500,500,100,100);
+    mapContext.fillStyle = 'blue';
+    mapContext.fillRect(100,100,100,100);
+    mapContext.fillStyle = 'pink';
+    mapContext.fillRect(500,500,100,100);
 
     //Line
-    c.beginPath();
-    c.moveTo(50, 300);
-    c.lineTo(300, 100);
-    c.lineTo(400, 300);
-    c.strokeStyle = 'red';
-    c.stroke();
+    mapContext.beginPath();
+    mapContext.moveTo(50, 300);
+    mapContext.lineTo(300, 100);
+    mapContext.lineTo(400, 300);
+    mapContext.strokeStyle = 'red';
+    mapContext.stroke();
 
-    c.beginPath();
-    c.moveTo(500, 600);
-    c.lineTo(700, 200);
-    c.strokeStyle = 'blue';
-    c.stroke();
+    mapContext.beginPath();
+    mapContext.moveTo(500, 600);
+    mapContext.lineTo(700, 200);
+    mapContext.strokeStyle = 'blue';
+    mapContext.stroke();
 
     // Arc / Circle
-    c.beginPath();
-    c.arc(300,300,30,Math.PI * 2, false);
-    c.strokeStyle = 'purple';
-    c.stroke();
+    mapContext.beginPath();
+    mapContext.arc(300,300,30,Math.PI * 2, false);
+    mapContext.strokeStyle = 'purple';
+    mapContext.stroke();
 
 }
