@@ -41,3 +41,41 @@ body {
     justify-content: start;
     flex-wrap: wrap;
 }
+
+.move-up {
+    height: 100px;
+    width: 100px;
+    transform: rotate(0deg);
+}
+
+.move-left {
+    height: 100px;
+    width: 100px;
+    transform: rotate(270deg);
+}
+
+.move-right {
+    height: 100px;
+    width: 100px;
+    transform: rotate(90deg);
+}
+
+.move-down {
+    height: 100px;
+    width: 100px;
+    transform: rotate(180deg);
+}
+
+.vertical-move {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.horizontal-move {
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
