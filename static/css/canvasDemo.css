@@ -20,6 +20,7 @@ body {
     display: flex;
 }
 
+/* IMAGENES Y CHIPS */
 .menu-img {
     height: 100px;
     width: 100px;
@@ -32,6 +33,21 @@ body {
 }
 
 .menu-img-selected {
+    box-shadow: 0 0 11px blue;
+}
+
+.menu-chip {
+    height: 100px;
+    width: 100px;
+    margin-left: 3.5%;
+    margin-bottom: 3.5%;
+}
+
+.menu-chip-over {
+    box-shadow: 0 0 11px aqua;
+}
+
+.menu-chip-selected {
     box-shadow: 0 0 11px blue;
 }
 
