@@ -1,13 +1,13 @@
 var mapCanvas;
 var mapContext;
 var tilesArr = [];
-var mouse = {
+var mapMouse = {
     x: undefined,
     y: undefined
 };
 var selectedImg;
-var initial;
-const maxSize = 50;
+var initialM;
+const maxSizeMap = 50;
 
 $(function init() {
     mapCanvas = document.querySelector('#backMap');
@@ -18,32 +18,36 @@ $(function init() {
     mapContext = mapCanvas.getContext('2d');
 
     mapCanvas.addEventListener("mousedown", function(event){
-        mouse.x = event.x - $("canvas").position().left;
-        mouse.y = event.y - $("canvas").position().top;
+        mapMouse.x = event.x - $("canvas").position().left;
+        mapMouse.y = event.y - $("canvas").position().top;
 
         mapCanvas.onmousemove = function(event) {
-            mouse.x = event.x - $("canvas").position().left;
-            mouse.y = event.y - $("canvas").position().top;
+            mapMouse.x = event.x - $("canvas").position().left;
+            mapMouse.y = event.y - $("canvas").position().top;
         }
     });
     mapCanvas.addEventListener("mouseup", function(e){
-        mouse.x = undefined;
-        mouse.y = undefined;
+        mapMouse.x = undefined;
+        mapMouse.y = undefined;
         mapCanvas.onmousemove = null
     });
     mapCanvas.addEventListener("mouseleave", function(e){
-        mouse.x = undefined;
-        mouse.y = undefined;
+        mapMouse.x = undefined;
+        mapMouse.y = undefined;
         mapCanvas.onmousemove = null
     });
 
     $('img.menu-img').click(function() {
         if(selectedImg == this.src) {
+            $("#backMap").css("z-index",0);
+            $("#chipMap").css("z-index",100);
             $('img.menu-img-selected')[0].classList.remove("menu-img-selected");
             selectedImg = undefined;
         }else{
-            mouse.x = undefined;
-            mouse.y = undefined;
+            $("#backMap").css("z-index",100);
+            $("#chipMap").css("z-index",0);
+            mapMouse.x = undefined;
+            mapMouse.y = undefined;
             if($('img.menu-img-selected')[0] != undefined) {
                 $('img.menu-img-selected')[0].classList.remove("menu-img-selected");
             }
@@ -90,59 +94,56 @@ function Tile(x, y, h, w, img) {
     this.h = h;
     this.w = w;
     this.img = img;
-    this.color = getRandomColor();
+    this.color = 'white';
     this.draw = function () {
-        //c.fillRect(this.x, this.y, this.h, this.w);
-        var htmlImg = new Image();
-        htmlImg.src = this.img;
-        mapContext.drawImage(htmlImg ,this.x, this.y, this.h, this.w);
-        mapContext.fillStyle = this.color;
         mapContext.strokeStyle = 'black';
-        mapContext.stroke();
+        mapContext.fillStyle = this.color;
+        mapContext.strokeRect(this.x, this.y, this.h, this.w);
+        if(this.img != undefined){
+            var htmlImg = new Image();
+            htmlImg.src = this.img;
+            mapContext.drawImage(htmlImg ,this.x, this.y, this.h, this.w);
+        }
     };
     this.update = function () {
-        if(selectedImg != undefined && mouse.x != undefined && this.x + this.w > mouse.x && this.x < mouse.x  && this.y + this.h > mouse.y && this.y < mouse.y) {
-        //if(mouse.x != undefined && Math.abs(mouse.x - this.x) < this.w/2 && Math.abs(mouse.y - this.y) < this.h/2) {
-        //if(mouse.x - this.x < this.x/2 && this.x - mouse.x > -this.x/2 && mouse.y - this.y < this.y/2 && this.y - mouse.y > -this.y/2) {
-            //this.color = getRandomColor();
+        if(selectedImg != undefined && mapMouse.x != undefined && this.x + this.w > mapMouse.x && this.x < mapMouse.x  && this.y + this.h > mapMouse.y && this.y < mapMouse.y) {
             this.img = selectedImg;
-            mouse.x = undefined;
-            mouse.y = undefined;
+            mapMouse.x = undefined;
+            mapMouse.y = undefined;
         }
         this.draw();
     };
-
 }
 
 function initTiles() {
     var rowTiles = 32;
     var cubeSize = Math.floor(innerWidth / rowTiles);
-    var x = (-1 * maxSize/2 + rowTiles/2) * cubeSize;
-    var y = (-1 * maxSize/2 + rowTiles/2) * cubeSize;
+    var x = (-1 * maxSizeMap/2 + rowTiles/2) * cubeSize;
+    var y = (-1 * maxSizeMap/2 + rowTiles/2) * cubeSize;
     var w = cubeSize;
     var h = cubeSize;
-    var img = '/static/Media/grass.jpg';
+    var img = undefined;//'/static/Media/grass.jpg';
 
 
-    for(var i=0;i<maxSize;i++){
-        for(var j = 0; j < maxSize; j++){
+    for(var i=0; i<maxSizeMap; i++){
+        for(var j = 0; j < maxSizeMap; j++){
             tilesArr.push(new Tile(x, y, h, w, img));
             x += cubeSize;
         }
-        x = (-1 * maxSize/2 + rowTiles/2) * cubeSize;
+        x = (-1 * maxSizeMap/2 + rowTiles/2) * cubeSize;
         y += cubeSize;
     }
 }
 function animate() {
     requestAnimationFrame(animate);
-    if(initial == undefined) {
-        initial=1
+    if(initialM == undefined) {
+        initialM=1
         mapContext.clearRect(0,0,innerWidth,innerHeight);
         tilesArr.forEach(tile => {
             tile.draw();
         })
     }else{
-        initial=1
+        initialM=1
         mapContext.clearRect(0,0,innerWidth,innerHeight);
         tilesArr.forEach(tile => {
             tile.update();
