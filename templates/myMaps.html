@@ -4,15 +4,20 @@
 {% endblock %}
 {% block titulo %} <title>My Maps</title> {% endblock %}
 {% block breadcrumbschild %}
-    <li class="breadcrumb-item active" aria-current="page"><a href='{% url 'myMaps' %}'>My Maps</a> </li>
+    <li class="breadcrumb-item active"><a href={% url 'mainMenu' %}>Main Menu</a> </li>
+    <li class="breadcrumb-item active" aria-current="page">My Maps</li>
 {% endblock %}
 {% block content %}
-    <ul>
-        {% for map,value in maps.items %}
-            <li>{{ map }}</li>
-        {% endfor %}
-        <li><a href="" data-toggle="modal" data-target="#ModalMaps">New map</a></li>
-    </ul>
+    <form id="editMap" action="/myMaps/editMap/" method="POST">
+    {% csrf_token %}
+        <input type="hidden" value="" name="mapId">
+        <ul>
+            {% for mapName, mapId in maps.items %}
+                <li><a href="#" onclick="changeValueMap('{{ mapId }}');">{{ mapName }}</a></li>
+            {% endfor %}
+            <li><a href="" data-toggle="modal" data-target="#ModalMaps">New map</a></li>
+        </ul>
+    </form>
     <div class="modal" tabindex="-1" role="dialog" id="ModalMaps">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -22,13 +27,13 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="ModalMapForm" action="/editMap/" method="post">
+                <form id="ModalMapForm" action="/myMaps/editMap/" method="post">
                     {% csrf_token %}
                     <div class="modal-body">
                         <select name="mapList" class="custom-select">
                             <option value="" selected>Open this select menu</option>
-                            {% for map,value in maps.items %}
-                                <option value="{{ map }}">{{ map }}</option>
+                            {% for mapName,mapId in mapsModal.items %}
+                                <option value="{{ mapId }}">{{ mapName }}</option>
                             {% endfor %}
                         </select>
                     </div>

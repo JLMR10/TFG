@@ -2,9 +2,9 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib import messages
 import pyrebase
-from tfgApp.models import User
+from tfgApp.models import User, Map
 from tfgApp.services import userServices, mapServices, tileListServices, tileServices, versionServices
-from tfgApp.repositories import userRepository
+from tfgApp.repositories import userRepository, mapRepository
 from requests.exceptions import HTTPError
 import json
 
@@ -101,16 +101,38 @@ def mainMenu(request):
 
 def myMaps(request):
     if "user" in request.session:
-        maps = userRepository.get(request.session["user"]["localId"], "Maps")
-        print(maps)
-        return render(request, 'myMaps.html', {"maps": maps})
+        userMaps = userRepository.get(request.session["user"]["localId"], "Maps")
+        userMapsNames = {}
+        if userMaps:
+            userMapsNames = {mapRepository.getProperty(key, "Name"): key for key, value in userMaps.items()}
+        mapsModal = dict(userMapsNames)
+        mapDefaultId, mapDefaultValues = mapRepository.getDefault()
+        mapDefaultName = mapDefaultValues.get("Name")
+        mapsModal[mapDefaultName] = mapDefaultId
+        return render(request, 'myMaps.html', {"maps": userMapsNames, "mapsModal": mapsModal})
     else:
         return HttpResponseRedirect('../')
 
 
-def editMap(request, map):
+def editMap(request):
     if "user" in request.session:
-        print(map)
-        return render(request, "editMap.html", {"map": map})
+        userId = request.session["user"]["localId"]
+        if request.method == "POST" and "mapList" in request.POST:
+            map = request.POST.get("mapList")
+            mapName = mapRepository.getProperty(map, "Name")
+            mapName += "_new"
+            mapDB = Map(mapName, userId, [mapName+"_0"])
+            mapJson = mapServices.mapToJson(mapDB)
+            message, mapId = mapRepository.create(mapJson)
+            mapRepository.addMapToUser(userId, mapId)
+            return render(request, "editMap.html", {"map": mapName})
+        if request.method == "POST" and "mapId" in request.POST:
+            map = request.POST.get("mapId")
+            userMaps = list(userRepository.get(userId, "Maps").keys())
+            if map in userMaps:
+                mapName = mapRepository.getProperty(map, "Name")
+                return render(request, "editMap.html", {"map": mapName})
+            else:
+                return HttpResponseRedirect('../')
     else:
         return HttpResponseRedirect('../')

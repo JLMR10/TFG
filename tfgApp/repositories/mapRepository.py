@@ -26,10 +26,23 @@ def create(json):
         listOfMaps.append(map["Name"])
 
     if json["Name"] not in listOfMaps:
-        database.child(ref).push(json)
+        id = database.child(ref).push(json)
         message = "The map has been created successfully"
 
-    return message
+    return message, id["name"]
+
+
+def getDefault():
+    obj = database.child(ref+"/-M2UkUrIG3GC19lqpJD1").get()
+    return obj.query_key, obj.val()
+
+
+def get(id):
+    return database.child(ref+"/"+id).get().val()
+
+
+def getProperty(id, propierty):
+    return database.child(ref+"/"+id).get().val().get(propierty)
 
 
 def update(json):
@@ -51,3 +64,8 @@ def delete(json):
             break
     return message
 
+
+def addMapToUser(userId, mapId):
+    info = {mapId: "true"}
+    reference = "User/" + userId + "/Maps/"
+    database.child(reference).update(info)
