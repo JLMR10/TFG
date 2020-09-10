@@ -4,7 +4,6 @@ from django.contrib import messages
 import pyrebase
 from tfgApp.models import User, Map
 from tfgApp.services import userServices, mapServices, tileListServices, tileServices, versionServices
-from tfgApp.repositories import userRepository, mapRepository
 from requests.exceptions import HTTPError
 import json
 
@@ -74,10 +73,8 @@ def signUp(request):
                     messages.error(request, message)
                     return render(request, "signUp.html")
 
-                uid = user['localId']
-                userDB = User(name, email, "", ["DefaultMap1", "DefaultMap2", "DefaultMap3"], [])
-                userJson = userServices.userToJson(userDB)
-                message = userRepository.create(userJson, uid)
+                id = user['localId']
+                message = userServices.createUser(id, name, email)
                 messages.success(request, message)
                 return HttpResponseRedirect('../')
 
@@ -101,14 +98,11 @@ def mainMenu(request):
 
 def myMaps(request):
     if "user" in request.session:
-        userMaps = userRepository.get(request.session["user"]["localId"], "Maps")
+        userMaps = userServices.getPropierty(request.session["user"]["localId"], "Maps")
         userMapsNames = {}
         if userMaps:
-            userMapsNames = {mapRepository.getProperty(key, "Name"): key for key, value in userMaps.items()}
-        mapsModal = dict(userMapsNames)
-        mapDefaultId, mapDefaultValues = mapRepository.getDefault()
-        mapDefaultName = mapDefaultValues.get("Name")
-        mapsModal[mapDefaultName] = mapDefaultId
+            userMapsNames = mapServices.getNameFromMaps(userMaps)
+        mapsModal = mapServices.getMapsForModal(userMapsNames)
         return render(request, 'myMaps.html', {"maps": userMapsNames, "mapsModal": mapsModal})
     else:
         return HttpResponseRedirect('../')
@@ -118,19 +112,23 @@ def editMap(request):
     if "user" in request.session:
         userId = request.session["user"]["localId"]
         if request.method == "POST" and "mapList" in request.POST:
-            map = request.POST.get("mapList")
-            mapName = mapRepository.getProperty(map, "Name")
-            mapName += "_new"
-            mapDB = Map(mapName, userId, [mapName+"_0"])
-            mapJson = mapServices.mapToJson(mapDB)
-            message, mapId = mapRepository.create(mapJson)
-            mapRepository.addMapToUser(userId, mapId)
-            return render(request, "editMap.html", {"map": mapName})
+            sourceMapId = request.POST.get("mapList")
+            mapName = request.POST.get("mapName")
+            message, mapId = mapServices.createMap(mapName, userId, [])
+            _, sourceMapFirstVersion = mapServices.getFirstVersion(sourceMapId)
+            versions = [versionServices.createFromAnotherVersion(sourceMapFirstVersion, mapName+"_0", mapId)[1]]
+            mapServices.addInitialVersions(versions, mapId)
+            if message == "The map has been created successfully":
+                userServices.addMap(userId, mapId)
+                return render(request, "editMap.html", {"map": mapName})
+            else:
+                messages.error(request, message)
+                return HttpResponseRedirect('../')
         if request.method == "POST" and "mapId" in request.POST:
             map = request.POST.get("mapId")
-            userMaps = list(userRepository.get(userId, "Maps").keys())
+            userMaps = list(userServices.getPropierty(userId, "Maps").keys())
             if map in userMaps:
-                mapName = mapRepository.getProperty(map, "Name")
+                mapName = mapServices.getProperty(map, "Name")
                 return render(request, "editMap.html", {"map": mapName})
             else:
                 return HttpResponseRedirect('../')

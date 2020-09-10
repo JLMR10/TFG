@@ -1,3 +1,5 @@
+from tfgApp.repositories import userRepository, versionRepository
+from tfgApp.services import mapServices
 import pyrebase
 
 config = {
@@ -21,15 +23,17 @@ ref = "Map"
 def create(json):
     message = "The map already exists"
     listOfMaps = []
-
-    for id, map in database.child(ref).get().val().items():
-        listOfMaps.append(map["Name"])
-
-    if json["Name"] not in listOfMaps:
-        id = database.child(ref).push(json)
+    id = ""
+    userMaps = userRepository.getMaps(json["User"])
+    userMapsNames = []
+    if userMaps:
+        userMapsNames = mapServices.getNameFromMaps(userMaps)
+    if json["Name"] not in userMapsNames:
+        obj = database.child(ref).push(json)
+        id = obj["name"]
         message = "The map has been created successfully"
 
-    return message, id["name"]
+    return message, id
 
 
 def getDefault():
@@ -43,6 +47,35 @@ def get(id):
 
 def getProperty(id, propierty):
     return database.child(ref+"/"+id).get().val().get(propierty)
+
+
+def getFirstVersion(id):
+    versions = database.child(ref+"/"+id).get().val().get("Versions")
+    firstVersion = None
+    firstVersionId = None
+    for versionId, _ in versions.items():
+        version = versionRepository.get(versionId)
+        order = version["Order"]
+        if order == 0:
+            firstVersion = version
+            firstVersionId = versionId
+    return firstVersionId, firstVersion
+
+
+def addInitialVersions(versionsList, mapId):
+    versionsJson = {"Versions": {version: "true" for version in versionsList}}
+    reference = ref + "/" + mapId
+    database.child(reference).update(versionsJson)
+
+
+"""mapJson = {mapId: "true"}
+    reference = ref + "/" + userId + "/Maps/"
+    userMaps = database.child(reference).get().val()
+    if userMaps:
+        database.child(reference).update(mapJson)
+    else:
+        mapsJson = {"Maps": mapJson}
+        database.child(reference).update(mapJson)"""
 
 
 def update(json):
@@ -63,9 +96,3 @@ def delete(json):
             message = "The map has been deleted successfully"
             break
     return message
-
-
-def addMapToUser(userId, mapId):
-    info = {mapId: "true"}
-    reference = "User/" + userId + "/Maps/"
-    database.child(reference).update(info)

@@ -32,8 +32,31 @@ def create(json, uid):
     return message
 
 
-def get(id, propierty):
-    return database.child(ref+"/"+id).get().val().get(propierty)
+def getPropierty(id, propierty):
+    valueFromPropierty = database.child(ref+"/"+id).get().val().get(propierty)
+    return valueFromPropierty
+
+
+def getMaps(id):
+    maps = database.child(ref+"/"+id).get().val().get("Maps")
+    return maps
+
+
+def addMap(userId, mapId):
+    mapJson = {mapId: "true"}
+    reference = ref + "/" + userId + "/Maps/"
+    userMaps = database.child(reference).get().val()
+    if userMaps:
+        database.child(reference).update(mapJson)
+    else:
+        mapsJson = {"Maps": mapJson}
+        database.child(reference).update(mapJson)
+
+"""def addMap(userId, mapId):
+    info = {mapId: "true"}
+    reference = ref + "/" + userId + "/Maps/"
+    db = database.child(reference)
+    db.child(reference).update(info)"""
 
 
 def update(json):

@@ -15,6 +15,25 @@ def userToJson(user):
     return json
 
 
+def createUser(id, name, email):
+    userDB = User(name, email, "", [], [])
+    userJson = userToJson(userDB)
+    message = userRepository.create(userJson, id)
+    return message
+
+
+def getMaps(id):
+    userRepository.getMaps(id)
+
+
+def addMap(userId, mapId):
+    userRepository.addMap(userId, mapId)
+
+
+def getPropierty(id, propierty):
+    return userRepository.getPropierty(id, propierty)
+
+
 def testCreate():
     user1 = User("Guille", "Guille@pueba.com", "JGJG75F", ["DefaultMap1", "DefaultMap2", "DefaultMap3"], ["testGame"])
     user1Json = userToJson(user1)

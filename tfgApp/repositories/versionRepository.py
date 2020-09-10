@@ -21,15 +21,26 @@ ref = "Version"
 def create(json):
     message = "The version already exists"
     listOfVersions = []
-
+    versionId = ""
     for id, version in database.child(ref).get().val().items():
         listOfVersions.append(version["Name"])
 
     if json["Name"] not in listOfVersions:
-        database.child(ref).push(json)
+        version = database.child(ref).push(json)
+        versionId = version["name"]
         message = "The version has been created successfully"
 
-    return message
+    return message, versionId
+
+
+def get(id):
+    version = database.child(ref + "/" + id).get().val()
+    return version
+
+
+def getPropierty(id, propierty):
+    valueFromPropierty = database.child(ref + "/" + id).get().val().get(propierty)
+    return valueFromPropierty
 
 
 def update(json):

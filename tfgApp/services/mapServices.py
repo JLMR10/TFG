@@ -12,6 +12,39 @@ def mapToJson(map):
     return json
 
 
+def createMap(name, userId, versionList):
+    mapDB = Map(name, userId, versionList)
+    mapJson = mapToJson(mapDB)
+    message, mapId = mapRepository.create(mapJson)
+    return message, mapId
+
+
+def addInitialVersions(versionsList, mapId):
+    mapRepository.addInitialVersions(versionsList, mapId)
+
+
+def getMapsForModal(userMapsDict):
+    mapsModal = dict(userMapsDict)
+    mapDefaultId, mapDefaultValues = mapRepository.getDefault()
+    mapDefaultName = mapDefaultValues.get("Name")
+    mapsModal[mapDefaultName] = mapDefaultId
+    return mapsModal
+
+
+def getProperty(id, propierty):
+    valueFromPropierty = mapRepository.getProperty(id, propierty)
+    return valueFromPropierty
+
+
+def getNameFromMaps(mapsDict):
+    mapsNames = {mapRepository.getProperty(key, "Name"): key for key, value in mapsDict.items()}
+    return mapsNames
+
+
+def getFirstVersion(id):
+    firstVersionId, firstVersion = mapRepository.getFirstVersion(id)
+    return firstVersionId, firstVersion
+
 def testCreate():
     map1 = Map("testMapName2", "Jose", ["testMapName2_0"])
     map1Json = mapToJson(map1)

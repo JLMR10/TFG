@@ -12,6 +12,22 @@ def versionToJson(version):
     return json
 
 
+def createFromAnotherVersion(version, name, map):
+    versionDB = Version(version["Name"], version["Map"], version["Order"], version["TileList"])
+    json = versionToJson(versionDB)
+    json["Map"] = map
+    json["Name"] = name
+    message, versionId = versionRepository.create(json)
+    return message, versionId
+
+
+def createVersion(name, mapId, order, tileList):
+    versionDB = Version(name, mapId, order, tileList)
+    versionJson = versionToJson(versionDB)
+    message, versionId = versionRepository.create(versionJson)
+    return message, versionId
+
+
 def testCreate():
     version1 = Version("testMapName_1", "testMapName", "1", "testTileListName")
     version1Json = versionToJson(version1)
