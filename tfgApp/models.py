@@ -47,8 +47,7 @@ class Tile:
 
 
 class TileList:
-    def __init__(self, name, position):
-        self.name = name
+    def __init__(self, position):
         self.position = position
 
 

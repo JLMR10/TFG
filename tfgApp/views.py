@@ -100,6 +100,7 @@ def myMaps(request):
     if "user" in request.session:
         userMaps = userServices.getPropierty(request.session["user"]["localId"], "Maps")
         userMapsNames = {}
+        ##res = tileListServices.mergeTileList(["-M2Ug2_ZPQV-Ch_wcnAK", "-M2Ug2_ZPQV-Ch_wcnA2", "-M2Ug2_ZPQV-Ch_wcnA3"])
         if userMaps:
             userMapsNames = mapServices.getNameFromMaps(userMaps)
         mapsModal = mapServices.getMapsForModal(userMapsNames)
@@ -115,9 +116,7 @@ def editMap(request):
             sourceMapId = request.POST.get("mapList")
             mapName = request.POST.get("mapName")
             message, mapId = mapServices.createMap(mapName, userId, [])
-            _, sourceMapFirstVersion = mapServices.getFirstVersion(sourceMapId)
-            versions = [versionServices.createFromAnotherVersion(sourceMapFirstVersion, mapName+"_0", mapId)[1]]
-            mapServices.addInitialVersions(versions, mapId)
+            versionServices.createFirstVersionForNewMap(sourceMapId, mapName, mapId)
             if message == "The map has been created successfully":
                 userServices.addMap(userId, mapId)
                 return render(request, "editMap.html", {"map": mapName})

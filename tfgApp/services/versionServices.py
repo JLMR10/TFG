@@ -1,6 +1,7 @@
 from tfgApp.models import Version
 from tfgApp.repositories import versionRepository
-
+from tfgApp.services import mapServices, tileListServices
+import collections
 
 def versionToJson(version):
     json = {
@@ -12,13 +13,19 @@ def versionToJson(version):
     return json
 
 
-def createFromAnotherVersion(version, name, map):
-    versionDB = Version(version["Name"], version["Map"], version["Order"], version["TileList"])
-    json = versionToJson(versionDB)
-    json["Map"] = map
-    json["Name"] = name
+def create(json):
     message, versionId = versionRepository.create(json)
     return message, versionId
+
+
+def get(id):
+    version = versionRepository.get(id)
+    return version
+
+
+def getPropierty(id, propierty):
+    valueFromPropierty = versionRepository.getPropierty(id, propierty)
+    return valueFromPropierty
 
 
 def createVersion(name, mapId, order, tileList):
@@ -26,6 +33,21 @@ def createVersion(name, mapId, order, tileList):
     versionJson = versionToJson(versionDB)
     message, versionId = versionRepository.create(versionJson)
     return message, versionId
+
+
+def createFirstVersionForNewMap(sourceMapId, mapName, mapId):
+    versionsIdSource = mapServices.getVersions(sourceMapId)
+    versionsSource = [versionRepository.get(id) for id in versionsIdSource]
+    mergedTileListId = mergeVersionsTileLists(versionsSource)
+    _, versionId = createVersion(mapName + "_0", mapId, 0, mergedTileListId)
+    mapServices.addInitialVersion(versionId, mapId)
+
+
+def mergeVersionsTileLists(versions):
+    tileListOrderedDict = collections.OrderedDict(sorted({version["Order"]: version["TileList"] for version in versions}.items()))
+    tileListIds = [tileListId for order, tileListId in tileListOrderedDict.items()]
+    mergedTileListId = tileListServices.mergeAndCreateTileList(tileListIds)
+    return mergedTileListId
 
 
 def testCreate():

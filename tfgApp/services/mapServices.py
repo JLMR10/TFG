@@ -19,8 +19,8 @@ def createMap(name, userId, versionList):
     return message, mapId
 
 
-def addInitialVersions(versionsList, mapId):
-    mapRepository.addInitialVersions(versionsList, mapId)
+def addInitialVersion(versionId, mapId):
+    mapRepository.addInitialVersion(versionId, mapId)
 
 
 def getMapsForModal(userMapsDict):
@@ -41,9 +41,15 @@ def getNameFromMaps(mapsDict):
     return mapsNames
 
 
+def getVersions(id):
+    versions = mapRepository.getVersions(id)
+    return versions
+
+
 def getFirstVersion(id):
     firstVersionId, firstVersion = mapRepository.getFirstVersion(id)
     return firstVersionId, firstVersion
+
 
 def testCreate():
     map1 = Map("testMapName2", "Jose", ["testMapName2_0"])

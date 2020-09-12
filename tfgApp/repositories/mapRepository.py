@@ -62,8 +62,13 @@ def getFirstVersion(id):
     return firstVersionId, firstVersion
 
 
-def addInitialVersions(versionsList, mapId):
-    versionsJson = {"Versions": {version: "true" for version in versionsList}}
+def getVersions(id):
+    versions = list(database.child(ref + "/" + id).get().val().get("Versions").keys())
+    return versions
+
+
+def addInitialVersion(versionId, mapId):
+    versionsJson = {"Versions": {versionId: "true"}}
     reference = ref + "/" + mapId
     database.child(reference).update(versionsJson)
 
