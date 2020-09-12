@@ -18,41 +18,68 @@ $(function init() {
     chipContext = chipCanvas.getContext('2d');
 
     chipCanvas.addEventListener("mousedown", function(event){
-        chipMouse.x = event.x - $("canvas").position().left;
-        chipMouse.y = event.y - $("canvas").position().top;
-
-        chipCanvas.onmousemove = function(event) {
+        if(selectedChip != undefined){
             chipMouse.x = event.x - $("canvas").position().left;
             chipMouse.y = event.y - $("canvas").position().top;
+
+            chipCanvas.onmousemove = function(event) {
+                chipMouse.x = event.x - $("canvas").position().left;
+                chipMouse.y = event.y - $("canvas").position().top;
+            }
+        }else if(selectedImg != undefined){
+            mapMouse.x = event.x - $("canvas").position().left;
+            mapMouse.y = event.y - $("canvas").position().top;
+
+            chipCanvas.onmousemove = function(event) {
+                mapMouse.x = event.x - $("canvas").position().left;
+                mapMouse.y = event.y - $("canvas").position().top;
+            }
         }
     });
     chipCanvas.addEventListener("mouseup", function(e){
-        chipMouse.x = undefined;
-        chipMouse.y = undefined;
-        chipCanvas.onmousemove = null
+        if(selectedChip != undefined) {
+            chipMouse.x = undefined;
+            chipMouse.y = undefined;
+            chipCanvas.onmousemove = null
+        }else if(selectedImg != undefined){
+            mapMouse.x = undefined;
+            mapMouse.y = undefined;
+            chipCanvas.onmousemove = null
+        }
     });
     chipCanvas.addEventListener("mouseleave", function(e){
-        chipMouse.x = undefined;
-        chipMouse.y = undefined;
-        chipCanvas.onmousemove = null
+        if(selectedChip != undefined) {
+            chipMouse.x = undefined;
+            chipMouse.y = undefined;
+            chipCanvas.onmousemove = null
+        }else if(selectedImg != undefined){
+            mapMouse.x = undefined;
+            mapMouse.y = undefined;
+            chipCanvas.onmousemove = null
+        }
     });
 
     $('img.menu-chip').click(function() {
         if(selectedChip == this.src) {
-            $("#backMap").css("z-index",0);
-            $("#chipMap").css("z-index",100);
-            $('img.menu-chip-selected')[0].classList.remove("menu-chip-selected");
+            //$("#backMap").css("z-index",0);
+            //$("#chipMap").css("z-index",100);
+            if($('img.menu-chip-selected')[0] != undefined) {
+                $('img.menu-chip-selected')[0].classList.remove("menu-chip-selected");
+            }
             selectedChip = undefined;
         }else{
-            $("#backMap").css("z-index",0);
-            $("#chipMap").css("z-index",100);
+            //$("#backMap").css("z-index",0);
+            //$("#chipMap").css("z-index",100);
             chipMouse.x = undefined;
             chipMouse.y = undefined;
             if($('img.menu-chip-selected')[0] != undefined) {
                 $('img.menu-chip-selected')[0].classList.remove("menu-chip-selected");
+            } else if($('img.menu-img-selected')[0] != undefined) {
+                $('img.menu-img-selected')[0].classList.remove("menu-img-selected");
             }
             this.classList.add("menu-chip-selected");
             selectedChip = this.src;
+            selectedImg = undefined;
         }
     });
     $('img.menu-chip, img.move-down, img.move-left, img.move-right, img.move-up').mouseover(function() {
@@ -77,6 +104,7 @@ $(function init() {
                 break;
         }
     });
+
     initChips();
     animateChip();
 })
@@ -106,7 +134,11 @@ function Chip(x, y, h, w, img) {
     };
     this.update = function () {
         if(selectedChip != undefined && chipMouse.x != undefined && this.x + this.w > chipMouse.x && this.x < chipMouse.x  && this.y + this.h > chipMouse.y && this.y < chipMouse.y) {
-            this.img = selectedChip;
+            if(selectedChip.includes('trash.png')){
+                this.img = undefined;
+            }else{
+                this.img = selectedChip;
+            }
             chipMouse.x = undefined;
             chipMouse.y = undefined;
         }
