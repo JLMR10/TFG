@@ -52,12 +52,15 @@ $(function init() {
             mapMouse.y = undefined;
             if($('img.menu-img-selected')[0] != undefined) {
                 $('img.menu-img-selected')[0].classList.remove("menu-img-selected");
-            } else if($('img.menu-chip-selected')[0] != undefined) {
+            }if($('img.menu-chip-selected')[0] != undefined) {
                 $('img.menu-chip-selected')[0].classList.remove("menu-chip-selected");
+            }if($('img.menu-character-selected')[0] != undefined) {
+                $('img.menu-character-selected')[0].classList.remove("menu-character-selected");
             }
             this.classList.add("menu-img-selected");
             selectedImg = this.src;
             selectedChip = undefined;
+            selectedCharacter = undefined;
         }
     });
     $('img.menu-img, img.move-down, img.move-left, img.move-right, img.move-up').mouseover(function() {

@@ -51,6 +51,21 @@ body {
     box-shadow: 0 0 11px blue;
 }
 
+.menu-character {
+    height: 100px;
+    width: 100px;
+    margin-left: 3.5%;
+    margin-bottom: 3.5%;
+}
+
+.menu-character-over {
+    box-shadow: 0 0 11px aqua;
+}
+
+.menu-character-selected {
+    box-shadow: 0 0 11px blue;
+}
+
 .menu-bin {
     height: 100px;
     width: 100px;

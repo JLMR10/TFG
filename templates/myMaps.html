@@ -1,6 +1,7 @@
 {% extends 'header.html' %}
 {% block scriptJS %}
-
+    {% load static %}
+     <link rel='stylesheet' href='{% static "/css/myMaps.css" %}'>
 {% endblock %}
 {% block titulo %} <title>My Maps</title> {% endblock %}
 {% block breadcrumbschild %}
@@ -11,12 +12,12 @@
     <form id="editMap" action="/myMaps/editMap/" method="POST">
     {% csrf_token %}
         <input type="hidden" value="" name="mapId">
-        <ul>
+        <div class="mapFlexMenu">
             {% for mapName, mapId in maps.items %}
-                <li><a href="#" onclick="changeValueMap('{{ mapId }}');">{{ mapName }}</a></li>
+            <a class="boxMaps rounded" href="#" data-toggle="tooltip" title="{{ mapName }}" onclick="changeValueMap('{{ mapId }}');">{{ mapName }}</a>
             {% endfor %}
-            <li><a href="" data-toggle="modal" data-target="#ModalMaps">New map</a></li>
-        </ul>
+            <a class="boxMaps rounded" href="" data-toggle="modal" data-target="#ModalMaps">New map</a>
+        </div>
     </form>
     <div class="modal" tabindex="-1" role="dialog" id="ModalMaps">
         <div class="modal-dialog" role="document">

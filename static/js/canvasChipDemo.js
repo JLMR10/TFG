@@ -1,5 +1,5 @@
 var chipCanvas;
-var mapContext;
+var chipContext;
 var chipsArr = [];
 var chipMouse = {
     x: undefined,
@@ -17,7 +17,7 @@ $(function init() {
 
     chipContext = chipCanvas.getContext('2d');
 
-    chipCanvas.addEventListener("mousedown", function(event){
+    /*chipCanvas.addEventListener("mousedown", function(event){
         if(selectedChip != undefined){
             chipMouse.x = event.x - $("canvas").position().left;
             chipMouse.y = event.y - $("canvas").position().top;
@@ -57,7 +57,7 @@ $(function init() {
             mapMouse.y = undefined;
             chipCanvas.onmousemove = null
         }
-    });
+    });*/
 
     $('img.menu-chip').click(function() {
         if(selectedChip == this.src) {
@@ -72,14 +72,17 @@ $(function init() {
             //$("#chipMap").css("z-index",100);
             chipMouse.x = undefined;
             chipMouse.y = undefined;
-            if($('img.menu-chip-selected')[0] != undefined) {
-                $('img.menu-chip-selected')[0].classList.remove("menu-chip-selected");
-            } else if($('img.menu-img-selected')[0] != undefined) {
+            if($('img.menu-img-selected')[0] != undefined) {
                 $('img.menu-img-selected')[0].classList.remove("menu-img-selected");
+            }if($('img.menu-chip-selected')[0] != undefined) {
+                $('img.menu-chip-selected')[0].classList.remove("menu-chip-selected");
+            }if($('img.menu-character-selected')[0] != undefined) {
+                $('img.menu-character-selected')[0].classList.remove("menu-character-selected");
             }
             this.classList.add("menu-chip-selected");
             selectedChip = this.src;
             selectedImg = undefined;
+            selectedCharacter = undefined;
         }
     });
     $('img.menu-chip, img.move-down, img.move-left, img.move-right, img.move-up').mouseover(function() {
