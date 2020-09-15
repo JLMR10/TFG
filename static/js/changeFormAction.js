@@ -7,6 +7,11 @@ document.getElementById('ModalMapForm').mapList.onchange = function() {
     }
 };
 
+$(document).ready(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})
+
+
 function changeValueMap(mapId) {
     document.getElementById("editMap").mapId.value = mapId;
     document.forms['editMap'].submit();

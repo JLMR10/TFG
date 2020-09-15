@@ -1,0 +1,48 @@
+.boxMaps:link, .boxMaps:visited {
+  background-color: lightskyblue;
+  color: white;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.boxMaps:hover, .boxMaps:active {
+  background-color: cornflowerblue;
+}
+
+.mapFlexMenu {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    height: 100%;
+    width: 41%;
+    align-self: center;
+    margin-left: 28%;
+    margin-top: 2%;
+    margin-bottom: 3%;
+    align-content: flex-start;
+}
+
+.mapFlexMenu a{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 7%;
+    flex: 0 0 20%;
+    min-width: 15%;
+    max-width: 20%;
+    margin: 1%;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+}
+
+#editMap {
+    height: 80%;
+}
