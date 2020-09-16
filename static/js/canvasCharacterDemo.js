@@ -6,6 +6,7 @@ var characterMouse = {
     y: undefined
 };
 var selectedCharacter;
+var draggedCharacter;
 var initialChar;
 const maxSizeCharacter = 50;
 
@@ -18,10 +19,10 @@ $(function init() {
     characterContext = characterCanvas.getContext('2d');
 
     characterCanvas.addEventListener("mousedown", function(event){
-        if(selectedCharacter != undefined){
-            characterMouse.x = event.x - $("canvas").position().left;
-            characterMouse.y = event.y - $("canvas").position().top;
+        characterMouse.x = event.x - $("canvas").position().left;
+        characterMouse.y = event.y - $("canvas").position().top;
 
+        if(selectedCharacter != undefined){
             characterCanvas.onmousemove = function(event) {
                 characterMouse.x = event.x - $("canvas").position().left;
                 characterMouse.y = event.y - $("canvas").position().top;
@@ -45,9 +46,10 @@ $(function init() {
         }
     });
     characterCanvas.addEventListener("mouseup", function(e){
+        characterMouse.x = undefined;
+        characterMouse.y = undefined;
+
         if(selectedCharacter != undefined) {
-            characterMouse.x = undefined;
-            characterMouse.y = undefined;
             characterCanvas.onmousemove = null
         }else if(selectedChip != undefined) {
             chipMouse.x = undefined;
@@ -60,9 +62,10 @@ $(function init() {
         }
     });
     characterCanvas.addEventListener("mouseleave", function(e){
+        characterMouse.x = undefined;
+        characterMouse.y = undefined;
+
         if(selectedCharacter != undefined) {
-            characterMouse.x = undefined;
-            characterMouse.y = undefined;
             characterCanvas.onmousemove = null
         }else if(selectedChip != undefined) {
             chipMouse.x = undefined;
@@ -135,15 +138,25 @@ function moveCharacters(x, y) {
     });
 }
 
-function Character(x, y, h, w, img) {
+function Character(x, y, h, w, img, color = 'black', maxMove = undefined) {
     this.x = x;
     this.y = y;
     this.h = h;
     this.w = w;
     this.img = img;
-    this.color = 'black';
+    this.color = color;
+    this.maxMove = maxMove;
     this.draw = function () {
-        characterContext.strokeStyle = 'black';
+        if(draggedCharacter != undefined &&
+            ((draggedCharacter.x <= this.x && draggedCharacter.x + draggedCharacter.maxMove * draggedCharacter.w >= this.x && draggedCharacter.y == this.y) ||
+            (draggedCharacter.x >= this.x && draggedCharacter.x - draggedCharacter.maxMove * draggedCharacter.w <= this.x && draggedCharacter.y == this.y) ||
+            (draggedCharacter.y <= this.y && draggedCharacter.y + draggedCharacter.maxMove * draggedCharacter.h >= this.y && draggedCharacter.x == this.x) ||
+            (draggedCharacter.y >= this.y && draggedCharacter.y - draggedCharacter.maxMove * draggedCharacter.h <= this.y && draggedCharacter.x == this.x)) ) {
+            this.color = 'gold';
+        }else {
+            this.color = 'black';
+        }
+        characterContext.strokeStyle = this.color;
         characterContext.strokeRect(this.x, this.y, this.h, this.w);
         if(this.img != undefined){
             var htmlImg = new Image();
@@ -155,8 +168,23 @@ function Character(x, y, h, w, img) {
         if(selectedCharacter != undefined && characterMouse.x != undefined && this.x + this.w > characterMouse.x && this.x < characterMouse.x  && this.y + this.h > characterMouse.y && this.y < characterMouse.y) {
             if(selectedCharacter.includes('trash.png')){
                 this.img = undefined;
+                this.maxMove = undefined;
             }else{
                 this.img = selectedCharacter;
+                this.maxMove = 3;
+            }
+            characterMouse.x = undefined;
+            characterMouse.y = undefined;
+        }else if(characterMouse.x != undefined && this.x + this.w > characterMouse.x && this.x < characterMouse.x  && this.y + this.h > characterMouse.y && this.y < characterMouse.y){
+            if(draggedCharacter == undefined) {
+                draggedCharacter = this;
+            }else if(this.color == 'gold'){
+                this.img = draggedCharacter.img;
+                this.maxMove = draggedCharacter.maxMove;
+                var auxIndex = charactersArr.indexOf(draggedCharacter);
+                charactersArr[auxIndex].img = undefined;
+                charactersArr[auxIndex].maxMove = undefined;
+                draggedCharacter = undefined;
             }
             characterMouse.x = undefined;
             characterMouse.y = undefined;
