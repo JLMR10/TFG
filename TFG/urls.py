@@ -24,6 +24,7 @@ from tfgApp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^canvasDemo', views.canvasDemo),
+    re_path(r'demoChat/(?P<gameId>.*)$', views.demoChat, name='demoChat'),
     path('signUp/', views.signUp, name='signUp'),
     re_path(r'^$', views.signIn, name='signIn'),
     path('logout/', views.logout, name="log"),

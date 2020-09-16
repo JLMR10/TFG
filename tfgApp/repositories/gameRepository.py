@@ -32,6 +32,14 @@ def create(json):
     return message
 
 
+def get(id):
+    return database.child(ref+"/"+id).get().val()
+
+
+def getProperty(id, propierty):
+    return database.child(ref+"/"+id).get().val().get(propierty)
+
+
 def update(json):
     message = "The game hasn't been edited"
     for id, game in database.child(ref).get().val().items():

@@ -12,6 +12,16 @@ def gameToJson(game):
     return json
 
 
+def get(id):
+    game = gameRepository.get(id)
+    return game
+
+
+def getProperty(id, propierty):
+    valueFromPropierty = gameRepository.getProperty(id, propierty)
+    return valueFromPropierty
+
+
 def testCreate():
     game1 = Game("autoTestGame", "01", "autoTestMap", "autoTestChipList")
     game1Json = gameToJson(game1)

@@ -26,7 +26,7 @@ SECRET_KEY = 'dxc0$k$qgc899v4&r#qv(yot^m)th8@daha64&^@y)1kc08g#c'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -82,7 +83,7 @@ MESSAGE_TAGS = {
 MESSAGE_LEVEL = 10
 
 WSGI_APPLICATION = 'TFG.wsgi.application'
-
+ASGI_APPLICATION = "TFG.routing.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases

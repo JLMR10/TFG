@@ -1,0 +1,17 @@
+{% extends 'header.html' %}
+{% block scriptJS %}
+    {% load static %}
+    <script src='{% static "js/demoChat.js" %}'></script>
+{% endblock %}
+{% block content %}
+    <ul id="chat-messages">
+    {% for chatMessage in chatMessages %}
+    <li> {{ chatMessage }}</li>
+    {% endfor %}
+    </ul>
+    <form action="" method="POST">
+    {% csrf_token %}
+    <input type="text" name="newMessage" class="form-control">
+    <input type="submit" class="btn btn-primary">
+  </form>
+{% endblock %}
