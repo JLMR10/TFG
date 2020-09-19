@@ -136,7 +136,6 @@ def editMap(request):
 
 
 def demoChat(request, gameId):
-    gameId = "-M2UiT1emPgnPc0HRDdO"
     users = list(gameServices.getProperty(gameId, "Users").values())
     chatMessages = []
     if request.method == "POST":

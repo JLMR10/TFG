@@ -6,12 +6,14 @@
 {% block content %}
     <ul id="chat-messages">
     {% for chatMessage in chatMessages %}
-    <li> {{ chatMessage }}</li>
+    <li> {{ chatMessage }} via {{ request.session.user.email }}</li>
     {% endfor %}
     </ul>
-    <form action="" method="POST">
+    <form id="formChat" action=""  method="POST">
     {% csrf_token %}
-    <input type="text" name="newMessage" class="form-control">
-    <input type="submit" class="btn btn-primary">
-  </form>
+        <input type="hidden" id="myUsername" value="{{ request.session.user.email }}"/>
+        <input type="text" id="id_message" name="newMessage" class="form-control"/>
+        <input type="submit" class="btn btn-primary"/>
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js" integrity="sha512-SxQulwFs2B38bmUJtBSo9tD07MDrtCbY8me3AOZ14tRknCPTeMDLvCQV4ekhs8R0o9QPnW5HQanKfveexVcwLA==" crossorigin="anonymous"></script>
 {% endblock %}
