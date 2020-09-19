@@ -22,7 +22,7 @@ $(function init() {
         characterMouse.x = event.x - $("canvas").position().left;
         characterMouse.y = event.y - $("canvas").position().top;
 
-        if(selectedCharacter != undefined){
+        if(selectedCharacter != undefined && selectedCharacter.img != undefined){
             characterCanvas.onmousemove = function(event) {
                 characterMouse.x = event.x - $("canvas").position().left;
                 characterMouse.y = event.y - $("canvas").position().top;
@@ -49,7 +49,7 @@ $(function init() {
         characterMouse.x = undefined;
         characterMouse.y = undefined;
 
-        if(selectedCharacter != undefined) {
+        if(selectedCharacter != undefined && selectedCharacter.img != undefined) {
             characterCanvas.onmousemove = null
         }else if(selectedChip != undefined) {
             chipMouse.x = undefined;
@@ -65,7 +65,7 @@ $(function init() {
         characterMouse.x = undefined;
         characterMouse.y = undefined;
 
-        if(selectedCharacter != undefined) {
+        if(selectedCharacter != undefined && selectedCharacter.img != undefined) {
             characterCanvas.onmousemove = null
         }else if(selectedChip != undefined) {
             chipMouse.x = undefined;
@@ -80,15 +80,11 @@ $(function init() {
 
     $('img.menu-character').click(function() {
         if(selectedCharacter == this.src) {
-            //$("#backMap").css("z-index",0);
-            //$("#chipMap").css("z-index",100);
             if($('img.menu-character-selected')[0] != undefined) {
                 $('img.menu-character-selected')[0].classList.remove("menu-character-selected");
             }
             selectedCharacter = undefined;
         }else{
-            //$("#backMap").css("z-index",0);
-            //$("#chipMap").css("z-index",100);
             characterMouse.x = undefined;
             characterMouse.y = undefined;
             if($('img.menu-img-selected')[0] != undefined) {
@@ -102,6 +98,7 @@ $(function init() {
             selectedCharacter = this.src;
             selectedImg = undefined;
             selectedChip = undefined;
+            draggedCharacter = undefined;
         }
     });
     $('img.menu-character, img.move-down, img.move-left, img.move-right, img.move-up').mouseover(function() {
@@ -148,10 +145,9 @@ function Character(x, y, h, w, img, color = 'black', maxMove = undefined) {
     this.maxMove = maxMove;
     this.draw = function () {
         if(draggedCharacter != undefined &&
-            ((draggedCharacter.x <= this.x && draggedCharacter.x + draggedCharacter.maxMove * draggedCharacter.w >= this.x && draggedCharacter.y == this.y) ||
-            (draggedCharacter.x >= this.x && draggedCharacter.x - draggedCharacter.maxMove * draggedCharacter.w <= this.x && draggedCharacter.y == this.y) ||
-            (draggedCharacter.y <= this.y && draggedCharacter.y + draggedCharacter.maxMove * draggedCharacter.h >= this.y && draggedCharacter.x == this.x) ||
-            (draggedCharacter.y >= this.y && draggedCharacter.y - draggedCharacter.maxMove * draggedCharacter.h <= this.y && draggedCharacter.x == this.x)) ) {
+            this.x >= draggedCharacter.x - draggedCharacter.maxMove * draggedCharacter.w && this.x <= draggedCharacter.x + draggedCharacter.maxMove *draggedCharacter.w &&
+            this.y >= draggedCharacter.y - draggedCharacter.maxMove * draggedCharacter.h && this.y <= draggedCharacter.y + draggedCharacter.maxMove *draggedCharacter.h
+        ){
             this.color = 'gold';
         }else {
             this.color = 'black';
@@ -166,7 +162,7 @@ function Character(x, y, h, w, img, color = 'black', maxMove = undefined) {
     };
     this.update = function () {
         if(selectedCharacter != undefined && characterMouse.x != undefined && this.x + this.w > characterMouse.x && this.x < characterMouse.x  && this.y + this.h > characterMouse.y && this.y < characterMouse.y) {
-            if(selectedCharacter.includes('trash.png')){
+            if(selectedCharacter.includes('trash')){
                 this.img = undefined;
                 this.maxMove = undefined;
             }else{
@@ -176,14 +172,18 @@ function Character(x, y, h, w, img, color = 'black', maxMove = undefined) {
             characterMouse.x = undefined;
             characterMouse.y = undefined;
         }else if(characterMouse.x != undefined && this.x + this.w > characterMouse.x && this.x < characterMouse.x  && this.y + this.h > characterMouse.y && this.y < characterMouse.y){
-            if(draggedCharacter == undefined) {
+            if(draggedCharacter == undefined && selectedImg == undefined && selectedChip == undefined && this.img != undefined) {
                 draggedCharacter = this;
             }else if(this.color == 'gold'){
-                this.img = draggedCharacter.img;
-                this.maxMove = draggedCharacter.maxMove;
+                var auxImg = draggedCharacter.img;
+                var auxMaxMove = draggedCharacter.maxMove;
                 var auxIndex = charactersArr.indexOf(draggedCharacter);
                 charactersArr[auxIndex].img = undefined;
                 charactersArr[auxIndex].maxMove = undefined;
+                this.img = auxImg;
+                this.maxMove = auxMaxMove;
+                draggedCharacter = undefined;
+            }else{
                 draggedCharacter = undefined;
             }
             characterMouse.x = undefined;
