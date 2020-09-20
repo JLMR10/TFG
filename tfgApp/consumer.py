@@ -11,8 +11,6 @@ class ChatConsumer(AsyncConsumer):
         print("connected", event)
 
         gameId = self.scope["url_route"]["kwargs"]["gameId"]
-        users = list(gameServices.getProperty(gameId, "Users").values())
-        print(users)
         print(self.scope["session"]["user"]["email"])
         self.game_id = gameId
         print(self.game_id)
@@ -33,10 +31,13 @@ class ChatConsumer(AsyncConsumer):
         if front_text is not None:
             loaded_dict_data = json.loads(front_text)
             msg = loaded_dict_data.get("message")
-            userEmail = self.scope["session"]["user"]["email"]
+            userId = self.scope["session"]["user"]["localId"]
+            print(self.scope["session"]["user"])
+            users = gameServices.getProperty(self.game_id, "Users")
+
             myResponse = {
                 "message": msg,
-                "username": userEmail
+                "username": users[userId]
             }
 
             #broadcasts the message event to be sent

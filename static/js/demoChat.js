@@ -16,7 +16,7 @@ $(function init() {
     socket.onmessage = function(e){
         console.log("message", e);
         var chatDataMsg = JSON.parse(e.data);
-        chatHolder.append("<li>" + chatDataMsg.message + " via " + chatDataMsg.username + "</li>")
+        chatHolder.append("<li><b>"+ chatDataMsg.username +"</b>: " + chatDataMsg.message + "</li>")
     };
     socket.onopen = function(e){
         console.log("open", e);
