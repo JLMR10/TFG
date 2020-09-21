@@ -17,59 +17,13 @@ $(function init() {
 
     chipContext = chipCanvas.getContext('2d');
 
-    /*chipCanvas.addEventListener("mousedown", function(event){
-        if(selectedChip != undefined){
-            chipMouse.x = event.x - $("canvas").position().left;
-            chipMouse.y = event.y - $("canvas").position().top;
-
-            chipCanvas.onmousemove = function(event) {
-                chipMouse.x = event.x - $("canvas").position().left;
-                chipMouse.y = event.y - $("canvas").position().top;
-            }
-        }else if(selectedImg != undefined){
-            mapMouse.x = event.x - $("canvas").position().left;
-            mapMouse.y = event.y - $("canvas").position().top;
-
-            chipCanvas.onmousemove = function(event) {
-                mapMouse.x = event.x - $("canvas").position().left;
-                mapMouse.y = event.y - $("canvas").position().top;
-            }
-        }
-    });
-    chipCanvas.addEventListener("mouseup", function(e){
-        if(selectedChip != undefined) {
-            chipMouse.x = undefined;
-            chipMouse.y = undefined;
-            chipCanvas.onmousemove = null
-        }else if(selectedImg != undefined){
-            mapMouse.x = undefined;
-            mapMouse.y = undefined;
-            chipCanvas.onmousemove = null
-        }
-    });
-    chipCanvas.addEventListener("mouseleave", function(e){
-        if(selectedChip != undefined) {
-            chipMouse.x = undefined;
-            chipMouse.y = undefined;
-            chipCanvas.onmousemove = null
-        }else if(selectedImg != undefined){
-            mapMouse.x = undefined;
-            mapMouse.y = undefined;
-            chipCanvas.onmousemove = null
-        }
-    });*/
-
     $('img.menu-chip').click(function() {
         if(selectedChip == this.src) {
-            //$("#backMap").css("z-index",0);
-            //$("#chipMap").css("z-index",100);
             if($('img.menu-chip-selected')[0] != undefined) {
                 $('img.menu-chip-selected')[0].classList.remove("menu-chip-selected");
             }
             selectedChip = undefined;
         }else{
-            //$("#backMap").css("z-index",0);
-            //$("#chipMap").css("z-index",100);
             chipMouse.x = undefined;
             chipMouse.y = undefined;
             if($('img.menu-img-selected')[0] != undefined) {
@@ -83,6 +37,7 @@ $(function init() {
             selectedChip = this.src;
             selectedImg = undefined;
             selectedCharacter = undefined;
+            draggedCharacter = undefined;
         }
     });
     $('img.menu-chip, img.move-down, img.move-left, img.move-right, img.move-up').mouseover(function() {
@@ -137,7 +92,7 @@ function Chip(x, y, h, w, img) {
     };
     this.update = function () {
         if(selectedChip != undefined && chipMouse.x != undefined && this.x + this.w > chipMouse.x && this.x < chipMouse.x  && this.y + this.h > chipMouse.y && this.y < chipMouse.y) {
-            if(selectedChip.includes('trash.png')){
+            if(selectedChip.includes('trash')){
                 this.img = undefined;
             }else{
                 this.img = selectedChip;

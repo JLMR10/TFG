@@ -7,9 +7,9 @@
 
     <!--Internal references-->
     {% load static %}
-    <script src='{% static "js/canvasDemo.js" %}'></script>
-    <script src='{% static "js/canvasChipDemo.js" %}'></script>
-    <script src='{% static "js/canvasCharacterDemo.js" %}'></script>
+    <script src='{% static "js/canvasBase.js" %}'></script>
+    <script src='{% static "js/canvasChip.js" %}'></script>
+    <script src='{% static "js/canvasCharacter.js" %}'></script>
     <link rel='stylesheet' href='{% static "/css/canvasDemo.css" %}'>
 
     <title>Canvas Demo</title>
@@ -38,7 +38,9 @@
                 <img class="menu-character" src="/static/Media/goblin.png">
             </div>
             <div class="img-container">
-                <img class="menu-chip" src="/static/Media/trash.png">
+                <img class="menu-img" src="/static/Media/trash.png">
+                <img class="menu-chip" src="/static/Media/trashBlue.png">
+                <img class="menu-character" src="/static/Media/trashGreen.png">
             </div>
         </div>
 

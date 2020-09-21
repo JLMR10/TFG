@@ -17,37 +17,13 @@ $(function init() {
 
     mapContext = mapCanvas.getContext('2d');
 
-    /*mapCanvas.addEventListener("mousedown", function(event){
-        mapMouse.x = event.x - $("canvas").position().left;
-        mapMouse.y = event.y - $("canvas").position().top;
-
-        mapCanvas.onmousemove = function(event) {
-            mapMouse.x = event.x - $("canvas").position().left;
-            mapMouse.y = event.y - $("canvas").position().top;
-        }
-    });
-    mapCanvas.addEventListener("mouseup", function(e){
-        mapMouse.x = undefined;
-        mapMouse.y = undefined;
-        mapCanvas.onmousemove = null
-    });
-    mapCanvas.addEventListener("mouseleave", function(e){
-        mapMouse.x = undefined;
-        mapMouse.y = undefined;
-        mapCanvas.onmousemove = null
-    });*/
-
     $('img.menu-img').click(function() {
         if(selectedImg == this.src) {
-            //$("#backMap").css("z-index",0);
-            //$("#chipMap").css("z-index",100);
             if($('img.menu-img-selected')[0] != undefined) {
                 $('img.menu-img-selected')[0].classList.remove("menu-img-selected");
             }
             selectedImg = undefined;
         }else{
-            //$("#backMap").css("z-index",100);
-            //$("#chipMap").css("z-index",0);
             mapMouse.x = undefined;
             mapMouse.y = undefined;
             if($('img.menu-img-selected')[0] != undefined) {
@@ -61,6 +37,7 @@ $(function init() {
             selectedImg = this.src;
             selectedChip = undefined;
             selectedCharacter = undefined;
+            draggedCharacter = undefined;
         }
     });
     $('img.menu-img, img.move-down, img.move-left, img.move-right, img.move-up').mouseover(function() {
@@ -115,7 +92,11 @@ function Tile(x, y, h, w, img) {
     };
     this.update = function () {
         if(selectedImg != undefined && mapMouse.x != undefined && this.x + this.w > mapMouse.x && this.x < mapMouse.x  && this.y + this.h > mapMouse.y && this.y < mapMouse.y) {
-            this.img = selectedImg;
+            if(selectedImg.includes('trash')){
+                this.img = undefined;
+            }else{
+                this.img = selectedImg;
+            }
             mapMouse.x = undefined;
             mapMouse.y = undefined;
         }
@@ -166,37 +147,4 @@ function getRandomColor() {
     color += letters[Math.floor(Math.random() * 16)];
   }
   return color;
-}
-
-
-
-
-function createCanvas() {
-
-    // Rectangle
-    mapContext.fillStyle = 'blue';
-    mapContext.fillRect(100,100,100,100);
-    mapContext.fillStyle = 'pink';
-    mapContext.fillRect(500,500,100,100);
-
-    //Line
-    mapContext.beginPath();
-    mapContext.moveTo(50, 300);
-    mapContext.lineTo(300, 100);
-    mapContext.lineTo(400, 300);
-    mapContext.strokeStyle = 'red';
-    mapContext.stroke();
-
-    mapContext.beginPath();
-    mapContext.moveTo(500, 600);
-    mapContext.lineTo(700, 200);
-    mapContext.strokeStyle = 'blue';
-    mapContext.stroke();
-
-    // Arc / Circle
-    mapContext.beginPath();
-    mapContext.arc(300,300,30,Math.PI * 2, false);
-    mapContext.strokeStyle = 'purple';
-    mapContext.stroke();
-
 }
