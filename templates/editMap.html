@@ -7,9 +7,17 @@
 {% endblock %}
 {% block content %}
     {% load static %}
+    <script>
+        var pythonTiles = {{ tilesList }};
+        var pythonChips = {{ chipsList }};
+        var pythonCharacters = {{ pythonCharacters }};
+    </script>
     <script src='{% static "js/canvasBase.js" %}'></script>
     <script src='{% static "js/canvasChip.js" %}'></script>
-    <link rel='stylesheet' href='{% static "/css/canvasDemo.css" %}'>
+    <script src='{% static "js/canvasCharacter.js" %}'></script>
+    <link rel='stylesheet' href='{% static "/css/canvasStyle.css" %}'>
+
+    <body>
 
     <div style="display: flex;justify-content: space-around">
         <div class="map-menu">
@@ -28,14 +36,18 @@
                 <img class="menu-img" src="/static/Media/magma.jpg">
                 <img class="menu-img" src="/static/Media/door.jpg">
                 <img class="menu-chip" src="/static/Media/chest.png">
+                <img class="menu-character" src="/static/Media/goblin.png">
             </div>
             <div class="img-container">
-                <img class="menu-chip" src="/static/Media/trash.png">
+                <img class="menu-img" src="/static/Media/trash.png">
+                <img class="menu-chip" src="/static/Media/trashBlue.png">
+                <img class="menu-character" src="/static/Media/trashGreen.png">
             </div>
         </div>
 
         <canvas id="backMap"></canvas>
-        <canvas id="chipMap" style="position: absolute;z-index:100"></canvas>
+        <canvas id="chipMap" style="position: absolute;z-index:50"></canvas>
+        <canvas id="characterMap" style="position: absolute;z-index:100"></canvas>
 
         <div class="map-menu">
             <div class="img-container">
@@ -54,5 +66,7 @@
             </div>
         </div>
     </div>
+
+    </body>
 
 {% endblock %}
