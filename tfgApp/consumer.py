@@ -28,17 +28,28 @@ class ChatConsumer(AsyncConsumer):
     async def websocket_receive(self, event):
         print("received", event)
         front_text = event.get('text', None)
+        ##prueba = json.loads(front_text)
         if front_text is not None:
             loaded_dict_data = json.loads(front_text)
-            msg = loaded_dict_data.get("message")
-            userId = self.scope["session"]["user"]["localId"]
-            print(self.scope["session"]["user"])
-            users = gameServices.getProperty(self.game_id, "Users")
+            if loaded_dict_data.get("canvasArray") is not None:
+                userId = self.scope["session"]["user"]["localId"]
+                users = gameServices.getProperty(self.game_id, "Users")
+                array = loaded_dict_data.get("canvasArray")
+                myResponse = {
+                    "canvasArray": array,
+                    "sender": userId
+                }
 
-            myResponse = {
-                "message": msg,
-                "username": users[userId]
-            }
+            else:
+                msg = loaded_dict_data.get("message")
+                userId = self.scope["session"]["user"]["localId"]
+                print(self.scope["session"]["user"])
+                users = gameServices.getProperty(self.game_id, "Users")
+
+                myResponse = {
+                    "message": msg,
+                    "username": users[userId]
+                }
 
             #broadcasts the message event to be sent
             await self.channel_layer.group_send(
