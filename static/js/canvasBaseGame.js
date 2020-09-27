@@ -8,6 +8,7 @@ var mapMouse = {
 var selectedImg;
 var initialM;
 const maxSizeMap = 50;
+var sendTile = false;
 
 $(function init() {
     mapCanvas = document.querySelector('#backMap');
@@ -96,6 +97,7 @@ function Tile(x, y, h, w, img) {
                 this.img = undefined;
             }else{
                 this.img = selectedImg;
+                sendTile = true;
             }
             mapMouse.x = undefined;
             mapMouse.y = undefined;
@@ -132,12 +134,15 @@ function animate() {
             tile.draw();
         })
     }else{
-        initialM = 1;
+        initialM += 1;
         mapContext.clearRect(0,0,innerWidth,innerHeight);
         tilesArr.forEach(tile => {
             tile.update();
         })
-
+        if(initialM >= 100 && sendTile){
+            sendArrayToSocket();
+            initialM = 1;
+        }
     }
 }
 
@@ -148,4 +153,14 @@ function getRandomColor() {
     color += letters[Math.floor(Math.random() * 16)];
   }
   return color;
+}
+
+
+function sendArrayToSocket(){
+    socket.send(JSON.stringify({"canvasArray": tilesArr }));
+    sendTile = false;
+}
+
+function updateTilesArrAsyc(socketArr) {
+    socketArr.forEach(function(e, i){tilesArr[i].img = e.img;});
 }
