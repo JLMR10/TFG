@@ -30,7 +30,11 @@ urlpatterns = [
     path('logout/', views.logout, name="log"),
     path('mainMenu/', views.mainMenu, name='mainMenu'),
     path('myMaps/', views.myMaps, name='myMaps'),
-    path('myMaps/editMap/', views.editMap, name='editMap')
+    path('myMaps/editMap/', views.editMap, name='editMap'),
+    path('createGame/', views.createGame, name='createGame'),
+    re_path(r'^game/(?P<gameId>.*)$', views.gameView, name='gameView')
+    ##re_path(r'createGame/(?P<gameId>.*)$', views.createGame, name='createGame'),
+
     ##re_path(r'^myMaps/(?P<map>\w+)/$', views.editMap, name='editMap')
 ]
 """+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)"""

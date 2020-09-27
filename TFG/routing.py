@@ -12,6 +12,7 @@ application = ProtocolTypeRouter({
             URLRouter(
                 [
                     re_path(r'demoChat/(?P<gameId>.*)$', ChatConsumer),
+                    re_path(r'game/(?P<gameId>.*)$', ChatConsumer),
                 ]
             )
         )

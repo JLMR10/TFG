@@ -135,6 +135,33 @@ def editMap(request):
         return HttpResponseRedirect('../')
 
 
+def createGame(request):
+    if "user" in request.session:
+        userId = request.session["user"]["localId"]
+        if request.method == "POST":
+            requestGameName = request.POST.get("gameName")
+            requestMapId = request.POST.get("mapId")
+            _, createdGameId = gameServices.createGame(requestGameName, requestMapId, [userId, "Master"])
+            return redirect("gameView", gameId=createdGameId)
+        else:
+            userMaps = userServices.getPropierty(userId, "Maps")
+            userMapsNames = {}
+            if userMaps:
+                userMapsNames = mapServices.getNameFromMaps(userMaps)
+            return render(request, "createGame.html", {"maps": userMapsNames})
+    else:
+        return HttpResponseRedirect('../')
+
+
+def gameView(request, gameId):
+    users = list(gameServices.getProperty(gameId, "Users").values())
+    gameCode = gameServices.getProperty(gameId, "Code")
+    chatMessages = []
+    if request.method == "POST":
+        chatMessages.append(request.POST.get("newMessage"))
+    return render(request, "game.html", {"chatMessages": chatMessages, "gameCode": gameCode})
+
+
 def demoChat(request, gameId):
     users = list(gameServices.getProperty(gameId, "Users").values())
     chatMessages = []
