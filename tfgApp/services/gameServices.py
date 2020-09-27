@@ -1,15 +1,41 @@
+import random
+import string
 from tfgApp.models import Game
 from tfgApp.repositories import gameRepository
 
 
-def gameToJson(game):
+def gameToJson(game, user):
     json = {
-            "GameName" : game.name,
-            "GameCode" : game.code,
-            "Map" : game.map,
-            "ChipList" : game.chipList
-        }
+        "Name": game.name,
+        "Code": game.code,
+        "Map": game.map,
+        "ChipList": game.chipList,
+        "Users": {user[0]: user[1]}
+    }
     return json
+
+
+def createGame(name, mapId, user):
+    code = generateRandomId()
+    gameDB = Game(name, code, mapId, [])
+    gameJson = gameToJson(gameDB, user)
+    message, id = gameRepository.create(gameJson)
+    return message, id
+
+
+def get(id):
+    game = gameRepository.get(id)
+    return game
+
+
+def getProperty(id, propierty):
+    valueFromPropierty = gameRepository.getProperty(id, propierty)
+    return valueFromPropierty
+
+
+def generateRandomId():  ##TODO: añadir un sistema para verificar que no existe ya ese ID
+    randomId = ''.join(random.choices(string.ascii_uppercase + string.digits, k=15))
+    return randomId
 
 
 def testCreate():

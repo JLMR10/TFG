@@ -20,16 +20,19 @@ ref = "Game"
 
 def create(json):
     message = "The game name already exists"
-    listOfGames = []
+    obj = database.child(ref).push(json)
+    id = obj["name"]
+    message = "The game has been created successfully"
 
-    for id, game in database.child(ref).get().val().items():
-        listOfGames.append(game["GameName"])
+    return message, id
 
-    if json["GameName"] not in listOfGames:
-        database.child(ref).push(json)
-        message = "The game has been created successfully"
 
-    return message
+def get(id):
+    return database.child(ref+"/"+id).get().val()
+
+
+def getProperty(id, propierty):
+    return database.child(ref+"/"+id).get().val().get(propierty)
 
 
 def update(json):

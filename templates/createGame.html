@@ -1,0 +1,20 @@
+{% extends 'header.html' %}
+{% block titulo %} <title>Create Game</title> {% endblock %}
+{% block breadcrumbschild %}
+    <li class="breadcrumb-item active"><a href={% url 'mainMenu' %}>Main Menu</a> </li>
+    <li class="breadcrumb-item active" aria-current="page">Create Game</li>
+{% endblock %}
+{% block content %}
+<form id="createGameForm" action="" method="post">
+    {% csrf_token %}
+    <select name="mapId" class="custom-select">
+        <option value="" selected>Open this select menu</option>
+        {% for mapName,mapId in maps.items %}
+            <option value="{{ mapId }}">{{ mapName }}</option>
+        {% endfor %}
+    </select>
+    <input name="gameName" type="text" style="margin-top: 10px;">
+    <button id="createBtn" type="submit" class="btn btn-primary">Create</button>
+    </div>
+</form>
+{% endblock %}

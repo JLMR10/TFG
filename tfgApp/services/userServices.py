@@ -31,7 +31,8 @@ def addMap(userId, mapId):
 
 
 def getPropierty(id, propierty):
-    return userRepository.getPropierty(id, propierty)
+    valueFromPropierty = userRepository.getPropierty(id, propierty)
+    return valueFromPropierty
 
 
 def testCreate():

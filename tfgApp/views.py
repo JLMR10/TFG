@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 import pyrebase
 from tfgApp.models import User, Map
-from tfgApp.services import userServices, mapServices, tileListServices, tileServices, versionServices
+from tfgApp.services import userServices, mapServices, tileListServices, tileServices, versionServices, gameServices
 from requests.exceptions import HTTPError
 import json
 
@@ -133,3 +133,38 @@ def editMap(request):
                 return HttpResponseRedirect('../')
     else:
         return HttpResponseRedirect('../')
+
+
+def createGame(request):
+    if "user" in request.session:
+        userId = request.session["user"]["localId"]
+        if request.method == "POST":
+            requestGameName = request.POST.get("gameName")
+            requestMapId = request.POST.get("mapId")
+            _, createdGameId = gameServices.createGame(requestGameName, requestMapId, [userId, "Master"])
+            return redirect("gameView", gameId=createdGameId)
+        else:
+            userMaps = userServices.getPropierty(userId, "Maps")
+            userMapsNames = {}
+            if userMaps:
+                userMapsNames = mapServices.getNameFromMaps(userMaps)
+            return render(request, "createGame.html", {"maps": userMapsNames})
+    else:
+        return HttpResponseRedirect('../')
+
+
+def gameView(request, gameId):
+    users = list(gameServices.getProperty(gameId, "Users").values())
+    gameCode = gameServices.getProperty(gameId, "Code")
+    chatMessages = []
+    if request.method == "POST":
+        chatMessages.append(request.POST.get("newMessage"))
+    return render(request, "game.html", {"chatMessages": chatMessages, "gameCode": gameCode})
+
+
+def demoChat(request, gameId):
+    users = list(gameServices.getProperty(gameId, "Users").values())
+    chatMessages = []
+    if request.method == "POST":
+        chatMessages.append(request.POST.get("newMessage"))
+    return render(request, "demoChat.html", {"chatMessages": chatMessages})

@@ -1,0 +1,83 @@
+{% extends 'header.html' %}
+{% block scriptJS %}
+    {% load static %}
+    <script src='{% static "js/canvasBaseGame.js" %}'></script>
+    <script src='{% static "js/canvasChipGame.js" %}'></script>
+    <script src='{% static "js/canvasCharacterGame.js" %}'></script>
+
+    <link rel='stylesheet' href='{% static "/css/canvasStyle.css" %}'>
+{% endblock %}
+{% block content %}
+    <div style="display: flex;justify-content: space-around">
+        <div class="map-menu">
+             <div class="menu-title">
+                 menu
+            </div>
+            <div class="img-container">
+                <img class="menu-img" src="/static/Media/grass.jpg">
+                <img class="menu-img" src="/static/Media/floor.jpg">
+                <img class="menu-img" src="/static/Media/rock.jpg">
+                <img class="menu-img" src="/static/Media/ground.jpg">
+                <img class="menu-img" src="/static/Media/brick.jpg">
+                <img class="menu-img" src="/static/Media/metal.jpg">
+                <img class="menu-img" src="/static/Media/water.jpg">
+                <img class="menu-img" src="/static/Media/wood.jpg">
+                <img class="menu-img" src="/static/Media/magma.jpg">
+                <img class="menu-img" src="/static/Media/door.jpg">
+                <img class="menu-chip" src="/static/Media/chest.png">
+                <img class="menu-character" src="/static/Media/goblin.png">
+            </div>
+            <div class="img-container">
+                <img class="menu-img" src="/static/Media/trash.png">
+                <img class="menu-chip" src="/static/Media/trashBlue.png">
+                <img class="menu-character" src="/static/Media/trashGreen.png">
+            </div>
+        </div>
+
+        <canvas id="backMap"></canvas>
+        <canvas id="chipMap" style="position: absolute;z-index:50"></canvas>
+        <canvas id="characterMap" style="position: absolute;z-index:100"></canvas>
+
+        <div class="map-menu">
+            <div class="img-container">
+                <div class="vertical-move">
+                    <img class="move-up" src="/static/Media/arrow.jpg">
+                </div>
+                <div class="horizontal-move">
+                    <img class="move-left" src="/static/Media/arrow.jpg">
+                </div>
+                <div class="horizontal-move">
+                    <img class="move-right" src="/static/Media/arrow.jpg">
+                </div>
+                <div class="vertical-move">
+                    <img class="move-down" src="/static/Media/arrow.jpg">
+                </div>
+            </div>
+            <div>
+                <ul id="chat-messages">
+                {% for chatMessage in chatMessages %}
+                <li> {{ chatMessage }} via {{ request.session.user.email }}</li>
+                {% endfor %}
+                </ul>
+                <form id="formChat" action=""  method="POST">
+                {% csrf_token %}
+                    <input type="hidden" id="myUsername" value="{{ request.session.user.email }}"/>
+                    <input type="hidden" id="myUsernameId" value="{{ request.session.user.localId }}"/>
+                    <input type="text" id="id_message" name="newMessage" class="form-control"/>
+                    <input type="submit" class="btn btn-primary"/>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js" integrity="sha512-SxQulwFs2B38bmUJtBSo9tD07MDrtCbY8me3AOZ14tRknCPTeMDLvCQV4ekhs8R0o9QPnW5HQanKfveexVcwLA==" crossorigin="anonymous"></script>
+    <script src='{% static "js/demoChat.js" %}'></script>
+{% endblock %}
