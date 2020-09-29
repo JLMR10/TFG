@@ -7,18 +7,20 @@
 {% endblock %}
 {% block content %}
     {% load static %}
+    {% csrf_token %}
     <script>
-        var pythonTiles = {{ tilesList }};
-        var pythonChips = {{ chipsList }};
-        var pythonCharacters = {{ pythonCharacters }};
+        //var pythonTiles = {{ tilesList }};
+        //var pythonChips = {{ chipsList }};
+        //var pythonCharacters = {{ pythonCharacters }};
+        const csrftoken = $("input[name='csrfmiddlewaretoken']")[0].value ;
     </script>
     <script src='{% static "js/canvasBase.js" %}'></script>
     <script src='{% static "js/canvasChip.js" %}'></script>
     <script src='{% static "js/canvasCharacter.js" %}'></script>
+    <script src='{% static "js/saveMap.js" %}'></script>
     <link rel='stylesheet' href='{% static "/css/canvasStyle.css" %}'>
 
     <body>
-
     <div style="display: flex;justify-content: space-around">
         <div class="map-menu">
              <div class="menu-title">
@@ -50,6 +52,7 @@
         <canvas id="characterMap" style="position: absolute;z-index:100"></canvas>
 
         <div class="map-menu">
+            <img class="save-map" src="/static/Media/save.png">
             <div class="img-container">
                 <div class="vertical-move">
                     <img class="move-up" src="/static/Media/arrow.jpg">
