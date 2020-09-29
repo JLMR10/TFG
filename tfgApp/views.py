@@ -143,7 +143,7 @@ def createGame(request):
             requestMapId = request.POST.get("mapId")
             _, createdGameId = gameServices.createGame(requestGameName, requestMapId, [userId, "Master"])
             return redirect("gameView", gameId=createdGameId)
-        else:
+        else: ##TODO: Revisar esta parte de código, puede faltar algo
             userMaps = userServices.getPropierty(userId, "Maps")
             userMapsNames = {}
             if userMaps:
@@ -153,8 +153,25 @@ def createGame(request):
         return HttpResponseRedirect('../')
 
 
+def joinGame(request):
+    if "user" in request.session:
+        userId = request.session["user"]["localId"]
+        if request.method == "POST":
+            gameCode = request.POST.get("gameCode")
+            joinGameId = gameServices.getGameIdFromCode(gameCode)
+            users = gameServices.getProperty(joinGameId, "Users")
+            if userId not in users.keys():
+                gameServices.addUserToGame(joinGameId, userId)
+                return redirect("gameView", gameId=joinGameId)
+            else:
+                return redirect("gameView", gameId=joinGameId)
+        else:
+            return HttpResponseRedirect('../')
+    else:
+        return HttpResponseRedirect('../')
+
+
 def gameView(request, gameId):
-    users = list(gameServices.getProperty(gameId, "Users").values())
     gameCode = gameServices.getProperty(gameId, "Code")
     chatMessages = []
     if request.method == "POST":

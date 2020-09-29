@@ -27,12 +27,31 @@ def create(json):
     return message, id
 
 
+def getAllGamesIdsAndCodes():
+    obj = database.child(ref).get().val()
+    gamesDict = {}
+    for id, values in obj.items():
+        gamesDict[values["Code"]] = id
+    return gamesDict
+
+
 def get(id):
     return database.child(ref+"/"+id).get().val()
 
 
 def getProperty(id, propierty):
     return database.child(ref+"/"+id).get().val().get(propierty)
+
+
+def addUserToGame(gameId, userId):
+    mapJson = {userId: "Member"}
+    reference = ref + "/" + gameId + "/Users/"
+    gameUsers = database.child(reference).get().val()
+    if gameUsers:
+        database.child(reference).update(mapJson)
+    else:
+        mapsJson = {"Users": mapJson}
+        database.child(reference).update(mapJson)
 
 
 def update(json):

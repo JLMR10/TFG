@@ -5,6 +5,29 @@
         <li><a href='{% url 'myMaps' %}'>My Maps</a></li>
         <li><a href='{% url 'createGame' %}'>Create Game</a></li>
         <li>Resume Game</li>
-        <li>Join Game</li>
+        <li><a href="" data-toggle="modal" data-target="#joinGame">Join Game</a></li>
+
+    <div class="modal" tabindex="-1" role="dialog" id="joinGame">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Search game:</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="ModalJoinForm" action="/joinGame/" method="post">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <input name="gameCode" type="text" placeholder="Game's code" style="margin-top: 10px;">
+                    </div>
+                    <div class="modal-footer">
+                        <button id="createBtn" type="submit" class="btn btn-primary">Enter</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     </ul>
 {% endblock %}
