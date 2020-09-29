@@ -35,6 +35,13 @@ def getPropierty(id, propierty):
     return valueFromPropierty
 
 
+def getIdAndNamesFromUsersList(usersList):
+    usersNamesList = {}
+    for userId in usersList:
+        usersNamesList[userId] = userRepository.getPropierty(userId, "Name")
+    return usersNamesList
+
+
 def testCreate():
     user1 = User("Guille", "Guille@pueba.com", "JGJG75F", ["DefaultMap1", "DefaultMap2", "DefaultMap3"], ["testGame"])
     user1Json = userToJson(user1)

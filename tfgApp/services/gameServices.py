@@ -33,9 +33,26 @@ def getProperty(id, propierty):
     return valueFromPropierty
 
 
+def getGameIdFromCode(gameCode):
+    gamesDict = gameRepository.getAllGamesIdsAndCodes()
+    gameId = None
+    if gameCode in gamesDict.keys():
+        gameId = gamesDict[gameCode]
+    return gameId
+
+
+def getAllGamesIdsAndCodes():
+    gamesDict = gameRepository.getAllGamesIdsAndCodes()
+    return gamesDict
+
+
 def generateRandomId():  ##TODO: añadir un sistema para verificar que no existe ya ese ID
     randomId = ''.join(random.choices(string.ascii_uppercase + string.digits, k=15))
     return randomId
+
+
+def addUserToGame(gameId, userId):
+    gameRepository.addUserToGame(gameId, userId)
 
 
 def testCreate():

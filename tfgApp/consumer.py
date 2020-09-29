@@ -3,7 +3,7 @@ import json
 from django.contrib.auth import get_user_model
 from channels.consumer import AsyncConsumer
 from channels.db import database_sync_to_async
-from tfgApp.services import gameServices
+from tfgApp.services import gameServices, userServices
 
 
 class ChatConsumer(AsyncConsumer):
@@ -33,7 +33,6 @@ class ChatConsumer(AsyncConsumer):
             loaded_dict_data = json.loads(front_text)
             if loaded_dict_data.get("canvasArray") is not None:
                 userId = self.scope["session"]["user"]["localId"]
-                users = gameServices.getProperty(self.game_id, "Users")
                 array = loaded_dict_data.get("canvasArray")
                 myResponse = {
                     "canvasArray": array,
@@ -44,7 +43,8 @@ class ChatConsumer(AsyncConsumer):
                 msg = loaded_dict_data.get("message")
                 userId = self.scope["session"]["user"]["localId"]
                 print(self.scope["session"]["user"])
-                users = gameServices.getProperty(self.game_id, "Users")
+                usersId = list(gameServices.getProperty(self.game_id, "Users").keys())
+                users = userServices.getIdAndNamesFromUsersList(usersId)
 
                 myResponse = {
                     "message": msg,
