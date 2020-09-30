@@ -1,5 +1,9 @@
 {% extends 'header.html' %}
 {% block titulo %} <title>Main Menu</title> {% endblock %}
+{% block scriptJS %}
+    {% load static %}
+    <script src='{% static "js/activateFormJoinGameModal.js" %}'></script>
+{% endblock %}
 {% block content %}
     <ul>
         <li><a href='{% url 'myMaps' %}'>My Maps</a></li>
@@ -16,13 +20,13 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="ModalJoinForm" action="/joinGame/" method="post">
+                <form id="ModalJoinForm" action="/mainMenu/joinGame/" method="post">
                     {% csrf_token %}
                     <div class="modal-body">
-                        <input name="gameCode" type="text" placeholder="Game's code" style="margin-top: 10px;">
+                        <input name="gameCode" id="gameCode" type="text" placeholder="Game's code" style="margin-top: 10px;" required>
                     </div>
                     <div class="modal-footer">
-                        <button id="createBtn" type="submit" class="btn btn-primary">Enter</button>
+                        <button id="createBtn" type="submit" class="btn btn-primary" disabled>Enter</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
                 </form>

@@ -159,12 +159,37 @@ def joinGame(request):
         if request.method == "POST":
             gameCode = request.POST.get("gameCode")
             joinGameId = gameServices.getGameIdFromCode(gameCode)
-            users = gameServices.getProperty(joinGameId, "Users")
-            if userId not in users.keys():
-                gameServices.addUserToGame(joinGameId, userId)
-                return redirect("gameView", gameId=joinGameId)
+            if joinGameId is not None:
+                users = gameServices.getProperty(joinGameId, "Users")
+                if userId not in users.keys():
+                    return render(request, "joinGame.html", {"gameId": joinGameId})
+                else:
+                    return redirect("gameView", gameId=joinGameId)
             else:
-                return redirect("gameView", gameId=joinGameId)
+                messages.error(request, "The game with code " + gameCode + " doesn't exist.")
+                return HttpResponseRedirect('../')
+        else:
+            return HttpResponseRedirect('../')
+    else:
+        return HttpResponseRedirect('../')
+
+
+def joinGamePost(request):
+    if "user" in request.session:
+        userId = request.session["user"]["localId"]
+        if request.method == "POST":
+            characterName = request.POST.get("characterName")
+            moveStat = request.POST.get("moveStat")
+            print(characterName)
+            print(moveStat)
+            gameId = request.POST.get("gameId")
+            users = gameServices.getProperty(gameId, "Users")
+            if len(users.keys()) < 4:
+                gameServices.addUserToGame(gameId, userId)
+                return redirect("gameView", gameId=gameId)
+            else:
+                messages.error(request, "La partida ha superado el nº máximo de participantes")
+                return HttpResponseRedirect('../')
         else:
             return HttpResponseRedirect('../')
     else:
