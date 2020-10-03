@@ -28,7 +28,7 @@ database = firebase.database()
 
 def signIn(request):
     if "user" in request.session:
-        return render(request, "mainMenu.html")
+        return redirect(mainMenu)
     else:
         if request.method == 'POST':
             email = request.POST.get("email")
@@ -44,7 +44,7 @@ def signIn(request):
 
             request.session["user"] = authFirebase.current_user
             messages.success(request, "Logged successfully")
-            return render(request, "mainMenu.html")
+            return redirect(mainMenu)
         return render(request, "signIn.html")
 
 
@@ -91,7 +91,9 @@ def canvasDemo(request):
 
 def mainMenu(request):
     if "user" in request.session:
-        return render(request, 'mainMenu.html')
+        userId = request.session["user"]["localId"]
+        userGames = userServices.getPropierty(userId, "Games")
+        return render(request, 'mainMenu.html', {"userGames": userGames})
     else:
         return HttpResponseRedirect('../')
 
@@ -186,6 +188,7 @@ def joinGamePost(request):
             users = gameServices.getProperty(gameId, "Users")
             if len(users.keys()) < 4:
                 gameServices.addUserToGame(gameId, userId)
+                userServices.addGameToUser(userId, gameId)
                 return redirect("gameView", gameId=gameId)
             else:
                 messages.error(request, "La partida ha superado el nº máximo de participantes")
@@ -197,11 +200,19 @@ def joinGamePost(request):
 
 
 def gameView(request, gameId):
-    gameCode = gameServices.getProperty(gameId, "Code")
-    chatMessages = []
-    if request.method == "POST":
-        chatMessages.append(request.POST.get("newMessage"))
-    return render(request, "game.html", {"chatMessages": chatMessages, "gameCode": gameCode})
+    if "user" in request.session:
+        users = gameServices.getProperty(gameId, "Users")
+        userId = request.session["user"]["localId"]
+        if userId in users.keys():
+            gameCode = gameServices.getProperty(gameId, "Code")
+            chatMessages = []
+            if request.method == "POST":
+                chatMessages.append(request.POST.get("newMessage"))
+            return render(request, "game.html", {"chatMessages": chatMessages, "gameCode": gameCode})
+        else:
+            return HttpResponseRedirect('../')
+    else:
+        return HttpResponseRedirect('../')
 
 
 def demoChat(request, gameId):

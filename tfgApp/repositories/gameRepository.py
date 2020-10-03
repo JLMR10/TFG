@@ -44,14 +44,14 @@ def getProperty(id, propierty):
 
 
 def addUserToGame(gameId, userId):
-    mapJson = {userId: "Member"}
+    userJson = {userId: "Member"}
     reference = ref + "/" + gameId + "/Users/"
     gameUsers = database.child(reference).get().val()
     if gameUsers:
-        database.child(reference).update(mapJson)
+        database.child(reference).update(userJson)
     else:
-        mapsJson = {"Users": mapJson}
-        database.child(reference).update(mapJson)
+        mapsJson = {"Users": userJson}
+        database.child(reference).update(userJson)
 
 
 def update(json):
