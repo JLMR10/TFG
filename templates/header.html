@@ -10,19 +10,19 @@
         <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-
+        {% load static %}
+        <link rel='stylesheet' href='{% static "/css/mainStyle.css" %}'>
         {% block scriptJS %} {% endblock %}
         {% block titulo %} {% endblock %}
     </head>
+    {% block body %}
   	<body>
         {% include 'messages.html' %}
-        <a> NOMBRE DE LA APP</a>
-
         {% block breadcrumbs %}
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     {% block breadcrumbschild %}
-                        <li class="breadcrumb-item">Main Menu</li>
+                        <li class="breadcrumb-item active" aria-current="page">Main Menu</li>
                     {% endblock %}
                     {% if request.session.user %}
                         <li class="ml-auto px-2"><h5>{{ request.session.user.email }}</h5></li>
@@ -33,4 +33,5 @@
         {% endblock %}
 		{% block content %} {% endblock %}
   	</body>
+    {% endblock %}
 </html>

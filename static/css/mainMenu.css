@@ -1,0 +1,77 @@
+.boxMenu:link, .boxMenu:visited {
+  background-color: lightskyblue;
+  color: white;
+  padding: 1.5em 0em;
+  text-align: center;
+  text-decoration: none;
+}
+
+.boxMenu:hover, .boxMenu:active {
+  background-color: cornflowerblue;
+}
+
+.flexMenu {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    height: 100%;
+    width: 89%;
+    align-self: center;
+    margin-left: 4.5%;
+    margin-top: 7%;
+    margin-bottom: 3%;
+    align-content: flex-start;
+}
+
+.flexMenu a{
+    word-wrap: break-word;
+    height: 7%;
+    flex: 0 0 30%;
+    min-width: 26%;
+    max-width: 32%;
+    margin: 1%;
+    font-size: 3.2em;
+}
+
+.boxJoin:link, .boxJoin:visited {
+  background-color: lightskyblue;
+  color: white;
+  padding: 0.7em 0em;
+  text-align: center;
+  text-decoration: none;
+}
+
+.boxJoin:hover, .boxJoin:active {
+  background-color: cornflowerblue;
+}
+
+.joinFlex {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    height: 100%;
+    width: 82%;
+    align-self: center;
+    margin-left: 8%;
+    margin-top: -3%;
+    margin-bottom: 3%;
+    align-content: flex-start;
+}
+
+.joinFlex a{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 7%;
+    flex: 0 0 32%;
+    min-width: 15%;
+    max-width: 48%;
+    margin: 1%;
+    font-size: 2.2em;
+}
+
+.rounded {
+    border-radius: 1.05rem!important;
+}

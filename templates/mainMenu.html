@@ -3,15 +3,19 @@
 {% block scriptJS %}
     {% load static %}
     <script src='{% static "js/activateFormJoinGameModal.js" %}'></script>
+    <link rel='stylesheet' href='{% static "/css/mainMenu.css" %}'>
 {% endblock %}
 {% block content %}
-    <ul>
-        <li><a href='{% url 'myMaps' %}'>My Maps</a></li>
-        <li><a href='{% url 'createGame' %}'>Create Game</a></li>
-        <li><a href="" data-toggle="modal" data-target="#myGames">My Games</a></li>
-        <li><a href="" data-toggle="modal" data-target="#joinGame">Join Game</a></li>
-    </ul>
-     <div class="modal" tabindex="-1" role="dialog" id="myGames">
+    <div class="flexMenu">
+        <a class="boxMenu rounded" href='{% url 'myMaps' %}'>My Maps</a>
+        <a class="boxMenu rounded" href="" data-toggle="modal" data-target="#myGames">My Games</a>
+        <a class="boxMenu rounded" href='{% url 'createGame' %}'>Create Game</a>
+    </div>
+    <div class="joinFlex">
+        <a class="boxJoin rounded" href="" data-toggle="modal" data-target="#joinGame">Join Game</a>
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="myGames">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
