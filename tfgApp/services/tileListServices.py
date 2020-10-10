@@ -38,6 +38,15 @@ def mergeAndCreateTileList(tileListsIds):
     return mergedTileListId
 
 
+def mergeTileList(tileListsIds):
+    tileLists = [getPropierty(id, "Position") for id in tileListsIds]
+    mergedTileList = {}
+    for tileList in tileLists:
+        for position, tile in tileList.items():
+            mergedTileList[position.split("_")[0]] = tile
+    return mergedTileList
+
+
 def testCreate():
     tileList1 = TileList("testTileListName2", [("1-1", "ForestTree"), ("2-1", "ForestTree"), ("2-3", "ForestTree")])
     tileList1Json = tileListToJson(tileList1)

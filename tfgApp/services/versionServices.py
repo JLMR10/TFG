@@ -1,6 +1,6 @@
 from tfgApp.models import Version
 from tfgApp.repositories import versionRepository
-from tfgApp.services import mapServices, tileListServices
+from tfgApp.services import mapServices, tileListServices, chipListServices, characterListServices
 import collections
 
 def versionToJson(version):
@@ -8,7 +8,9 @@ def versionToJson(version):
             "Name": version.name,
             "Map": version.map,
             "Order": version.order,
-            "TileList": version.tileList
+            "TileList": version.tileList,
+            "ChipList": version.chipList,
+            "CharacterList": version.characterList
         }
     return json
 
@@ -28,8 +30,20 @@ def getPropierty(id, propierty):
     return valueFromPropierty
 
 
-def createVersion(name, mapId, order, tileList):
-    versionDB = Version(name, mapId, order, tileList)
+def getLastVersion(mapId):
+    last = 0
+    lastVersion = None
+    versionsIdSource = mapServices.getVersions(mapId)
+    versionsSource = [versionRepository.get(id) for id in versionsIdSource]
+    for version in versionsSource:
+        if version["Order"] >= last:
+            last = version["Order"]
+            lastVersion = version
+    return lastVersion
+
+
+def createVersion(name, mapId, order, tileList, chipList, characterList):
+    versionDB = Version(name, mapId, order, tileList, chipList, characterList)
     versionJson = versionToJson(versionDB)
     message, versionId = versionRepository.create(versionJson)
     return message, versionId
@@ -39,8 +53,50 @@ def createFirstVersionForNewMap(sourceMapId, mapName, mapId):
     versionsIdSource = mapServices.getVersions(sourceMapId)
     versionsSource = [versionRepository.get(id) for id in versionsIdSource]
     mergedTileListId = mergeVersionsTileLists(versionsSource)
-    _, versionId = createVersion(mapName + "_0", mapId, 0, mergedTileListId)
+    mergedChipListId = mergeVersionsChipLists(versionsSource)
+    mergedCharacterListId = mergeVersionsCharacterLists(versionsSource)
+    _, versionId = createVersion(mapName + "_0", mapId, 0, mergedTileListId, mergedChipListId, mergedCharacterListId)
     mapServices.addInitialVersion(versionId, mapId)
+
+def getListsFromVersion(mapId, maxOrder):
+    versionsId = mapServices.getVersions(mapId)
+    versions = [versionRepository.get(id) for id in versionsId]
+    tileList = getVersionsTileLists(versions, maxOrder)
+    chipList = getVersionsChipLists(versions, maxOrder)
+    characterList = getVersionsCharacterLists(versions, maxOrder)
+    return [tileList, chipList, characterList]
+
+
+def getVersionsTileLists(versions, maxOrder):
+    tileListOrderedDict = collections.OrderedDict(sorted({version["Order"]: version["TileList"] for version in versions}.items()))
+    tileListIds = []
+    for order, tileListId in tileListOrderedDict.items():
+        if order <= maxOrder:
+            tileListIds.append(tileListId)
+    mergeTileList = tileListServices.mergeTileList(tileListIds)
+    return mergeTileList
+
+
+def getVersionsChipLists(versions, maxOrder):
+    chipListOrderedDict = collections.OrderedDict(
+        sorted({version["Order"]: version["ChipList"] for version in versions}.items()))
+    chipListIds = []
+    for order, chipListId in chipListOrderedDict.items():
+        if order <= maxOrder:
+            chipListIds.append(chipListId)
+    mergeChipList = chipListServices.mergeChipList(chipListIds)
+    return mergeChipList
+
+
+def getVersionsCharacterLists(versions, maxOrder):
+    characterListOrderedDict = collections.OrderedDict(
+        sorted({version["Order"]: version["CharacterList"] for version in versions}.items()))
+    characterListIds = []
+    for order, characterListId in characterListOrderedDict.items():
+        if order <= maxOrder:
+            characterListIds.append(characterListId)
+    mergeCharacterList = characterListServices.mergeCharacterList(characterListIds)
+    return mergeCharacterList
 
 
 def mergeVersionsTileLists(versions):
@@ -48,6 +104,20 @@ def mergeVersionsTileLists(versions):
     tileListIds = [tileListId for order, tileListId in tileListOrderedDict.items()]
     mergedTileListId = tileListServices.mergeAndCreateTileList(tileListIds)
     return mergedTileListId
+
+
+def mergeVersionsChipLists(versions):
+    chipListOrderedDict = collections.OrderedDict(sorted({version["Order"]: version["ChipList"] for version in versions}.items()))
+    chipListIds = [chipListId for order, chipListId in chipListOrderedDict.items()]
+    mergedChipListId = chipListServices.mergeAndCreateChipList(chipListIds)
+    return mergedChipListId
+
+
+def mergeVersionsCharacterLists(versions):
+    characterListOrderedDict = collections.OrderedDict(sorted({version["Order"]: version["CharacterList"] for version in versions}.items()))
+    characterListIds = [characterListId for order, characterListId in characterListOrderedDict.items()]
+    mergedCharacterListId = characterListServices.mergeAndCreateCharacterList(characterListIds)
+    return mergedCharacterListId
 
 
 def testCreate():

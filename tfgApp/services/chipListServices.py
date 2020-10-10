@@ -3,12 +3,48 @@ from tfgApp.repositories import chipListRepository
 
 
 def chipListToJson(chipList):
-    position = {pos: name for pos, name in chipList.position}
+    position = {pos+"_": name for pos, name in chipList.position.items()}
     json = {
-            "Name": chipList.name,
             "Position": position
         }
     return json
+
+
+def create(json):
+    message, tileListId = chipListRepository.create(json)
+    return message, tileListId
+
+
+def get(id):
+    tileList = chipListRepository.get(id)
+    return tileList
+
+
+def getPropierty(id, propierty):
+    valueFromPropierty = chipListRepository.getPropierty(id, propierty)
+    return valueFromPropierty
+
+
+def mergeAndCreateChipList(chipListsIds):
+    chipLists = [getPropierty(id, "Position") for id in chipListsIds]
+    mergedChipList = {}
+    for chipList in chipLists:
+        for position, chip in chipList.items():
+            ##position = position.replace("_", "")
+            mergedChipList[position] = chip
+    mergedChipListObj = ChipList(mergedChipList)
+    mergedChipListJson = chipListToJson(mergedChipListObj)
+    _, mergedChipListId = create(mergedChipListJson)
+    return mergedChipListId
+
+
+def mergeChipList(chipListsIds):
+    chipLists = [getPropierty(id, "Position") for id in chipListsIds]
+    mergedChipList = {}
+    for chipList in chipLists:
+        for position, tile in chipList.items():
+            mergedChipList[position.split("_")[0]] = tile
+    return mergedChipList
 
 
 def testCreate():

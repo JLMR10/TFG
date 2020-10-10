@@ -19,17 +19,26 @@ ref = "ChipList"
 
 
 def create(json):
-    message = "The chipList name already exists"
-    listOfChipLists = []
+    chipList = database.child(ref).push(json)
+    chipListId = chipList["name"]
+    message = "The tileList has been created successfully"
 
-    for id, chipList in database.child(ref).get().val().items():
-        listOfChipLists.append(chipList["Name"])
+    return message, chipListId
 
-    if json["Name"] not in listOfChipLists:
-        database.child(ref).push(json)
-        message = "The chipList has been created successfully"
 
-    return message
+def get(id):
+    chipList = database.child(ref + "/" + id).get().val()
+    return chipList
+
+
+def getPropierty(id, propierty):
+    valueFromPropierty = database.child(ref + "/" + id).get().val().get(propierty)
+    if propierty == "Position":
+        valueFromPropiertyFormatted = {}
+        for position, tile in valueFromPropierty.items():
+            position = position.replace("_", "")
+            valueFromPropiertyFormatted[position] = tile
+    return valueFromPropiertyFormatted
 
 
 def update(json):

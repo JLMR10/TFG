@@ -32,6 +32,10 @@ def create(json):
     return message
 
 
+def getAllChips():
+    return database.child(ref).get().val().items()
+
+
 def update(json):
     message = "The chip hasn't been edited"
     for id, chip in database.child(ref).get().val().items():

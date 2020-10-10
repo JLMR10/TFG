@@ -10,6 +10,15 @@ def tileToJson(tile):
     return json
 
 
+def getAllTiles():
+    listOfTiles = []
+    sourceTiles = tileRepository.getAllTiles()
+    for id, tile in sourceTiles:
+        listOfTiles.append([id, tile["Image"]])
+
+    return listOfTiles
+
+
 def testCreate():
     tile1 = Tile("mokutonImageRef", "mokuton")
     tile1Json = tileToJson(tile1)

@@ -11,22 +11,34 @@ $(function init() {
         chipsArr.forEach(e => baseChips[baseChips.length] = e.img);
         charactersArr.forEach(e => baseCharacters[baseCharacters.length] = e.img);
         let data = {
-            CSRF: csrftoken,
             tiles: baseTiles,
             chips: baseChips,
             characters: baseCharacters,
         }
-        edit(data, csrftoken);
+        edit(data);
     });
 
 
 });
 
-function edit(data, csrftoken) {
+function edit(data) {
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
     $.ajaxSetup({
-        url: "",
-        headers: { "X-CSFRToken": getCookie("csrftoken")},
-        data: data,
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+        }
+    });
+
+    $.ajax({
+        url: "http://127.0.0.1:8000/myMaps/editMap/saveMap/",
+        //headers: { "X-CSFRToken": getCookie("csrftoken")},
+        data: JSON.stringify(data),
         type: "POST",
         success: function (response) {
             console.log(response);
@@ -36,7 +48,7 @@ function edit(data, csrftoken) {
         },
         async: true,
         contentType: "application/json; charset=utf-8",
-        dataType: "json"
+        dataType: "text"
     });
 }
 

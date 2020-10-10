@@ -11,6 +11,15 @@ def chipToJson(chip):
     return json
 
 
+def getAllChips():
+    listOfChips = []
+    sourceChips = chipRepository.getAllChips()
+    for id, chip in sourceChips:
+        listOfChips.append([id, chip["Image"]])
+
+    return listOfChips
+
+
 def testCreate():
     chip1 = Chip("autoTestChip0", "0", "autoTestGame")
     chip1Json = chipToJson(chip1)
