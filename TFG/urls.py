@@ -34,7 +34,8 @@ urlpatterns = [
     path('myMaps/editMap/saveMap/', views.saveMap, name='saveMap'),
     path('createGame/', views.createGame, name='createGame'),
     re_path(r'^game/(?P<gameId>.*)$', views.gameView, name='gameView'),
-    path('joinGame/', views.joinGame, name='joinGame'),
+    path('mainMenu/joinGame/', views.joinGame, name='joinGame'),
+    path('mainMenu/joinGamePost/', views.joinGamePost, name='joinGamePost'),
     ##re_path(r'createGame/(?P<gameId>.*)$', views.createGame, name='createGame'),
 
     ##re_path(r'^myMaps/(?P<map>\w+)/$', views.editMap, name='editMap')

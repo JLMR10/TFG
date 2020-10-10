@@ -1,12 +1,47 @@
 {% extends 'header.html' %}
 {% block titulo %} <title>Main Menu</title> {% endblock %}
+{% block scriptJS %}
+    {% load static %}
+    <script src='{% static "js/activateFormJoinGameModal.js" %}'></script>
+    <link rel='stylesheet' href='{% static "/css/mainMenu.css" %}'>
+{% endblock %}
 {% block content %}
-    <ul>
-        <li><a href='{% url 'myMaps' %}'>My Maps</a></li>
-        <li><a href='{% url 'createGame' %}'>Create Game</a></li>
-        <li>Resume Game</li>
-        <li><a href="" data-toggle="modal" data-target="#joinGame">Join Game</a></li>
+    <div class="flexMenu">
+        <a class="boxMenu rounded" href='{% url 'myMaps' %}'>My Maps</a>
+        <a class="boxMenu rounded" href="" data-toggle="modal" data-target="#myGames">My Games</a>
+        <a class="boxMenu rounded" href='{% url 'createGame' %}'>Create Game</a>
+    </div>
+    <div class="joinFlex">
+        <a class="boxJoin rounded" href="" data-toggle="modal" data-target="#joinGame">Join Game</a>
+    </div>
 
+    <div class="modal" tabindex="-1" role="dialog" id="myGames">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">My games:</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="ModalMyGamesForm" action="" method="post">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <select id="gameList" name="gameList" class="custom-select">
+                            <option value="" selected>Open this select menu</option>
+                            {% for gameId,gameName in userGames.items %}
+                                <option value="{{ gameId }}">{{ gameName }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="createBtnGames" type="submit" class="btn btn-primary" disabled>Join</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="modal" tabindex="-1" role="dialog" id="joinGame">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -16,18 +51,17 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="ModalJoinForm" action="/joinGame/" method="post">
+                <form id="ModalJoinForm" action="/mainMenu/joinGame/" method="post">
                     {% csrf_token %}
                     <div class="modal-body">
-                        <input name="gameCode" type="text" placeholder="Game's code" style="margin-top: 10px;">
+                        <input name="gameCode" id="gameCode" type="text" placeholder="Game's code" style="margin-top: 10px;" required>
                     </div>
                     <div class="modal-footer">
-                        <button id="createBtn" type="submit" class="btn btn-primary">Enter</button>
+                        <button id="createBtn" type="submit" class="btn btn-primary" disabled>Enter</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    </ul>
 {% endblock %}

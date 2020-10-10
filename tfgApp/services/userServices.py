@@ -30,6 +30,10 @@ def addMap(userId, mapId):
     userRepository.addMap(userId, mapId)
 
 
+def addGameToUser(userId, gameId):
+    userRepository.addGameToUser(userId, gameId)
+
+
 def getPropierty(id, propierty):
     valueFromPropierty = userRepository.getPropierty(id, propierty)
     return valueFromPropierty
