@@ -1,9 +1,12 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 import pyrebase
+from django.views.decorators.csrf import csrf_exempt
+
 from tfgApp.models import User, Map
-from tfgApp.services import userServices, mapServices, tileListServices, tileServices, versionServices, gameServices
+from tfgApp.services import userServices, mapServices, tileListServices, tileServices, versionServices, gameServices, \
+    chipServices, characterServices
 from requests.exceptions import HTTPError
 import json
 
@@ -129,13 +132,39 @@ def editMap(request):
             map = request.POST.get("mapId")
             userMaps = list(userServices.getPropierty(userId, "Maps").keys())
             if map in userMaps:
+                maxVersion = versionServices.getLastVersion(map)
+                maxOrder = maxVersion["Order"]
+                mapItemList = versionServices.getListsFromVersion(map, maxOrder)
                 mapName = mapServices.getProperty(map, "Name")
-                return render(request, "editMap.html", {"map": mapName})
+                response = {
+                    "map": mapName,
+                    "mapTiles": mapItemList[0],
+                    "mapChips": mapItemList[1],
+                    "mapCharacters": mapItemList[2],
+                    "menuTiles": tileServices.getAllTiles(),
+                    "menuChips": chipServices.getAllChips(),
+                    "menuCharacters": characterServices.getAllCharacters()
+                }
+                return render(request, "editMap.html", response)
             else:
                 return HttpResponseRedirect('../')
     else:
         return HttpResponseRedirect('../')
 
+
+##@csrf_exempt
+def saveMap(request):
+    userId = request.session["user"]["localId"]
+    data = json.loads(request.body)
+    tiles = data["tiles"]
+    chips = data["chips"]
+    characters = data["characters"]
+
+    ## Revisar como pasart las listas con los Ids
+    ##,version = createVersion(name, mapId, order, tileList, chipList, characterList)
+    ##addMapVersion(Map)
+    response = HttpResponse(status=201)
+    return response
 
 def createGame(request):
     if "user" in request.session:

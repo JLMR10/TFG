@@ -28,15 +28,13 @@ class Game:
 
 
 class Chip:
-    def __init__(self, game, moveStat, name):
+    def __init__(self, image, name):
+        self.image = image
         self.name = name
-        self.game = game
-        self.moveStat = moveStat
 
 
 class ChipList:
-    def __init__(self, name, position):
-        self.name = name
+    def __init__(self, position):
         self.position = position
 
 
@@ -51,10 +49,23 @@ class TileList:
         self.position = position
 
 
+class Character:
+    def __init__(self, image, name):
+        self.image = image
+        self.name = name
+
+
+class CharacterList:
+    def __init__(self, position):
+        self.position = position
+
+
 class Version:
-    def __init__(self, name, map, order, tileList):
+    def __init__(self, name, map, order, tileList, chipList, characterList):
         self.name = name
         self.map = map
         self.order = order
         self.tileList = tileList
+        self.chipList = chipList
+        self.characterList = characterList
 

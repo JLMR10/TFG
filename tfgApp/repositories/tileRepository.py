@@ -32,6 +32,10 @@ def create(json):
     return message
 
 
+def getAllTiles():
+    return database.child(ref).get().val().items()
+
+
 def update(json):
     message = "The tile hasn't been edited"
     for id, tile in database.child(ref).get().val().items():
