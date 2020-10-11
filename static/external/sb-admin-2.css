@@ -12157,7 +12157,7 @@ body.sidebar-toggled footer.sticky-footer {
   pointer-events: none;
   line-height: 1.25em;
   margin-top: calc(-3em - 2px);
-  margin-bottom: calc((3em - 1em) + 2px);
+  margin-bottom: calc((2em  - 1em) + 2px);
 }
 .modal input[type="text"] + label[placeholder]:before {
   content: attr(placeholder);
@@ -12215,4 +12215,47 @@ body.sidebar-toggled footer.sticky-footer {
   background-size: 100% 5px;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+.select2-container .select2-selection--single {
+    width: 22.9em;
+    height: 3em;
+}
+
+.select2-container--default .select2-selection--single {
+    border: 1px solid #ccc;
+    border-radius: 1.5em;
+    background: #fff;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 26px;
+    position: absolute;
+    top: 9px;
+    right: 9px;
+    width: 20px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #7d7d7d;
+    line-height: 28px;
+    margin-top: 0.5em;
+    margin-left: 0.4em;
+}
+
+ul::-webkit-scrollbar {
+    width: 12px;
+    background-color: #F5F5F5;
+}
+
+ul::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+ul::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px #bcbed2;
+    background-color: #8c8ea2;
 }

@@ -1,20 +1,22 @@
 {% extends 'header.html' %}
 {% block scriptJS %}
     {% load static %}
-     <link rel='stylesheet' href='{% static "/css/myMaps.css" %}'>
+    <link rel='stylesheet' href='{% static "/css/myMaps.css" %}'>
+    <script src='{% static "js/select2.js" %}'></script>
 {% endblock %}
 {% block titulo %} <title>My Maps</title> {% endblock %}
 {% block breadcrumbschild %}
-    <li class="breadcrumb-item active"><a href={% url 'mainMenu' %}>Main Menu</a> </li>
+    <li class="breadcrumb-item active"><a href={% url 'mainMenu' %}>Main Menu</a></li>
     <li class="breadcrumb-item active" aria-current="page">My Maps</li>
 {% endblock %}
 {% block content %}
     <form id="editMap" action="/myMaps/editMap/" method="POST">
-    {% csrf_token %}
+        {% csrf_token %}
         <input type="hidden" value="" name="mapId">
         <div class="mapFlexMenu">
             {% for mapName, mapId in maps.items %}
-            <a class="boxMaps rounded" href="#" data-toggle="tooltip" title="{{ mapName }}" onclick="changeValueMap('{{ mapId }}');">{{ mapName }}</a>
+                <a class="boxMaps rounded" href="#" data-toggle="tooltip" title="{{ mapName }}"
+                   onclick="changeValueMap('{{ mapId }}');">{{ mapName }}</a>
             {% endfor %}
             <a class="boxMaps rounded" href="" data-toggle="modal" data-target="#ModalMaps">New map</a>
         </div>
@@ -31,14 +33,14 @@
                 <form id="ModalMapForm" action="/myMaps/editMap/" method="post">
                     {% csrf_token %}
                     <div class="modal-body">
-                        <select name="mapList" class="custom-select" required>
-                            <option value="" selected></option>
+                        <select name="mapList" class="modal-select" required>
+                            <option value="" selected>Select base map</option>
                             {% for mapName,mapId in mapsModal.items %}
                                 <option value="{{ mapId }}">{{ mapName }}</option>
                             {% endfor %}
                         </select>
                         <label alt="Select base map" placeholder="Select base map"></label>
-                        <input name="mapName" type="text" style="margin-top: 10px;" required>
+                        <input name="mapName" type="text" style="margin-top: -0.1em;" required>
                         <label alt="Map's name" placeholder="Map's name"></label>
                     </div>
                     <div class="modal-footer">
@@ -50,8 +52,8 @@
         </div>
     </div>
 
-{% load static %}
-<script src='{% static "js/changeFormAction.js" %}'></script>
+    {% load static %}
+    <script src='{% static "js/changeFormAction.js" %}'></script>
 {% endblock %}
 
 

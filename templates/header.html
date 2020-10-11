@@ -12,8 +12,10 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
         {% load static %}
         <link rel='stylesheet' href='{% static "/css/mainStyle.css" %}'>
-        <link rel='stylesheet' href='{% static "/external/sb-admin-2.css" %}'>
         <link rel='stylesheet' href='{% static "/external/fonts/all.css" %}'>
+        <link rel='stylesheet' href='{% static "/external/select2.min.css" %}'>
+        <link rel='stylesheet' href='{% static "/external/sb-admin-2.css" %}'>
+        <script src="{% static "/external/select2.min.js" %}"></script>
         {% block scriptJS %} {% endblock %}
         {% block titulo %} {% endblock %}
     </head>

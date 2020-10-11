@@ -43,8 +43,12 @@ $(function init() {
         });
         if (validGame === true) {
             jQuery("#createBtnGames").prop('disabled', false);
+            $('.select2-container--default .select2-selection--single').css('border-color','#4e73df');
+            $('.select2-selection__rendered').css('color','#000');
         } else {
             jQuery("#createBtnGames").prop('disabled', true);
+            $('.select2-container--default .select2-selection--single').css('border-color','#ccc');
+            $('.select2-selection__rendered').css('color','#7d7d7d');
         }
     });
 
@@ -52,4 +56,7 @@ $(function init() {
         $('#ModalMyGamesForm').attr("action", '/game/'+ $('#gameList').val())
     })
 
+    $(document).ready(function() {
+        $('.modal-select').select2();
+    });
 });

@@ -28,13 +28,12 @@
                 <form id="ModalMyGamesForm" action="" method="post">
                     {% csrf_token %}
                     <div class="modal-body">
-                        <select id="gameList" name="gameList" class="custom-select" required>
-                            <option value="" selected></option>
+                        <select id="gameList" name="gameList" class="modal-select" required>
+                            <option value="" selected>Select your map</option>
                             {% for gameId,gameName in userGames.items %}
                                 <option value="{{ gameId }}">{{ gameName }}</option>
                             {% endfor %}
                         </select>
-                        <label alt="Select your map" placeholder="Select your map"></label>
                     </div>
                     <div class="modal-footer">
                         <button id="createBtnGames" type="submit" class="btn btn-primary" disabled>Join</button>
