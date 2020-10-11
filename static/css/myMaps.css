@@ -1,13 +1,14 @@
 .boxMaps:link, .boxMaps:visited {
-  background-color: lightskyblue;
-  color: white;
-  padding: 14px 25px;
-  text-align: center;
-  text-decoration: none;
+    background-color: lightskyblue;
+    color: white;
+    padding: 2em 0.5em;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px !important;
 }
 
 .boxMaps:hover, .boxMaps:active {
-  background-color: cornflowerblue;
+    background-color: cornflowerblue;
 }
 
 .mapFlexMenu {
@@ -16,15 +17,15 @@
     justify-content: center;
     flex-wrap: wrap;
     height: 100%;
-    width: 41%;
+    width: 75%;
     align-self: center;
-    margin-left: 28%;
-    margin-top: 2%;
+    margin-left: 11%;
+    margin-top: 10%;
     margin-bottom: 3%;
     align-content: flex-start;
 }
 
-.mapFlexMenu a{
+.mapFlexMenu a {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

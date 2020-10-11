@@ -23,7 +23,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Select base map:</h5>
+                    <h5 class="modal-title">Create new map:</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -31,13 +31,15 @@
                 <form id="ModalMapForm" action="/myMaps/editMap/" method="post">
                     {% csrf_token %}
                     <div class="modal-body">
-                        <select name="mapList" class="custom-select">
-                            <option value="" selected>Open this select menu</option>
+                        <select name="mapList" class="custom-select" required>
+                            <option value="" selected></option>
                             {% for mapName,mapId in mapsModal.items %}
                                 <option value="{{ mapId }}">{{ mapName }}</option>
                             {% endfor %}
                         </select>
-                        <input name="mapName" type="text" style="margin-top: 10px;">
+                        <label alt="Select base map" placeholder="Select base map"></label>
+                        <input name="mapName" type="text" style="margin-top: 10px;" required>
+                        <label alt="Map's name" placeholder="Map's name"></label>
                     </div>
                     <div class="modal-footer">
                         <button id="createBtn" type="submit" class="btn btn-primary" disabled>Create</button>

@@ -1,13 +1,14 @@
 .boxMenu:link, .boxMenu:visited {
-  background-color: lightskyblue;
-  color: white;
-  padding: 1.5em 0em;
-  text-align: center;
-  text-decoration: none;
+    background-color: lightskyblue;
+    color: white;
+    padding: 1.5em 0em;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px !important;
 }
 
 .boxMenu:hover, .boxMenu:active {
-  background-color: cornflowerblue;
+    background-color: cornflowerblue;
 }
 
 .flexMenu {
@@ -24,7 +25,7 @@
     align-content: flex-start;
 }
 
-.flexMenu a{
+.flexMenu a {
     word-wrap: break-word;
     height: 7%;
     flex: 0 0 30%;
@@ -35,15 +36,16 @@
 }
 
 .boxJoin:link, .boxJoin:visited {
-  background-color: lightskyblue;
-  color: white;
-  padding: 0.7em 0em;
-  text-align: center;
-  text-decoration: none;
+    background-color: lightskyblue;
+    color: white;
+    padding: 0.7em 0em;
+    text-align: center;
+    text-decoration: none;
+    //box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px !important;
 }
 
 .boxJoin:hover, .boxJoin:active {
-  background-color: cornflowerblue;
+    background-color: cornflowerblue;
 }
 
 .joinFlex {
@@ -60,7 +62,7 @@
     align-content: flex-start;
 }
 
-.joinFlex a{
+.joinFlex a {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -73,6 +75,5 @@
 }
 
 .rounded {
-    border-radius: 1.05rem!important;
+    border-radius: 1.05rem !important;
 }
-
