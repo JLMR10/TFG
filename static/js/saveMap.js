@@ -21,7 +21,7 @@ $(function init() {
 
 });
 
-function edit(data) {
+function joinGameModal(data) {
 
     function csrfSafeMethod(method) {
         // these HTTP methods do not require CSRF protection

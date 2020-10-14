@@ -53,8 +53,8 @@ def addMap(userId, mapId):
         database.child(reference).update(mapJson)
 
 
-def addGameToUser(userId, gameId):
-    gameJson = {gameId: "True"}
+def addGameToUser(userId, gameId, gameName):
+    gameJson = {gameId: gameName}
     reference = ref + "/" + userId + "/Games/"
     userGames = database.child(reference).get().val()
     if userGames:

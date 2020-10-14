@@ -4,13 +4,14 @@
     {% load static %}
     <script src='{% static "js/activateFormJoinGameModal.js" %}'></script>
     <link rel='stylesheet' href='{% static "/css/mainMenu.css" %}'>
+
 {% endblock %}
 
 {% block content %}
     <div class="flexMenu">
         <a class="boxMenu rounded shadow" href='{% url 'myMaps' %}'>My Maps</a>
         <a class="boxMenu rounded shadow" href="" data-toggle="modal" data-target="#myGames">My Games</a>
-        <a class="boxMenu rounded shadow" href='{% url 'createGame' %}'>Create Game</a>
+        <a class="boxMenu rounded shadow" href="" data-toggle="modal" data-target="#createGame">Create Game</a>
     </div>
     <div class="joinFlex">
         <a class="boxJoin rounded shadow" href="" data-toggle="modal" data-target="#joinGame">Join Game</a>
@@ -52,14 +53,73 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="ModalJoinForm" action="/mainMenu/joinGame/" method="post">
+                <form id="ModalJoinForm" action="/mainMenu/joinGameModal/" method="post">
                     {% csrf_token %}
-                    <div class="modal-body">
+                    <div class="modal-body" id="modal-body-join">
                         <input name="gameCode" id="gameCode" type="text" style="margin-top: 10px;" required>
                         <label alt="Game's code" placeholder="Game's code"></label>
                     </div>
                     <div class="modal-footer">
                         <button id="createBtn" type="submit" class="btn btn-primary" disabled>Enter</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal" tabindex="-1" role="dialog" id="joinGameCharacter" style="display: none">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create a character for the game:</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="ModalJoinCharacterForm" action="/mainMenu/joinGameCharacterModal/" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body" id="modal-body-joinCharacter">
+                        <input type="hidden" id="gameId" name="gameId" value="">
+                        <p class="h7">Character's movement stat: </p>
+                        <div class="def-number-input number-input safari_only">
+                            <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
+                            <input type="number" class="quantity" id="moveStat" name="moveStat" min="5" max="20" value="5" required>
+                            <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
+                        </div>
+                        <input type="text" id="characterName" name="characterName" required>
+                        <label alt="Character's name" placeholder="Character's name"></label>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="createBtnCharacter" type="submit" class="btn btn-primary" disabled>Enter</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal" tabindex="-1" role="dialog" id="createGame">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create new game:</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="ModalCreateGameForm" action="/mainMenu/createGame/" method="post">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <select id="mapId" name="mapId" class="modal-select" required>
+                            <option value="" selected>Open this select menu</option>
+                            {% for mapName,mapId in maps.items %}
+                                <option value="{{ mapId }}">{{ mapName }}</option>
+                            {% endfor %}
+                        </select>
+                        <input name="gameName" id="gameName" type="text" style="margin-top: 1em;" required>
+                        <label alt="Game's name" placeholder="Game's name"></label>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="createBtnCreateGame" type="submit" class="btn btn-primary" disabled>Enter</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
                 </form>

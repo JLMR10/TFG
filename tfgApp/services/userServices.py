@@ -30,8 +30,8 @@ def addMap(userId, mapId):
     userRepository.addMap(userId, mapId)
 
 
-def addGameToUser(userId, gameId):
-    userRepository.addGameToUser(userId, gameId)
+def addGameToUser(userId, gameId, gameName):
+    userRepository.addGameToUser(userId, gameId, gameName)
 
 
 def getPropierty(id, propierty):

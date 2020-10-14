@@ -43,6 +43,12 @@ def getProperty(id, propierty):
     return database.child(ref+"/"+id).get().val().get(propierty)
 
 
+def addCharacterUserToGame(gameId, userId, characterName, characterMove, index):
+    characterJson = {index+"_": {"Name": characterName, "Move": characterMove, "User": userId}}
+    reference = ref + "/" + gameId + "/Characters/"
+    database.child(reference).update(characterJson)
+
+
 def addUserToGame(gameId, userId):
     userJson = {userId: "Member"}
     reference = ref + "/" + gameId + "/Users/"
