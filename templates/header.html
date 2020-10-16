@@ -12,26 +12,52 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
         {% load static %}
         <link rel='stylesheet' href='{% static "/css/mainStyle.css" %}'>
+        <link rel='stylesheet' href='{% static "/external/fonts/all.css" %}'>
+        <link rel='stylesheet' href='{% static "/external/select2.min.css" %}'>
+        <link rel='stylesheet' href='{% static "/external/sb-admin-2.css" %}'>
+        <script src="{% static "/external/select2.min.js" %}"></script>
         {% block scriptJS %} {% endblock %}
         {% block titulo %} {% endblock %}
     </head>
     {% block body %}
   	<body>
-        {% include 'messages.html' %}
-        {% block breadcrumbs %}
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    {% block breadcrumbschild %}
-                        <li class="breadcrumb-item active" aria-current="page">Main Menu</li>
-                    {% endblock %}
-                    {% if request.session.user %}
-                        <li class="ml-auto px-2"><h5>{{ request.session.user.email }}</h5></li>
-                        <li class="px-2"><button class="btn btn-sm btn-danger float-right" onclick="location.href='{% url 'log' %}'"> Logout</button></li>
-                    {% endif %}
-                </ol>
-            </nav>
-        {% endblock %}
-		{% block content %} {% endblock %}
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                {% include 'messages.html' %}
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <ol class="breadcrumb">
+                        {% block breadcrumbschild %}
+                            <li class="breadcrumb-item active" aria-current="page">Main Menu</li>
+                        {% endblock %}
+                    </ol>
+                    <ul class="navbar-nav ml-auto">
+                        <div class="topbar-divider d-none d-sm-block"></div>
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small usermail">{{ request.session.user.email }}</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                 aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Edit Profile <!-- TODO EDIT PROFILE-->
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item-logout" href="{% url 'log' %}">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="container-fluid">
+                    {% block content %} {% endblock %}
+                </div>
+            </div>
+        </div>
   	</body>
     {% endblock %}
 </html>

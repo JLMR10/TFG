@@ -55,6 +55,15 @@ def addUserToGame(gameId, userId):
     gameRepository.addUserToGame(gameId, userId)
 
 
+def addCharacterUserToGame(gameId, userId, characterName, characterMove):
+    characters = getProperty(gameId, "Characters").keys()
+    indexes = []
+    for character in characters:
+        indexes.append(character.replace("_", ""))
+    maxIndex = max(indexes)
+    index = str(int(maxIndex)+1)
+    gameRepository.addCharacterUserToGame(gameId, userId, characterName, characterMove, index)
+
 def testCreate():
     game1 = Game("autoTestGame", "01", "autoTestMap", "autoTestChipList")
     game1Json = gameToJson(game1)

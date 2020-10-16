@@ -96,7 +96,11 @@ def mainMenu(request):
     if "user" in request.session:
         userId = request.session["user"]["localId"]
         userGames = userServices.getPropierty(userId, "Games")
-        return render(request, 'mainMenu.html', {"userGames": userGames})
+        userMaps = userServices.getPropierty(userId, "Maps")
+        userMapsNames = {}
+        if userMaps:
+            userMapsNames = mapServices.getNameFromMaps(userMaps)
+        return render(request, 'mainMenu.html', {"userGames": userGames, "maps": userMapsNames})
     else:
         return HttpResponseRedirect('../')
 
@@ -185,6 +189,7 @@ def saveMap(request):
     response = HttpResponse(status=201)
     return response
 
+
 def createGame(request):
     if "user" in request.session:
         userId = request.session["user"]["localId"]
@@ -192,13 +197,10 @@ def createGame(request):
             requestGameName = request.POST.get("gameName")
             requestMapId = request.POST.get("mapId")
             _, createdGameId = gameServices.createGame(requestGameName, requestMapId, [userId, "Master"])
+            userServices.addGameToUser(userId, createdGameId, requestGameName)
             return redirect("gameView", gameId=createdGameId)
-        else: ##TODO: Revisar esta parte de código, puede faltar algo
-            userMaps = userServices.getPropierty(userId, "Maps")
-            userMapsNames = {}
-            if userMaps:
-                userMapsNames = mapServices.getNameFromMaps(userMaps)
-            return render(request, "createGame.html", {"maps": userMapsNames})
+        else:
+            return HttpResponseRedirect('../')
     else:
         return HttpResponseRedirect('../')
 
@@ -236,11 +238,65 @@ def joinGamePost(request):
             users = gameServices.getProperty(gameId, "Users")
             if len(users.keys()) < 4:
                 gameServices.addUserToGame(gameId, userId)
-                userServices.addGameToUser(userId, gameId)
+                gameName = gameServices.getProperty(gameId, "Name")
+                userServices.addGameToUser(userId, gameId, gameName)
                 return redirect("gameView", gameId=gameId)
             else:
                 messages.error(request, "La partida ha superado el nº máximo de participantes")
                 return HttpResponseRedirect('../')
+        else:
+            return HttpResponseRedirect('../')
+    else:
+        return HttpResponseRedirect('../')
+
+
+def joinGameModal(request):
+    if "user" in request.session:
+        userId = request.session["user"]["localId"]
+        if request.method == "POST":
+            data = json.loads(request.body)
+            gameCode = data["gameCode"]
+            joinGameId = gameServices.getGameIdFromCode(gameCode)
+            isNewUser = False
+            gameExist = False
+            if joinGameId is not None:
+                users = gameServices.getProperty(joinGameId, "Users")
+                gameExist = True
+                if userId not in users.keys():
+                    isNewUser = True
+                else:
+                    isNewUser = False
+            dataResponse = {"gameCode": gameCode, "isNewUser": isNewUser, "gameExist": gameExist, "gameId": joinGameId}
+            return HttpResponse(json.dumps(dataResponse), content_type="application/json; charset=utf-8")
+        else:
+            HttpResponseRedirect('../')
+    else:
+        return HttpResponseRedirect('../')
+
+
+def joinCharacterModal(request):
+    if "user" in request.session:
+        userId = request.session["user"]["localId"]
+        if request.method == "POST":
+            data = json.loads(request.body)
+            print(data)
+            characterName = data["characterName"]
+            characterMove = data["characterMove"]
+            print(characterName)
+            print(characterMove)
+            gameId = data["gameId"]
+            users = gameServices.getProperty(gameId, "Users")
+            if len(users.keys()) < 4:
+                gameServices.addUserToGame(gameId, userId)
+                gameName = gameServices.getProperty(gameId, "Name")
+                gameServices.addCharacterUserToGame(gameId, userId, characterName, characterMove)
+                userServices.addGameToUser(userId, gameId, gameName)
+                isMaximumUsersReached = False
+            else:
+                isMaximumUsersReached = True
+
+            dataResponse = {"gameId": gameId, "isMaximumUsersReached": isMaximumUsersReached}
+            return HttpResponse(json.dumps(dataResponse), content_type="application/json; charset=utf-8")
         else:
             return HttpResponseRedirect('../')
     else:
