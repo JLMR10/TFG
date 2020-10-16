@@ -23,6 +23,10 @@ def addInitialVersion(versionId, mapId):
     mapRepository.addInitialVersion(versionId, mapId)
 
 
+def addVersion(versionId, mapId):
+    mapRepository.addVersion(versionId, mapId)
+
+
 def getMapsForModal(userMapsDict):
     mapsModal = dict(userMapsDict)
     mapDefaultId, mapDefaultValues = mapRepository.getDefault()

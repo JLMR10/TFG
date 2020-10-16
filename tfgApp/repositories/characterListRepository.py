@@ -32,13 +32,18 @@ def get(id):
 
 
 def getPropierty(id, propierty):
-    valueFromPropierty = database.child(ref + "/" + id).get().val().get(propierty)
+    valueFromPropierty = database.child(ref + "/" + id).get().val()
+    if valueFromPropierty:
+        valueFromPropierty = database.child(ref + "/" + id).get().val().get(propierty)
+    else:
+        valueFromPropierty = {}
     if propierty == "Position":
         valueFromPropiertyFormatted = {}
-        for position, character in valueFromPropierty.items():
+        for position, tile in valueFromPropierty.items():
             position = position.replace("_", "")
-            valueFromPropiertyFormatted[position] = character
-    return valueFromPropiertyFormatted
+            valueFromPropiertyFormatted[position] = tile
+        valueFromPropierty = valueFromPropiertyFormatted
+    return valueFromPropierty
 
 
 def update(json):

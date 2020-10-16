@@ -47,6 +47,20 @@ def mergeTileList(tileListsIds):
     return mergedTileList
 
 
+def newTileList(sourceList, modifiedList):
+    newList = {}
+    index = 0
+    for tile in modifiedList:
+        if(str(index) not in sourceList.keys()):
+            newList[str(index)] = tile
+        elif(sourceList[str(index)] != tile):
+            newList[str(index)] = tile
+        index += 1
+    jsonList = tileListToJson(TileList(newList))
+    _,listId = create(jsonList)
+    return listId
+
+
 def testCreate():
     tileList1 = TileList("testTileListName2", [("1-1", "ForestTree"), ("2-1", "ForestTree"), ("2-3", "ForestTree")])
     tileList1Json = tileListToJson(tileList1)

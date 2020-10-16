@@ -73,6 +73,17 @@ def addInitialVersion(versionId, mapId):
     database.child(reference).update(versionsJson)
 
 
+def addVersion(versionId, mapId):
+    versionsJson = {versionId: "true"}
+    reference = ref + "/" + mapId + "/Versions/"
+    mapVersions = database.child(reference).get().val()
+    if mapVersions:
+        database.child(reference).update(versionsJson)
+    else:
+        versionsJson = {"Versions": versionsJson}
+        database.child(reference).update(versionsJson)
+
+
 """mapJson = {mapId: "true"}
     reference = ref + "/" + userId + "/Maps/"
     userMaps = database.child(reference).get().val()

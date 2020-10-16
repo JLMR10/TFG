@@ -42,8 +42,27 @@ def getLastVersion(mapId):
     return lastVersion
 
 
+def getVersionsUpToOrder(mapId, order):
+    selectedVersions = []
+    versionsIdSource = mapServices.getVersions(mapId)
+    versionsSource = [versionRepository.get(id) for id in versionsIdSource]
+    for version in versionsSource:
+        if version["Order"] <= order:
+            selectedVersions.append(version)
+    return selectedVersions
+
+
+def createVersionFromMap(name, mapId, order, tileList, chipList, characterList):
+    oldMap = getListsFromVersion(mapId, order)
+    tileListId = tileListServices.newTileList(oldMap[0], tileList)
+    chipListId = chipListServices.newChipList(oldMap[1], chipList)
+    characterListId = characterListServices.newCharacterList(oldMap[2], characterList)
+    _,versionId = createVersion(name, mapId, order + 1, tileListId, chipListId, characterListId)
+    return versionId
+
+
 def createVersion(name, mapId, order, tileList, chipList, characterList):
-    versionDB = Version(name, mapId, order, tileList, chipList, characterList)
+    versionDB = Version(name + "_" + str(order), mapId, order, tileList, chipList, characterList)
     versionJson = versionToJson(versionDB)
     message, versionId = versionRepository.create(versionJson)
     return message, versionId
@@ -57,6 +76,7 @@ def createFirstVersionForNewMap(sourceMapId, mapName, mapId):
     mergedCharacterListId = mergeVersionsCharacterLists(versionsSource)
     _, versionId = createVersion(mapName + "_0", mapId, 0, mergedTileListId, mergedChipListId, mergedCharacterListId)
     mapServices.addInitialVersion(versionId, mapId)
+
 
 def getListsFromVersion(mapId, maxOrder):
     versionsId = mapServices.getVersions(mapId)

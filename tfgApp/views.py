@@ -124,7 +124,22 @@ def editMap(request):
             versionServices.createFirstVersionForNewMap(sourceMapId, mapName, mapId)
             if message == "The map has been created successfully":
                 userServices.addMap(userId, mapId)
-                return render(request, "editMap.html", {"map": mapName})
+                maxVersion = versionServices.getLastVersion(mapId)
+                maxOrder = maxVersion["Order"]
+                mapItemList = versionServices.getListsFromVersion(map, maxOrder)
+                mapName = mapServices.getProperty(map, "Name")
+                response = {
+                    'order': maxOrder,
+                    'mapId': mapId,
+                    'map': mapName,
+                    'mapTiles': mapItemList[0],
+                    'mapChips': mapItemList[1],
+                    'mapCharacters': mapItemList[2],
+                    'menuTiles': tileServices.getAllTiles(),
+                    'menuChips': chipServices.getAllChips(),
+                    'menuCharacters': characterServices.getAllCharacters()
+                }
+                return render(request, "editMap.html", response)
             else:
                 messages.error(request, message)
                 return HttpResponseRedirect('../')
@@ -137,13 +152,15 @@ def editMap(request):
                 mapItemList = versionServices.getListsFromVersion(map, maxOrder)
                 mapName = mapServices.getProperty(map, "Name")
                 response = {
-                    "map": mapName,
-                    "mapTiles": mapItemList[0],
-                    "mapChips": mapItemList[1],
-                    "mapCharacters": mapItemList[2],
-                    "menuTiles": tileServices.getAllTiles(),
-                    "menuChips": chipServices.getAllChips(),
-                    "menuCharacters": characterServices.getAllCharacters()
+                    'order': maxOrder,
+                    'mapId': map,
+                    'map': mapName,
+                    'mapTiles': mapItemList[0],
+                    'mapChips': mapItemList[1],
+                    'mapCharacters': mapItemList[2],
+                    'menuTiles': tileServices.getAllTiles(),
+                    'menuChips': chipServices.getAllChips(),
+                    'menuCharacters': characterServices.getAllCharacters()
                 }
                 return render(request, "editMap.html", response)
             else:
@@ -154,15 +171,17 @@ def editMap(request):
 
 ##@csrf_exempt
 def saveMap(request):
-    userId = request.session["user"]["localId"]
     data = json.loads(request.body)
+    mapId = data["mapId"]
+    name = data["mapName"]
+    order = data["order"]
     tiles = data["tiles"]
     chips = data["chips"]
     characters = data["characters"]
 
     ## Revisar como pasart las listas con los Ids
-    ##,version = createVersion(name, mapId, order, tileList, chipList, characterList)
-    ##addMapVersion(Map)
+    version = versionServices.createVersionFromMap(name, mapId, order, tiles, chips, characters)
+    mapServices.addVersion(version, mapId)
     response = HttpResponse(status=201)
     return response
 
