@@ -1,25 +1,22 @@
 {% extends 'header.html' %}
 {% block titulo %} <title>My Maps</title> {% endblock %}
+{% block scriptJS %}
+    {% load static %}
+    <script src='{% static "js/canvasBase.js" %}'></script>
+    <script src='{% static "js/canvasChip.js" %}'></script>
+    <script src='{% static "js/canvasCharacter.js" %}'></script>
+    <script src='{% static "js/utilityMap.js" %}'></script>
+    <link rel='stylesheet' href='{% static "/css/canvasStyle.css" %}'>
+{% endblock %}
 {% block breadcrumbschild %}
     <li class="breadcrumb-item active"><a href={% url 'mainMenu' %}>Main Menu</a> </li>
     <li class="breadcrumb-item"><a href='{% url 'myMaps' %}'>My Maps</a> </li>
     <li class="breadcrumb-item active" aria-current="page">{{ map }}</li>
 {% endblock %}
 {% block content %}
-    {% load static %}
     {% csrf_token %}
-    <script src='{% static "js/canvasBase.js" %}'></script>
-    <script src='{% static "js/canvasChip.js" %}'></script>
-    <script src='{% static "js/canvasCharacter.js" %}'></script>
-    <script src='{% static "js/utilityMap.js" %}'></script>
-    <link rel='stylesheet' href='{% static "/css/canvasStyle.css" %}'>
-
-    <body>
     <div style="display: flex;justify-content: space-around">
         <div class="map-menu">
-             <div class="menu-title">
-                 menu
-            </div>
             <div id="Tiles" class="img-container">
             </div>
             <div id="Chips" class="img-container">
@@ -51,8 +48,6 @@
             </div>
         </div>
     </div>
-
-    </body>
 
     <script>
         var pythonTiles = JSON.parse("{{ mapTiles }}".replaceAll('&#x27;','"').replaceAll('--','-'));
