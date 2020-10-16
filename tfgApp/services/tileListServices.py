@@ -30,7 +30,7 @@ def mergeAndCreateTileList(tileListsIds):
     mergedTileList = {}
     for tileList in tileLists:
         for position, tile in tileList.items():
-            ##position = position.replace("_", "")
+            position = position.split("_")[0]
             mergedTileList[position] = tile
     mergedTileListObj = TileList(mergedTileList)
     mergedTileListJson = tileListToJson(mergedTileListObj)

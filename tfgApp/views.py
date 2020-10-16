@@ -130,8 +130,8 @@ def editMap(request):
                 userServices.addMap(userId, mapId)
                 maxVersion = versionServices.getLastVersion(mapId)
                 maxOrder = maxVersion["Order"]
-                mapItemList = versionServices.getListsFromVersion(map, maxOrder)
-                mapName = mapServices.getProperty(map, "Name")
+                mapItemList = versionServices.getListsFromVersion(mapId, maxOrder)
+                mapName = mapServices.getProperty(mapId, "Name")
                 response = {
                     'order': maxOrder,
                     'mapId': mapId,
