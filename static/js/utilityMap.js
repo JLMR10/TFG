@@ -7,10 +7,20 @@ $(function init() {
         let baseTiles = [];
         let baseChips = [];
         let baseCharacters = [];
-        tilesArr.forEach(e => baseTiles[baseTiles.length] = e.img);
-        chipsArr.forEach(e => baseChips[baseChips.length] = e.img);
-        charactersArr.forEach(e => baseCharacters[baseCharacters.length] = e.img);
+        tilesArr.forEach(function (e){
+            baseTiles[baseTiles.length] = e.id
+        });
+        chipsArr.forEach(function (e){
+            baseChips[baseChips.length] = e.id
+        });
+        charactersArr.forEach(function (e){
+            baseCharacters[baseCharacters.length] = e.id
+        });
+        //TODO: Añadir Orden de la versión actual en el js segun selector
         let data = {
+            mapId: mapId,
+            mapName, mapName,
+            order: maxOrder,
             tiles: baseTiles,
             chips: baseChips,
             characters: baseCharacters,
@@ -66,4 +76,20 @@ function getCookie(name) {
         }
     }
     return cookieValue;
+}
+
+function renderMenu(menuTiles, menuChips, menuCharacter) {
+    createMenuImg("Tiles", "menu-img", menuTiles);
+    createMenuImg("Chips", "menu-chip", menuChips);
+    createMenuImg("Characters", "menu-character", menuCharacter);
+}
+
+function createMenuImg(id, css, array) {
+    for(let index in array) {
+        let elem = document.createElement("img");
+        elem.src = "/static/Media/" + array[index][1];
+        elem.id = array[index][0];
+        elem.classList.add(css);
+        document.getElementById(id).appendChild(elem);
+    }
 }

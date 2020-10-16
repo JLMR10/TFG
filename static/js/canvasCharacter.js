@@ -79,7 +79,7 @@ $(function init() {
     });
 
     $('img.menu-character').click(function() {
-        if(selectedCharacter == this.src) {
+        if(selectedCharacter == this.getAttribute('src')) {
             if($('img.menu-character-selected')[0] != undefined) {
                 $('img.menu-character-selected')[0].classList.remove("menu-character-selected");
             }
@@ -95,7 +95,7 @@ $(function init() {
                 $('img.menu-character-selected')[0].classList.remove("menu-character-selected");
             }
             this.classList.add("menu-character-selected");
-            selectedCharacter = this.src;
+            selectedCharacter = this.getAttribute('src');
             selectedImg = undefined;
             selectedChip = undefined;
             draggedCharacter = undefined;
@@ -135,7 +135,7 @@ function moveCharacters(x, y) {
     });
 }
 
-function Character(x, y, h, w, img, color = 'black', maxMove = undefined) {
+function Character(x, y, h, w, img, color = 'black', maxMove = undefined, id = undefined) {
     this.x = x;
     this.y = y;
     this.h = h;
@@ -143,6 +143,7 @@ function Character(x, y, h, w, img, color = 'black', maxMove = undefined) {
     this.img = img;
     this.color = color;
     this.maxMove = maxMove;
+    this.id = id;
     this.draw = function () {
         if(draggedCharacter != undefined &&
             this.x >= draggedCharacter.x - draggedCharacter.maxMove * draggedCharacter.w && this.x <= draggedCharacter.x + draggedCharacter.maxMove *draggedCharacter.w &&
@@ -165,9 +166,11 @@ function Character(x, y, h, w, img, color = 'black', maxMove = undefined) {
             if(selectedCharacter.includes('trash')){
                 this.img = undefined;
                 this.maxMove = undefined;
+                this.id = undefined;
             }else{
                 this.img = selectedCharacter;
                 this.maxMove = 3;
+                this.id = $("img[src$='" + selectedCharacter + "']")[0].id;
             }
             characterMouse.x = undefined;
             characterMouse.y = undefined;
@@ -177,11 +180,14 @@ function Character(x, y, h, w, img, color = 'black', maxMove = undefined) {
             }else if(this.color == 'gold'){
                 var auxImg = draggedCharacter.img;
                 var auxMaxMove = draggedCharacter.maxMove;
+                var auxId = draggedCharacter.id;
                 var auxIndex = charactersArr.indexOf(draggedCharacter);
                 charactersArr[auxIndex].img = undefined;
                 charactersArr[auxIndex].maxMove = undefined;
+                charactersArr[auxIndex].id = undefined;
                 this.img = auxImg;
                 this.maxMove = auxMaxMove;
+                this.id = auxId;
                 draggedCharacter = undefined;
             }else{
                 draggedCharacter = undefined;
@@ -202,11 +208,17 @@ function initCharacters() {
     var w = cubeSize;
     var h = cubeSize;
     var img = undefined;
+    let responseKeys = Object.keys(pythonCharacters);
 
 
     for(var i=0; i<maxSizeCharacter; i++){
         for(var j = 0; j < maxSizeCharacter; j++){
-            charactersArr.push(new Character(x, y, h, w, img));
+            let index = i * maxSizeMap + j;
+            if(responseKeys.includes(index.toString())) {
+                charactersArr.push(new Character(x, y, h, w, $("#" + pythonCharacters[index]).attr('src'), 'black',3, pythonCharacters[index] ));
+            }else{
+                charactersArr.push(new Character(x, y, h, w, img));
+            }
             x += cubeSize;
         }
         x = (-1 * maxSizeCharacter/2 + rowTiles/2) * cubeSize;

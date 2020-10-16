@@ -47,6 +47,20 @@ def mergeChipList(chipListsIds):
     return mergedChipList
 
 
+def newChipList(sourceList, modifiedList):
+    newList = {}
+    index = 0
+    for tile in modifiedList:
+        if(str(index) not in sourceList.keys()):
+            newList[str(index)] = tile
+        elif(sourceList[str(index)] != tile):
+            newList[str(index)] = tile
+        index += 1
+    jsonList = chipListToJson(ChipList(newList))
+    _,listId = create(jsonList)
+    return listId
+
+
 def testCreate():
     chipList1 = ChipList("autoTestChipList", [("1-1", "NPC"), ("1-2", "NPC"), ("2-1", "NPC")])
     chipList1Json = chipListToJson(chipList1)
