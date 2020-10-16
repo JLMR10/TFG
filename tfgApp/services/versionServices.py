@@ -1,3 +1,5 @@
+import sys
+
 from tfgApp.models import Version
 from tfgApp.repositories import versionRepository
 from tfgApp.services import mapServices, tileListServices, chipListServices, characterListServices
@@ -52,6 +54,18 @@ def getVersionsUpToOrder(mapId, order):
     return selectedVersions
 
 
+def getOrdersUpTo(mapId, order):
+    versionOrders = []
+    versionsIdSource = mapServices.getVersions(mapId)
+    versionsSource = [versionRepository.get(id) for id in versionsIdSource]
+    for version in versionsSource:
+        if version["Order"] <= order:
+            versionOrders.append(version["Order"])
+    versionOrders.sort()
+    return versionOrders
+
+
+
 def createVersionFromMap(name, mapId, order, tileList, chipList, characterList):
     oldMap = getListsFromVersion(mapId, order)
     tileListId = tileListServices.newTileList(oldMap[0], tileList)
@@ -68,9 +82,8 @@ def createVersion(name, mapId, order, tileList, chipList, characterList):
     return message, versionId
 
 
-def createFirstVersionForNewMap(sourceMapId, mapName, mapId):
-    versionsIdSource = mapServices.getVersions(sourceMapId)
-    versionsSource = [versionRepository.get(id) for id in versionsIdSource]
+def createFirstVersionForNewMap(sourceMapId, mapName, mapId, order=sys.maxsize):
+    versionsSource = getVersionsUpToOrder(sourceMapId, order)
     mergedTileListId = mergeVersionsTileLists(versionsSource)
     mergedChipListId = mergeVersionsChipLists(versionsSource)
     mergedCharacterListId = mergeVersionsCharacterLists(versionsSource)

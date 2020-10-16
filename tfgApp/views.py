@@ -132,10 +132,12 @@ def editMap(request):
                 userServices.addMap(userId, mapId)
                 maxVersion = versionServices.getLastVersion(mapId)
                 maxOrder = maxVersion["Order"]
+                versionOrders = versionServices.getOrdersUpTo(mapId, maxOrder)
                 mapItemList = versionServices.getListsFromVersion(mapId, maxOrder)
                 mapName = mapServices.getProperty(mapId, "Name")
                 response = {
-                    'order': maxOrder,
+                    'versionOrders': versionOrders,
+                    'maxOrder': maxOrder,
                     'mapId': mapId,
                     'map': mapName,
                     'mapTiles': mapItemList[0],
@@ -155,10 +157,12 @@ def editMap(request):
             if map in userMaps:
                 maxVersion = versionServices.getLastVersion(map)
                 maxOrder = maxVersion["Order"]
+                versionOrders = versionServices.getOrdersUpTo(map, maxOrder)
                 mapItemList = versionServices.getListsFromVersion(map, maxOrder)
                 mapName = mapServices.getProperty(map, "Name")
                 response = {
-                    'order': maxOrder,
+                    'versionOrders': versionOrders,
+                    'maxOrder': maxOrder,
                     'mapId': map,
                     'map': mapName,
                     'mapTiles': mapItemList[0],
@@ -177,19 +181,47 @@ def editMap(request):
 
 ##@csrf_exempt
 def saveMap(request):
+    userId = request.session["user"]["localId"]
     data = json.loads(request.body)
     mapId = data["mapId"]
     name = data["mapName"]
     order = data["order"]
     tiles = data["tiles"]
     chips = data["chips"]
+    isPrevious = data["isPrevious"]
     characters = data["characters"]
 
-    ## Revisar como pasart las listas con los Ids
-    version = versionServices.createVersionFromMap(name, mapId, order, tiles, chips, characters)
-    mapServices.addVersion(version, mapId)
-    response = HttpResponse(status=201)
-    return response
+    if(isPrevious):
+        message, newMapId = mapServices.createMap(name, userId, [])
+        versionServices.createFirstVersionForNewMap(mapId, name, newMapId, order)
+        if message == "The map has been created successfully":
+            userServices.addMap(userId, newMapId)
+            maxVersion = versionServices.getLastVersion(newMapId)
+            maxOrder = maxVersion["Order"]
+            versionOrders = versionServices.getOrdersUpTo(maxOrder)
+            mapItemList = versionServices.getListsFromVersion(newMapId, maxOrder)
+            mapName = mapServices.getProperty(newMapId, "Name")
+            response = {
+                'versionOrders': versionOrders,
+                'maxOrder': maxOrder,
+                'mapId': newMapId,
+                'map': mapName,
+                'mapTiles': mapItemList[0],
+                'mapChips': mapItemList[1],
+                'mapCharacters': mapItemList[2],
+                'menuTiles': tileServices.getAllTiles(),
+                'menuChips': chipServices.getAllChips(),
+                'menuCharacters': characterServices.getAllCharacters()
+            }
+            return render(request, "editMap.html", response)
+        else:
+            messages.error(request, message)
+            return HttpResponseRedirect('../')
+    else:
+        version = versionServices.createVersionFromMap(name, mapId, order, tiles, chips, characters)
+        mapServices.addVersion(version, mapId)
+        response = HttpResponse(status=201)
+        return response
 
 
 def createGame(request):

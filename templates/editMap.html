@@ -33,6 +33,7 @@
         <canvas id="characterMap" style="position: absolute;z-index:100"></canvas>
 
         <div class="map-menu">
+            <select id="versionOrders"></select>
             <img class="save-map" src="/static/Media/save.png">
             <div class="img-container">
                 <div class="vertical-move">
@@ -60,10 +61,12 @@
         let menuTiles = JSON.parse("{{ menuTiles }}".replaceAll('&#x27;','"').replaceAll('--','-'));
         let menuChips = JSON.parse("{{ menuChips }}".replaceAll('&#x27;','"').replaceAll('--','-'));
         let menuCharacters = JSON.parse("{{ menuCharacters }}".replaceAll('&#x27;','"').replaceAll('--','-'));
-        renderMenu(menuTiles, menuChips, menuCharacters);
         const mapName = "{{ map }}";
         const mapId = "{{ mapId }}";
-        var maxOrder = {{ order }};
+        const maxOrder = {{ maxOrder }};
+        var versionOrders = {{ versionOrders }};
+        renderMenu(menuTiles, menuChips, menuCharacters);
+        fillVersionOrder(versionOrders);
         const csrftoken = $("input[name='csrfmiddlewaretoken']")[0].value ;
     </script>
 

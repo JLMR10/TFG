@@ -17,10 +17,13 @@ $(function init() {
             baseCharacters[baseCharacters.length] = e.id
         });
         //TODO: Añadir Orden de la versión actual en el js segun selector
+        let selector = document.getElementById("ddlViewBy");
+        let actualOrder = selector.options[selector.selectedIndex].text.split('_')[0];
         let data = {
             mapId: mapId,
-            mapName, mapName,
-            order: maxOrder,
+            mapName: mapName,
+            order: selector.options[selector.selectedIndex].text.split('_')[0],
+            isPrevious: parseInt(actualOrder) < maxOrder,
             tiles: baseTiles,
             chips: baseChips,
             characters: baseCharacters,
@@ -92,4 +95,21 @@ function createMenuImg(id, css, array) {
         elem.classList.add(css);
         document.getElementById(id).appendChild(elem);
     }
+}
+
+function fillVersionOrder(versionOrders) {
+    var sel = document.getElementById('versionOrders');
+    var fragment = document.createDocumentFragment();
+
+    versionOrders.forEach(function(versionOrder, index) {
+        var opt = document.createElement('option');
+        opt.innerHTML = 'Version_' + versionOrder;
+        opt.value = versionOrder;
+        if(index == (versionOrders.length - 1)){
+            opt.selected = true;
+        }
+        fragment.appendChild(opt);
+
+    });
+    sel.appendChild(fragment);
 }
