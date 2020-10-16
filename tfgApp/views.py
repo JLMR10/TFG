@@ -36,12 +36,12 @@ def signIn(request):
         if request.method == 'POST':
             email = request.POST.get("email")
             password = request.POST.get("password")
-
             try:
                 user = authFirebase.sign_in_with_email_and_password(email, password)
             except HTTPError as e:
                 error_json = e.args[1]
-                message = json.loads(error_json)["error"]["message"]
+                errorMessage = json.loads(error_json)["error"]["message"]
+                message = getErrorMessage(errorMessage)
                 messages.error(request, message)
                 return render(request, "signIn.html")
 
@@ -72,8 +72,10 @@ def signUp(request):
                     user = authFirebase.create_user_with_email_and_password(email, password)
                 except HTTPError as e:
                     error_json = e.args[1]
-                    message = json.loads(error_json)["error"]["message"]
+                    errorMessage = json.loads(error_json)["error"]["message"]
+                    message = getErrorMessage(errorMessage)
                     messages.error(request, message)
+
                     return render(request, "signUp.html")
 
                 id = user['localId']
@@ -298,6 +300,18 @@ def gameView(request, gameId):
             return HttpResponseRedirect('../')
     else:
         return HttpResponseRedirect('../')
+
+
+def getErrorMessage(message):
+    errorMap = {
+        "EMAIL_NOT_FOUND": "The credentials aren't correct",
+        "INVALID_PASSWORD": "The credentials aren't correct",
+        "EMAIL_EXISTS": "An account with this email already exists"
+    }
+    mappedMessage = message
+    if message in errorMap.keys():
+        mappedMessage = errorMap[message]
+    return mappedMessage
 
 
 def demoChat(request, gameId):
