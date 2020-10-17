@@ -10849,6 +10849,10 @@ a:focus {
     border-left: 0.25rem solid #4e73df !important;
 }
 
+.border-top-primary {
+    border-top: 0.25rem solid #4e73df !important;
+}
+
 .border-bottom-primary {
     border-bottom: 0.25rem solid #4e73df !important;
 }
@@ -12260,6 +12264,7 @@ ul::-webkit-scrollbar-thumb {
     background-color: #8c8ea2;
 }
 
+
 .number-input input[type="number"] {
     -webkit-appearance: textfield;
     -moz-appearance: textfield;
@@ -12353,4 +12358,34 @@ ul::-webkit-scrollbar-thumb {
     margin-bottom: 0.5rem;
     font-weight: 400;
     line-height: 2.2;
+}
+
+.card-menu {
+    height: 45.2em !important;
+    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.card-menu::-webkit-scrollbar {
+    width: 9px;
+    background-color: #F5F5F5;
+}
+
+.card-menu::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+.card-menu::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px #bcbed2;
+    background-color: #8c8ea2;
+}
+
+.card-menu > hr {
+    width: 80%;
+    align-self: center;
+    border-top: 2px solid rgba(0, 0, 0, 0.1);
 }

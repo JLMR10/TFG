@@ -16,6 +16,19 @@ body {
     flex-direction: column;
 }
 
+.map-save {
+    width: 20%;
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    flex-direction: row;
+}
+
+.arrow-div{
+    margin-top: 40%;
+}
+
+
 .menu-title{
     display: flex;
 }
@@ -116,4 +129,52 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: center;
+}
+
+.menu-save{
+    display: flex;
+    width: 57%;
+    margin-left: 10%;
+}
+
+.save-map{
+    display: flex;
+    font-size: 1.3rem;
+    width: 8.9em;
+    height: 2.26em;
+    margin-top: 0.068em;
+}
+
+.save-map > i{
+    margin-right: 0.7em;
+}
+
+
+.menu-save > span {
+    display: flex;
+}
+
+.menu-select {
+    display: flex;
+    width: 40%;
+}
+
+.map-menu .select2-container .select2-selection--single {
+    width: 8.9em;
+    height: 3em;
+}
+
+.menu-select > span {
+    width: unset !important;
+}
+
+.menu-select .select2-container--default .select2-selection--single {
+    border-radius: 0.2rem;
+    box-shadow: 0 0.125rem 0.25rem 0 rgba(58, 59, 69, 0.2);
+}
+
+.select-save{
+    display: flex;
+    flex-direction: row;
+    margin-left: 0.4em;
 }

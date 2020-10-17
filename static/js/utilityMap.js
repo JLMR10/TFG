@@ -31,7 +31,9 @@ $(function init() {
         saveMap(data);
     });
 
-
+    $(document).ready(function() {
+        $('.selectVersion').select2();
+    });
 });
 
 function saveMap(data) {
