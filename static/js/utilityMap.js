@@ -17,24 +17,24 @@ $(function init() {
             baseCharacters[baseCharacters.length] = e.id
         });
         //TODO: Añadir Orden de la versión actual en el js segun selector
-        let selector = document.getElementById("ddlViewBy");
-        let actualOrder = selector.options[selector.selectedIndex].text.split('_')[0];
+        let selector = document.getElementById("versionOrders");
+        let actualOrder = parseInt(selector.options[selector.selectedIndex].text.split('_')[1]);
         let data = {
             mapId: mapId,
             mapName: mapName,
-            order: selector.options[selector.selectedIndex].text.split('_')[0],
-            isPrevious: parseInt(actualOrder) < maxOrder,
+            order: actualOrder,
+            isPrevious: actualOrder < maxOrder,
             tiles: baseTiles,
             chips: baseChips,
             characters: baseCharacters,
         }
-        edit(data);
+        saveMap(data);
     });
 
 
 });
 
-function joinGameModal(data) {
+function saveMap(data) {
 
     function csrfSafeMethod(method) {
         // these HTTP methods do not require CSRF protection
