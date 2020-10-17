@@ -15,12 +15,14 @@
 {% endblock %}
 {% block content %}
     {% csrf_token %}
-    <div style="display: flex;justify-content: space-around">
-        <div class="map-menu">
+    <div style="display: flex;justify-content: space-around;">
+        <div class="map-menu card card-menu border-top-primary shadow h-100 py-2">
             <div id="Tiles" class="img-container">
             </div>
+            <hr class="hr-menu">
             <div id="Chips" class="img-container">
             </div>
+            <hr class="hr-menu">
             <div id="Characters" class="img-container">
             </div>
         </div>
@@ -29,10 +31,18 @@
         <canvas id="chipMap" style="position: absolute;z-index:50"></canvas>
         <canvas id="characterMap" style="position: absolute;z-index:100"></canvas>
 
+
         <div class="map-menu">
-            <select id="versionOrders"></select>
-            <img class="save-map" src="/static/Media/save.png">
-            <div class="img-container">
+            <div class="select-save">
+                <div class="menu-select">
+                    <select class="selectVersion" id="versionOrders"></select>
+                </div>
+                <div class="menu-save">
+                    <a href="#" class="save-map d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
+                            class="fas fa-download fa-sm text-white-50"></i> Save Changes</a>
+                </div>
+            </div>
+            <div class="img-container arrow-div">
                 <div class="vertical-move">
                     <img class="move-up" src="/static/Media/arrow.png">
                 </div>
@@ -46,6 +56,7 @@
                     <img class="move-down" src="/static/Media/arrow.png">
                 </div>
             </div>
+
         </div>
     </div>
 

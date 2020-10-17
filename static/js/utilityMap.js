@@ -31,7 +31,9 @@ $(function init() {
         edit(data);
     });
 
-
+    $(document).ready(function() {
+        $('.selectVersion').select2();
+    });
 });
 
 function joinGameModal(data) {
