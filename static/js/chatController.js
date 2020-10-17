@@ -4,6 +4,7 @@ var formData = $("#formChat");
 var msgInput = $("#id_message");
 var chatHolder = $("#chat-messages");
 var me = $("#myUsernameId").val();
+var meName = $("#myUsername").val();
 
 var wsStart = "ws://";
 if (loc.protocol == "https:"){
@@ -21,7 +22,12 @@ socket.onmessage = function(e){
             updateTilesArrAsyc(jsonData.canvasArray);
         }
     }else {
-        chatHolder.append("<li><b>"+ jsonData.username +"</b>: " + jsonData.message + "</li>");
+        if(jsonData.senderID != me){
+            chatHolder.append("<div class='message py2'><span class='otherMessages card border-left-secondary'><b>"+ jsonData.username +":</b> " + jsonData.message + "</span></div>");
+        }else{
+             chatHolder.append("<div class='message py2'><span class='myMessages card border-right-primary'>" + jsonData.message + "</span></div>");
+        }
+
     }
 };
 socket.onopen = function(e){
@@ -45,3 +51,7 @@ socket.onerror = function(e){
 socket.onclose = function(e){
     //console.log("close", e)
 };
+
+$("#send-message").click(function () {
+    formData.submit();
+});

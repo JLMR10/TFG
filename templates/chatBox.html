@@ -1,0 +1,22 @@
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Game chat</h6>
+    </div>
+    <div class="card-body">
+        <div class="chat-box">
+            <div class="chat-messages" id="chat-messages">
+            </div>
+            <div class="send-message-form">
+                <form id="formChat" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" id="myUsername" value="{{ request.session.user.email }}"/>
+                    <input type="hidden" id="myUsernameId" value="{{ request.session.user.localId }}"/>
+                    <input type="text" id="id_message" name="newMessage" class="form-control"/>
+                </form>
+                <a href="#" id="send-message"
+                   class="save-map d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                        class="fas fa-paper-plane fa-sm text-white-50"></i></a>
+            </div>
+        </div>
+    </div>
+</div>

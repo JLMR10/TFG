@@ -10853,6 +10853,10 @@ a:focus {
     border-top: 0.25rem solid #4e73df !important;
 }
 
+.border-right-primary {
+    border-right: 0.25rem solid #4e73df !important;
+}
+
 .border-bottom-primary {
     border-bottom: 0.25rem solid #4e73df !important;
 }
@@ -10861,12 +10865,20 @@ a:focus {
     border-left: 0.25rem solid #858796 !important;
 }
 
+.border-right-secondary {
+    border-right: 0.25rem solid #858796 !important;
+}
+
 .border-bottom-secondary {
     border-bottom: 0.25rem solid #858796 !important;
 }
 
 .border-left-success {
     border-left: 0.25rem solid #1cc88a !important;
+}
+
+.border-right-success {
+    border-right: 0.25rem solid #1cc88a !important;
 }
 
 .border-bottom-success {

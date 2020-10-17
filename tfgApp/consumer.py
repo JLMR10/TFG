@@ -48,7 +48,8 @@ class ChatConsumer(AsyncConsumer):
 
                 myResponse = {
                     "message": msg,
-                    "username": users[userId]
+                    "username": users[userId],
+                    "senderID": userId
                 }
 
             #broadcasts the message event to be sent

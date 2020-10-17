@@ -344,7 +344,7 @@ def gameView(request, gameId):
         if userId in users.keys():
             gameCode = gameServices.getProperty(gameId, "Code")
             chatMessages = []
-            if request.method == "POST":
+            if request.method == "POST" and "newMessage" in request.POST.keys():
                 chatMessages.append(request.POST.get("newMessage"))
             return render(request, "game.html", {"chatMessages": chatMessages, "gameCode": gameCode})
         else:

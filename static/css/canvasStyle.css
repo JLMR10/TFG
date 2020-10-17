@@ -26,6 +26,7 @@ body {
 
 .arrow-div{
     margin-top: 40%;
+    margin-left: -9%;
 }
 
 
@@ -146,7 +147,7 @@ body {
 }
 
 .save-map > i{
-    margin-right: 0.7em;
+    margin-right: 0.4em;
 }
 
 
