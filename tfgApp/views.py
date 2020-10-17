@@ -343,10 +343,18 @@ def gameView(request, gameId):
         userId = request.session["user"]["localId"]
         if userId in users.keys():
             gameCode = gameServices.getProperty(gameId, "Code")
+            gameName = gameServices.getProperty(gameId, "Name")
             chatMessages = []
             if request.method == "POST" and "newMessage" in request.POST.keys():
                 chatMessages.append(request.POST.get("newMessage"))
-            return render(request, "game.html", {"chatMessages": chatMessages, "gameCode": gameCode})
+
+            isMaster = gameServices.isUserMaster(gameId, userId)
+            if isMaster:
+                return render(request, "game.html",
+                              {"chatMessages": chatMessages, "gameCode": gameCode, "gameName": gameName})
+            else:
+                return render(request, "gameUser.html",
+                              {"chatMessages": chatMessages, "gameCode": gameCode, "gameName": gameName})
         else:
             return HttpResponseRedirect('../')
     else:

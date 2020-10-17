@@ -61,8 +61,19 @@ def addCharacterUserToGame(gameId, userId, characterName, characterMove):
     for character in characters:
         indexes.append(character.replace("_", ""))
     maxIndex = max(indexes)
-    index = str(int(maxIndex)+1)
+    index = str(int(maxIndex) + 1)
     gameRepository.addCharacterUserToGame(gameId, userId, characterName, characterMove, index)
+
+
+def isUserMaster(gameId, userId):
+    users = getProperty(gameId, "Users")
+    userMasterBool = False
+    for user, type in users.items():
+        if type == "Master":
+            userMasterBool = user == userId
+            break
+    return userMasterBool
+
 
 def testCreate():
     game1 = Game("autoTestGame", "01", "autoTestMap", "autoTestChipList")

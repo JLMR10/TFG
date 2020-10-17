@@ -1,9 +1,9 @@
 .left-panel {
     width: 20%;
     padding: 0px;
-    margin: 0px;
     display: flex;
     flex-direction: column;
+    margin-top: -2em;
 }
 
 .map-menu{
@@ -61,6 +61,8 @@
 
 .message .myMessages {
     padding: 0.2rem;
+    align-items: flex-end;
+    word-break: break-word;
 }
 
 .message .otherMessages {
@@ -87,4 +89,44 @@
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 6px #bcbed2;
     background-color: #8c8ea2;
+}
+
+.chat-messages {
+    scrollbar-color: #8c8ea2 #F5F5F5;
+    scrollbar-width: thin;
+}
+
+.menu-save {
+    display: flex;
+    width: 57%;
+    margin-left: 50%;
+    margin-top: -4em;
+    margin-bottom: 1em;
+}
+
+.turn-order{
+    height: 14.4em;
+}
+
+.turn{
+    padding-left: 2em;
+    margin-top: 0.6em;
+}
+
+.turn-users{
+    padding-left: 4em;
+    padding-right: 4em;
+}
+
+
+
+
+
+
+
+
+
+
+.arrow-user{
+    margin-top: 11.5em;
 }

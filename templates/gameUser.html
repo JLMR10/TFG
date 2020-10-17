@@ -16,32 +16,7 @@
     <div style="display: flex;justify-content: space-around;margin-top:4%">
         <div class="left-panel">
             <div><h5>Game Name: {{ gameName }}</h5></div>
-            <div class="map-menu card card-menu border-top-primary shadow h-100 py-2">
-                <div id="Tiles" class="img-container">
-                    <img class="menu-img" src="/static/Media/grass.jpg">
-                    <img class="menu-img" src="/static/Media/floor.jpg">
-                    <img class="menu-img" src="/static/Media/rock.jpg">
-                    <img class="menu-img" src="/static/Media/ground.jpg">
-                    <img class="menu-img" src="/static/Media/brick.jpg">
-                    <img class="menu-img" src="/static/Media/metal.jpg">
-                    <img class="menu-img" src="/static/Media/water.jpg">
-                    <img class="menu-img" src="/static/Media/wood.jpg">
-                    <img class="menu-img" src="/static/Media/magma.jpg">
-                    <img class="menu-img" src="/static/Media/door.jpg">
-                    <img class="menu-img" src="/static/Media/trash.png">
-                </div>
-                <hr class="hr-menu">
-                <div id="Chips" class="img-container">
-                    <img class="menu-chip" src="/static/Media/chest.png">
-                    <img class="menu-chip" src="/static/Media/trashBlue.png">
-                </div>
-                <hr class="hr-menu">
-                <div id="Characters" class="img-container">
-                    <img class="menu-character" src="/static/Media/goblin.png">
-                    <img class="menu-character" src="/static/Media/trashGreen.png">
-                </div>
-            </div>
-            <div class="arrow-master">
+            <div class="arrow-master arrow-user">
                 <div class="img-container">
                     <div class="vertical-move">
                         <img class="move-up" src="/static/Media/arrow.png">
@@ -64,20 +39,16 @@
         <canvas id="characterMap" style="position: absolute;z-index:100"></canvas>
 
         <div class="map-menu">
-            <div class="menu-save">
-                <a href="#" class="save-map d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
-                        class="fas fa-download fa-sm text-white-50"></i> Save Changes</a>
-            </div>
             <div class="card shadow mb-4 turn-order">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Turn: userplaceholder</h6>
                 </div>
                 <div class="card-body">
-                    <h7>Select the next player's turn:</h7>
+                    <h7>Users and movement:</h7>
                     <div class="turn-users">
-                        <a class="card border-left-primary turn btn btn-sm btn-normal">User 1: 2 blocks</a>
-                        <a class="card border-left-primary turn btn btn-sm btn-normal">User 2: 3 blocks</a>
-                        <a class="card border-left-primary turn btn btn-sm btn-normal">User 3: 2 blocks</a>
+                        <a class="card border-left-secondary turn ">User 1: 2 blocks</a>
+                        <a class="card border-left-secondary turn ">User 2: 3 blocks</a>
+                        <a class="card border-left-secondary turn ">User 3: 2 blocks</a>
                     </div>
                 </div>
             </div>
