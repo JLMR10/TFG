@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 import pyrebase
@@ -209,49 +209,70 @@ def editMap(request):
 
 
 ##@csrf_exempt
+def changeVersion(request):
+    data = json.loads(request.body)
+    mapId = data["mapId"]
+    order = data["order"]
+    mapItemList = versionServices.getListsFromVersion(mapId, order)
+    response = {
+        'mapTiles': mapItemList[0],
+        'mapChips': mapItemList[1],
+        'mapCharacters': mapItemList[2]
+    }
+    return JsonResponse(response, status=200)
+
+
+##@csrf_exempt
 def saveMap(request):
-    userId = request.session["user"]["localId"]
     data = json.loads(request.body)
     mapId = data["mapId"]
     name = data["mapName"]
     order = data["order"]
     tiles = data["tiles"]
     chips = data["chips"]
-    isPrevious = data["isPrevious"]
     characters = data["characters"]
+    version = versionServices.createVersionFromMap(name, mapId, order, tiles, chips, characters)
+    mapServices.addVersion(version, mapId)
+    response = {
+        'newOrder': order + 1
+    }
+    return JsonResponse(response, status=200)
 
-    if(isPrevious):
-        message, newMapId = mapServices.createMap(name, userId, [])
-        versionServices.createFirstVersionForNewMap(mapId, name, newMapId, order)
-        if message == "The map has been created successfully":
-            userServices.addMap(userId, newMapId)
-            maxVersion = versionServices.getLastVersion(newMapId)
-            maxOrder = maxVersion["Order"]
-            versionOrders = versionServices.getOrdersUpTo(maxOrder)
-            mapItemList = versionServices.getListsFromVersion(newMapId, maxOrder)
-            mapName = mapServices.getProperty(newMapId, "Name")
-            response = {
-                'versionOrders': versionOrders,
-                'maxOrder': maxOrder,
-                'mapId': newMapId,
-                'map': mapName,
-                'mapTiles': mapItemList[0],
-                'mapChips': mapItemList[1],
-                'mapCharacters': mapItemList[2],
-                'menuTiles': tileServices.getAllTiles(),
-                'menuChips': chipServices.getAllChips(),
-                'menuCharacters': characterServices.getAllCharacters()
-            }
-            return render(request, "editMap.html", response)
-        else:
-            messages.error(request, message)
-            return HttpResponseRedirect('../')
+def saveFromVersion(request):
+    userId = request.session["user"]["localId"]
+    mapId = request.POST.get("mapId")
+    name = request.POST.get("mapName")
+    order = int(request.POST.get("order"))
+    tiles = json.loads(request.POST.get("tiles"))
+    chips = json.loads(request.POST.get("chips"))
+    characters = json.loads(request.POST.get("characters"))
+    message, newMapId = mapServices.createMap(name, userId, [])
+    versionServices.createFirstVersionForNewMap(mapId, name, newMapId, order)
+    version = versionServices.createVersionFromMap(name, newMapId, 1, tiles, chips, characters)
+    mapServices.addVersion(version, newMapId)
+    if message == "The map has been created successfully":
+        userServices.addMap(userId, newMapId)
+        maxVersion = versionServices.getLastVersion(newMapId)
+        maxOrder = maxVersion["Order"]
+        versionOrders = versionServices.getOrdersUpTo(newMapId, maxOrder)
+        mapItemList = versionServices.getListsFromVersion(newMapId, maxOrder)
+        mapName = mapServices.getProperty(newMapId, "Name")
+        response = {
+            'versionOrders': versionOrders,
+            'maxOrder': maxOrder,
+            'mapId': newMapId,
+            'map': mapName,
+            'mapTiles': mapItemList[0],
+            'mapChips': mapItemList[1],
+            'mapCharacters': mapItemList[2],
+            'menuTiles': tileServices.getAllTiles(),
+            'menuChips': chipServices.getAllChips(),
+            'menuCharacters': characterServices.getAllCharacters()
+        }
+        return render(request, "editMap.html", response)
     else:
-        version = versionServices.createVersionFromMap(name, mapId, order, tiles, chips, characters)
-        mapServices.addVersion(version, mapId)
-        response = HttpResponse(status=201)
-        return response
-
+        messages.error(request, message)
+        return HttpResponseRedirect('../')
 
 def createGame(request):
     if "user" in request.session:

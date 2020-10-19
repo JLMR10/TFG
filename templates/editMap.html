@@ -7,6 +7,7 @@
     <script src='{% static "js/canvasCharacter.js" %}'></script>
     <script src='{% static "js/utilityMap.js" %}'></script>
     <link rel='stylesheet' href='{% static "/css/canvasStyle.css" %}'>
+    <link rel='stylesheet' href='{% static "/external/loading.css" %}'>
 {% endblock %}
 {% block breadcrumbschild %}
     <li class="breadcrumb-item active"><a href={% url 'mainMenu' %}>Main Menu</a> </li>
@@ -60,7 +61,42 @@
         </div>
     </div>
 
+    <div class="modal" tabindex="-1" role="dialog" id="savePreviousModal" style="display: none">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Insert a name for the new map:</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="savePreviousModalForm" action="/myMaps/editMap/saveFromVersion/" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body" id="modal-body-savePrevious">
+                        <input type="hidden" id="mapId" name="mapId" value="">
+                        <input type="hidden" id="order" name="order" value="">
+                        <input type="hidden" id="tiles" name="tiles" value="">
+                        <input type="hidden" id="chips" name="chips" value="">
+                        <input type="hidden" id="characters" name="characters" value="">
+                        <input type="text" id="mapName" name="mapName" required>
+                        <label alt="Name" placeholder="Map name"></label>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="createBtnSavePrevious" type="submit" class="btn btn-primary" disabled>Enter</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="loader-wrapper">
+      <span class="loader"><span class="loader-inner"></span></span>
+    </div>
     <script>
+        $(window).on("load",function(){
+            $(".loader-wrapper").fadeOut("slow");
+        });
         var pythonTiles = JSON.parse("{{ mapTiles }}".replaceAll('&#x27;','"').replaceAll('--','-'));
         var pythonChips = JSON.parse("{{ mapChips }}".replaceAll('&#x27;','"').replaceAll('--','-'));
         var pythonCharacters = JSON.parse("{{ mapCharacters }}".replaceAll('&#x27;','"').replaceAll('--','-'));
@@ -69,7 +105,7 @@
         let menuCharacters = JSON.parse("{{ menuCharacters }}".replaceAll('&#x27;','"').replaceAll('--','-'));
         const mapName = "{{ map }}";
         const mapId = "{{ mapId }}";
-        const maxOrder = {{ maxOrder }};
+        var maxOrder = {{ maxOrder }};
         var versionOrders = {{ versionOrders }};
         renderMenu(menuTiles, menuChips, menuCharacters);
         fillVersionOrder(versionOrders);
