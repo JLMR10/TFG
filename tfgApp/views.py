@@ -90,6 +90,35 @@ def signUp(request):
         return render(request, "signUp.html")
 
 
+def editProfile(request):
+    if "user" in request.session:
+        userId = request.session["user"]["localId"]
+        userEmail = userServices.getPropierty(userId, "Email")
+        if request.method == 'POST':
+            newName = request.POST.get("userName")
+            print(userEmail)
+            print(newName)
+            userServices.update(userId, newName, "Name")
+            messages.success(request, "The user was edited!")
+            return HttpResponseRedirect('../')
+        else:
+            userName = userServices.getPropierty(userId, "Name")
+            return render(request, "editProfile.html", {"userName": userName, "userEmail": userEmail})
+    else:
+        return HttpResponseRedirect('../')
+
+
+def resetPassword(request):
+    if "user" in request.session:
+        userId = request.session["user"]["localId"]
+        userEmail = userServices.getPropierty(userId, "Email")
+        authFirebase.send_password_reset_email(userEmail)
+        messages.success(request, "An email to reset your password have been sent!")
+        return redirect("editProfile")
+    else:
+        HttpResponseRedirect('../')
+
+
 def canvasDemo(request):
     return render(request, "canvasDemo.html")
 

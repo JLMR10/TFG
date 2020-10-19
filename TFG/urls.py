@@ -38,6 +38,8 @@ urlpatterns = [
     path('mainMenu/joinGamePost/', views.joinGamePost, name='joinGamePost'),
     path('mainMenu/joinGameModal/', views.joinGameModal, name='joinGameModal'),
     path('mainMenu/JoinGameCharacterModal/', views.joinCharacterModal, name='joinCharacterModal'),
+    path('mainMenu/editProfile/', views.editProfile, name='editProfile'),
+    path('resetPassword/', views.resetPassword, name='resetPassword'),
     ##re_path(r'createGame/(?P<gameId>.*)$', views.createGame, name='createGame'),
 
     ##re_path(r'^myMaps/(?P<map>\w+)/$', views.editMap, name='editMap')

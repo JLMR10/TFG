@@ -39,6 +39,10 @@ def getPropierty(id, propierty):
     return valueFromPropierty
 
 
+def update(id, value, propierty):
+    return userRepository.update(id, value, propierty)
+
+
 def getIdAndNamesFromUsersList(usersList):
     usersNamesList = {}
     for userId in usersList:

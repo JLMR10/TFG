@@ -70,14 +70,12 @@ def addGameToUser(userId, gameId, gameName):
     db.child(reference).update(info)"""
 
 
-def update(json):
-    message = "The user hasn't been edited"
-    for id, user in database.child(ref).get().val().items():
-        if user["Name"] == json["Name"]:
-            database.child(ref + "/" + id).update(json)
-            message = "The user has been edited successfully"
-            break
-    return message
+def update(id, value, propierty):
+    jsonNewValue = {
+        id+"/"+propierty: value
+    }
+    obj = database.child(ref).update(jsonNewValue)
+    return obj
 
 
 def delete(json):

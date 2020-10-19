@@ -25,7 +25,7 @@ socket.onmessage = function(e){
         if(jsonData.senderID != me){
             chatHolder.append("<div class='message py2'><span class='otherMessages card border-left-secondary'><b>"+ jsonData.username +":</b> " + jsonData.message + "</span></div>");
         }else{
-             chatHolder.append("<div class='message py2'><span class='myMessages card border-right-primary'>" + jsonData.message + "</span></div>");
+
         }
 
     }
@@ -35,11 +35,10 @@ socket.onopen = function(e){
     formData.submit(function (event) {
         event.preventDefault();
         var msgText = msgInput.val();
-        //chatHolder.append("<li>" + msgText + " via " + me + "</li>")
-        //var formDataSerialized = formData.serialize()
+        chatHolder.append("<div class='message py2'><span class='myMessages card border-right-primary'>" + msgText + "</span></div>");
         var finalData = {
             "message": msgText
-        }
+        };
         socket.send(JSON.stringify(finalData));
         //msgInput.val("");
         formData[0].reset();
@@ -55,3 +54,4 @@ socket.onclose = function(e){
 $("#send-message").click(function () {
     formData.submit();
 });
+

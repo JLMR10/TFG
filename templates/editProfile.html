@@ -1,0 +1,39 @@
+{% extends 'header.html' %}
+{% block titulo %} <title>Edit Profile</title> {% endblock %}
+{% block scriptJS %}
+    {% load static %}
+    <link rel='stylesheet' href='{% static "/external/sb-admin-2.css" %}'>
+    <link rel='stylesheet' href='{% static "/css/mainMenu.css" %}'>
+    <link rel='stylesheet' href='{% static "/css/editProfile.css" %}'>
+{% endblock %}
+{% block breadcrumbschild %}
+    <li class="breadcrumb-item active"><a href={% url 'mainMenu' %}>Main Menu</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edit Profile</li>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid container">
+        <div class="card card-menu shadow h-100 py-2 ">
+            <div class="modal-header justify-content-center">
+                <h1 class="modal-title">Edit your Password and Username!</h1>
+            </div>
+            <div class="modal-body">
+                <form id="editProfileForm" class="editProfileForm" action="" method="post">
+                    {% csrf_token %}
+                    <h5>Email</h5>
+                    <input name="userEmail" id="userEmail" type="text" placeholder="{{ userEmail }}" style="margin-top: 10px;" disabled>
+                    <h5>Username</h5>
+                    <input name="userName" id="userName" type="text" style="margin-top: 10px;" required>
+                    <label alt="{{ userName }}" placeholder="{{ userName }}"></label>
+                    <button id="createBtn" type="submit" class="btn btn-primary">Save</button>
+                </form>
+                <div class="text-center">
+                    <a class="small" href="{% url 'resetPassword' %}">Change your password!</a>
+                </div>
+                <div class="text-center">
+                    <a class="small" >An email will be send to reset your password</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
