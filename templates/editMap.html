@@ -18,12 +18,15 @@
     {% csrf_token %}
     <div style="display: flex;justify-content: space-around;">
         <div class="map-menu card card-menu border-top-primary shadow h-100 py-2">
+            <a class="name-map-menu"> Terrain </a>
             <div id="Tiles" class="img-container">
             </div>
             <hr class="hr-menu">
+            <a class="name-map-menu"> Objects </a>
             <div id="Chips" class="img-container">
             </div>
             <hr class="hr-menu">
+            <a class="name-map-menu"> NPCs </a>
             <div id="Characters" class="img-container">
             </div>
         </div>
@@ -44,6 +47,7 @@
                 </div>
             </div>
             <div class="img-container arrow-div">
+                <a class="vertical-move name">Map controller</a>
                 <div class="vertical-move">
                     <img class="move-up" src="/static/Media/arrow.png">
                 </div>
@@ -101,8 +105,11 @@
         var pythonChips = JSON.parse("{{ mapChips }}".replaceAll('&#x27;','"').replaceAll('--','-'));
         var pythonCharacters = JSON.parse("{{ mapCharacters }}".replaceAll('&#x27;','"').replaceAll('--','-'));
         let menuTiles = JSON.parse("{{ menuTiles }}".replaceAll('&#x27;','"').replaceAll('--','-'));
+        menuTiles.push(["","trash.png"]);
         let menuChips = JSON.parse("{{ menuChips }}".replaceAll('&#x27;','"').replaceAll('--','-'));
+        menuChips.push(["","trashBlue.png"]);
         let menuCharacters = JSON.parse("{{ menuCharacters }}".replaceAll('&#x27;','"').replaceAll('--','-'));
+        menuCharacters.push(["","trashGreen.png"]);
         const mapName = "{{ map }}";
         const mapId = "{{ mapId }}";
         var maxOrder = {{ maxOrder }};
@@ -111,5 +118,4 @@
         fillVersionOrder(versionOrders);
         const csrftoken = $("input[name='csrfmiddlewaretoken']")[0].value ;
     </script>
-
 {% endblock %}

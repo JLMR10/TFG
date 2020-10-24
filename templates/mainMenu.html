@@ -9,12 +9,12 @@
 
 {% block content %}
     <div class="flexMenu">
-        <a class="boxMenu rounded shadow" href='{% url 'myMaps' %}'>My Maps</a>
-        <a class="boxMenu rounded shadow" href="" data-toggle="modal" data-target="#myGames">My Games</a>
-        <a class="boxMenu rounded shadow" href="" data-toggle="modal" data-target="#createGame">Create Game</a>
+        <a class="boxMenu rounded shadow" href='{% url 'myMaps' %}'><i class="far fa-map"></i> My Maps</a>
+        <a class="boxMenu rounded shadow" href="" data-toggle="modal" data-target="#myGames"><i class="fas fa-dice-d20"></i> My Games</a>
+        <a class="boxMenu rounded shadow" href="" data-toggle="modal" data-target="#createGame"><i class="far fa-plus-square"></i> Create Game</a>
     </div>
     <div class="joinFlex">
-        <a class="boxJoin rounded shadow" href="" data-toggle="modal" data-target="#joinGame">Join Game</a>
+        <a class="boxJoin rounded shadow" href="" data-toggle="modal" data-target="#joinGame"><i class="fas fa-sign-in-alt"></i> Join Game</a>
     </div>
 
     <div class="modal" tabindex="-1" role="dialog" id="myGames">
