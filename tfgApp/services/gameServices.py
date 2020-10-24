@@ -10,7 +10,8 @@ def gameToJson(game, user):
         "Code": game.code,
         "Map": game.map,
         "ChipList": game.chipList,
-        "Users": {user[0]: user[1]}
+        "Users": {user[0]: user[1]},
+        "Characters": "Empty"
     }
     return json
 
@@ -56,12 +57,16 @@ def addUserToGame(gameId, userId):
 
 
 def addCharacterUserToGame(gameId, userId, characterName, characterMove):
-    characters = getProperty(gameId, "Characters").keys()
-    indexes = []
-    for character in characters:
-        indexes.append(character.replace("_", ""))
-    maxIndex = max(indexes)
-    index = str(int(maxIndex) + 1)
+    charactersObj = getProperty(gameId, "Characters")
+    if charactersObj != "Empty":
+        characters = charactersObj.keys()
+        indexes = []
+        for character in characters:
+            indexes.append(character.replace("_", ""))
+        maxIndex = max(indexes)
+        index = str(int(maxIndex) + 1)
+    else:
+        index = "0"
     gameRepository.addCharacterUserToGame(gameId, userId, characterName, characterMove, index)
 
 

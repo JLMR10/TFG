@@ -44,9 +44,16 @@ def getProperty(id, propierty):
 
 
 def addCharacterUserToGame(gameId, userId, characterName, characterMove, index):
-    characterJson = {index+"_": {"Name": characterName, "Move": characterMove, "User": userId}}
-    reference = ref + "/" + gameId + "/Characters/"
-    database.child(reference).update(characterJson)
+    characterJson = {index+"_": {"Name": characterName, "Move": characterMove, "Position": "Empty", "User": userId}}
+    referenceCharacterPropierty = ref + "/" + gameId + "/Characters/"
+    charactersGame = database.child(referenceCharacterPropierty).get().val()
+    if charactersGame != "Empty":
+        database.child(referenceCharacterPropierty).update(characterJson)
+    else:
+        firstCharacterJson = {
+            gameId+"/Characters": characterJson
+        }
+        database.child(ref).update(firstCharacterJson)
 
 
 def addUserToGame(gameId, userId):

@@ -238,6 +238,7 @@ def saveMap(request):
     }
     return JsonResponse(response, status=200)
 
+
 def saveFromVersion(request):
     userId = request.session["user"]["localId"]
     mapId = request.POST.get("mapId")
@@ -273,6 +274,7 @@ def saveFromVersion(request):
     else:
         messages.error(request, message)
         return HttpResponseRedirect('../')
+
 
 def createGame(request):
     if "user" in request.session:
@@ -398,13 +400,16 @@ def gameView(request, gameId):
             if request.method == "POST" and "newMessage" in request.POST.keys():
                 chatMessages.append(request.POST.get("newMessage"))
 
+            characters = gameServices.getProperty(gameId, "Characters")
             isMaster = gameServices.isUserMaster(gameId, userId)
             if isMaster:
                 return render(request, "game.html",
-                              {"chatMessages": chatMessages, "gameCode": gameCode, "gameName": gameName})
+                              {"chatMessages": chatMessages, "gameCode": gameCode, "gameName": gameName,
+                               "characters": characters})
             else:
                 return render(request, "gameUser.html",
-                              {"chatMessages": chatMessages, "gameCode": gameCode, "gameName": gameName})
+                              {"chatMessages": chatMessages, "gameCode": gameCode, "gameName": gameName,
+                               "characters": characters})
         else:
             return HttpResponseRedirect('../')
     else:
