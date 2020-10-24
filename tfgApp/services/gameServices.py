@@ -81,7 +81,9 @@ def isUserMaster(gameId, userId):
 
 
 def updateUserCharacterPosition(gameId, userCharacters):
-    pass
+    for i, userCharacter in enumerate(userCharacters):
+        if userCharacter:
+            gameRepository.updateUserCharacterPosition(gameId, userCharacter, i)
 
 
 def testCreate():

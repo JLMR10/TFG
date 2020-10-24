@@ -439,6 +439,7 @@ def gameView(request, gameId):
 ##@csrf_exempt
 def saveGame(request):
     data = json.loads(request.body)
+    gameId = data["gameId"]
     mapId = data["mapId"]
     name = data["mapName"]
     order = data["order"]
@@ -446,7 +447,7 @@ def saveGame(request):
     chips = data["chips"]
     characters = data["characters"]
     userCharacters = data["userCharacters"]
-    ##service
+    gameServices.updateUserCharacterPosition(gameId, userCharacters)
     version = versionServices.createVersionFromMap(name, mapId, order, tiles, chips, characters)
     mapServices.addVersion(version, mapId)
     response = {

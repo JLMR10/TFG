@@ -25,7 +25,7 @@ $(function init() {
         });
         charactersArr.forEach(function (e){
             if(e.isUser == "true") {
-                userCharacters[userCharacters.length] = e.id
+                userCharacters[userCharacters.length] = e.img.split('/')[3].split('_')[0] + '_';
             }else{
                 userCharacters[userCharacters.length] = undefined;
             }

@@ -215,12 +215,20 @@ function initCharacters() {
     var h = cubeSize;
     var img = undefined;
     let responseKeys = Object.keys(pythonCharacters);
+    let userPositions = [];
+    Object.keys(pythonUserCharacters).forEach(function (e) {
+        userPositions.push(pythonUserCharacters[e].Position);
+    })
+
 
 
     for(var i=0; i<maxSizeCharacter; i++){
         for(var j = 0; j < maxSizeCharacter; j++){
             let index = i * maxSizeMap + j;
-            if(responseKeys.includes(index.toString())) {
+            if(userPositions.includes(index)) {
+                let subIndex = userPositions.indexOf(index);
+                charactersArr.push(new Character(x, y, h, w, "/static/Media/" + subIndex + '_character.png', 'black',pythonUserCharacters[subIndex + "_"].Move, pythonUserCharacters[subIndex + "_"].User));
+            }else if(responseKeys.includes(index.toString())){
                 charactersArr.push(new Character(x, y, h, w, $("#" + pythonCharacters[index]).attr('src'), 'black',3, pythonCharacters[index] ));
             }else{
                 charactersArr.push(new Character(x, y, h, w, img));

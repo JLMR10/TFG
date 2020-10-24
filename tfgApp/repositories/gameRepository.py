@@ -67,8 +67,12 @@ def addUserToGame(gameId, userId):
         database.child(reference).update(userJson)
 
 
-def updateUserCharacterPosition(gameId, userCharacters):
-    pass
+def updateUserCharacterPosition(gameId, key, position):
+    jsonNewValue = {
+        key + "/Position": position
+    }
+    obj = database.child(ref+"/"+gameId+"/Characters").update(jsonNewValue)
+    return obj
 
 
 def update(json):
