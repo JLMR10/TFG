@@ -80,6 +80,10 @@ def isUserMaster(gameId, userId):
     return userMasterBool
 
 
+def updateUserCharacterPosition(gameId, userCharacters):
+    pass
+
+
 def testCreate():
     game1 = Game("autoTestGame", "01", "autoTestMap", "autoTestChipList")
     game1Json = gameToJson(game1)

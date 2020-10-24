@@ -18,7 +18,7 @@ $(function init() {
     chipContext = chipCanvas.getContext('2d');
 
     $('img.menu-chip').click(function() {
-        if(selectedChip == this.src) {
+        if(selectedChip == this.getAttribute('src')) {
             if($('img.menu-chip-selected')[0] != undefined) {
                 $('img.menu-chip-selected')[0].classList.remove("menu-chip-selected");
             }
@@ -34,7 +34,7 @@ $(function init() {
                 $('img.menu-character-selected')[0].classList.remove("menu-character-selected");
             }
             this.classList.add("menu-chip-selected");
-            selectedChip = this.src;
+            selectedChip = this.getAttribute('src');
             selectedImg = undefined;
             selectedCharacter = undefined;
             draggedCharacter = undefined;
@@ -74,13 +74,14 @@ function moveChips(x, y) {
     });
 }
 
-function Chip(x, y, h, w, img) {
+function Chip(x, y, h, w, img, id = undefined) {
     this.x = x;
     this.y = y;
     this.h = h;
     this.w = w;
     this.img = img;
     this.color = 'black';
+    this.id = id;
     this.draw = function () {
         chipContext.strokeStyle = 'black';
         chipContext.strokeRect(this.x, this.y, this.h, this.w);
@@ -94,8 +95,10 @@ function Chip(x, y, h, w, img) {
         if(selectedChip != undefined && chipMouse.x != undefined && this.x + this.w > chipMouse.x && this.x < chipMouse.x  && this.y + this.h > chipMouse.y && this.y < chipMouse.y) {
             if(selectedChip.includes('trash')){
                 this.img = undefined;
+                this.id = undefined;
             }else{
                 this.img = selectedChip;
+                this.id = $("img[src$='" + selectedChip + "']")[0].id;
             }
             chipMouse.x = undefined;
             chipMouse.y = undefined;
@@ -113,11 +116,17 @@ function initChips() {
     var w = cubeSize;
     var h = cubeSize;
     var img = undefined;
+    let responseKeys = Object.keys(pythonChips);
 
 
     for(var i=0; i<maxSizeChip; i++){
         for(var j = 0; j < maxSizeChip; j++){
-            chipsArr.push(new Chip(x, y, h, w, img));
+            let index = i * maxSizeMap + j;
+            if(responseKeys.includes(index.toString())) {
+                chipsArr.push(new Chip(x, y, h, w, $("#" + pythonChips[index]).attr('src'), pythonChips[index] ));
+            }else{
+                chipsArr.push(new Chip(x, y, h, w, img));
+            }
             x += cubeSize;
         }
         x = (-1 * maxSizeChip/2 + rowTiles/2) * cubeSize;
