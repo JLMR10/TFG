@@ -67,6 +67,14 @@ def addUserToGame(gameId, userId):
         database.child(reference).update(userJson)
 
 
+def updateUserCharacterPosition(gameId, key, position):
+    jsonNewValue = {
+        key + "/Position": position
+    }
+    obj = database.child(ref+"/"+gameId+"/Characters").update(jsonNewValue)
+    return obj
+
+
 def update(json):
     message = "The game hasn't been edited"
     for id, game in database.child(ref).get().val().items():

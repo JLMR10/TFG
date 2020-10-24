@@ -19,7 +19,7 @@ $(function init() {
     mapContext = mapCanvas.getContext('2d');
 
     $('img.menu-img').click(function() {
-        if(selectedImg == this.src) {
+        if(selectedImg == this.getAttribute('src')) {
             if($('img.menu-img-selected')[0] != undefined) {
                 $('img.menu-img-selected')[0].classList.remove("menu-img-selected");
             }
@@ -35,7 +35,7 @@ $(function init() {
                 $('img.menu-character-selected')[0].classList.remove("menu-character-selected");
             }
             this.classList.add("menu-img-selected");
-            selectedImg = this.src;
+            selectedImg = this.getAttribute('src');
             selectedChip = undefined;
             selectedCharacter = undefined;
             draggedCharacter = undefined;
@@ -74,13 +74,14 @@ function move(x, y) {
     });
 }
 
-function Tile(x, y, h, w, img) {
+function Tile(x, y, h, w, img, id) {
     this.x = x;
     this.y = y;
     this.h = h;
     this.w = w;
     this.img = img;
     this.color = 'white';
+    this.id = id;
     this.draw = function () {
         mapContext.strokeStyle = 'black';
         mapContext.fillStyle = this.color;
@@ -95,8 +96,10 @@ function Tile(x, y, h, w, img) {
         if(selectedImg != undefined && mapMouse.x != undefined && this.x + this.w > mapMouse.x && this.x < mapMouse.x  && this.y + this.h > mapMouse.y && this.y < mapMouse.y) {
             if(selectedImg.includes('trash')){
                 this.img = undefined;
+                this.id = undefined
             }else{
                 this.img = selectedImg;
+                this.id = $("img[src$='" + selectedImg + "']")[0].id;
                 sendTile = true;
             }
             mapMouse.x = undefined;
@@ -107,18 +110,24 @@ function Tile(x, y, h, w, img) {
 }
 
 function initTiles() {
-    var rowTiles = 32;
-    var cubeSize = Math.floor(innerWidth / rowTiles);
-    var x = (-1 * maxSizeMap/2 + rowTiles/2) * cubeSize;
-    var y = (-1 * maxSizeMap/2 + rowTiles/2) * cubeSize;
-    var w = cubeSize;
-    var h = cubeSize;
-    var img = undefined;//'/static/Media/grass.jpg';
+    let rowTiles = 32;
+    let cubeSize = Math.floor(innerWidth / rowTiles);
+    let x = (-1 * maxSizeMap/2 + rowTiles/2) * cubeSize;
+    let y = (-1 * maxSizeMap/2 + rowTiles/2) * cubeSize;
+    let w = cubeSize;
+    let h = cubeSize;
+    let img = undefined;//'/static/Media/grass.jpg';
+    let responseKeys = Object.keys(pythonTiles);
 
 
-    for(var i=0; i<maxSizeMap; i++){
-        for(var j = 0; j < maxSizeMap; j++){
-            tilesArr.push(new Tile(x, y, h, w, img));
+    for(let i=0; i<maxSizeMap; i++){
+        for(let j = 0; j < maxSizeMap; j++){
+            let index = i * maxSizeMap + j;
+            if(responseKeys.includes(index.toString())) {
+                tilesArr.push(new Tile(x, y, h, w, $("#" + pythonTiles[index]).attr('src'), pythonTiles[index]));
+            }else{
+                tilesArr.push(new Tile(x, y, h, w, img, undefined));
+            }
             x += cubeSize;
         }
         x = (-1 * maxSizeMap/2 + rowTiles/2) * cubeSize;

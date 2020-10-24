@@ -402,18 +402,58 @@ def gameView(request, gameId):
 
             characters = gameServices.getProperty(gameId, "Characters")
             isMaster = gameServices.isUserMaster(gameId, userId)
+
+            ############################
+            gameMap = gameServices.getProperty(gameId, "Map")
+            maxVersion = versionServices.getLastVersion(gameMap)
+            maxOrder = maxVersion["Order"]
+            mapItemList = versionServices.getListsFromVersion(gameMap, maxOrder)
+            mapName = mapServices.getProperty(gameMap, "Name")
+            response = {
+                'gameId': gameId,
+                'maxOrder': maxOrder,
+                'mapId': gameMap,
+                'map': mapName,
+                'mapTiles': mapItemList[0],
+                'mapChips': mapItemList[1],
+                'mapCharacters': mapItemList[2],
+                'menuTiles': tileServices.getAllTiles(),
+                'menuChips': chipServices.getAllChips(),
+                'menuCharacters': characterServices.getAllCharacters(),
+                "chatMessages": chatMessages,
+                "gameCode": gameCode,
+                "gameName": gameName,
+                "characters": characters
+            }
+            ############################
             if isMaster:
-                return render(request, "game.html",
-                              {"chatMessages": chatMessages, "gameCode": gameCode, "gameName": gameName,
-                               "characters": characters})
+                return render(request, "game.html", response)
             else:
-                return render(request, "gameUser.html",
-                              {"chatMessages": chatMessages, "gameCode": gameCode, "gameName": gameName,
-                               "characters": characters})
+                return render(request, "gameUser.html", response)
         else:
             return HttpResponseRedirect('../')
     else:
         return HttpResponseRedirect('../')
+
+
+##@csrf_exempt
+def saveGame(request):
+    data = json.loads(request.body)
+    gameId = data["gameId"]
+    mapId = data["mapId"]
+    name = data["mapName"]
+    order = data["order"]
+    tiles = data["tiles"]
+    chips = data["chips"]
+    characters = data["characters"]
+    userCharacters = data["userCharacters"]
+    gameServices.updateUserCharacterPosition(gameId, userCharacters)
+    version = versionServices.createVersionFromMap(name, mapId, order, tiles, chips, characters)
+    mapServices.addVersion(version, mapId)
+    response = {
+        'newOrder': order + 1
+    }
+    return JsonResponse(response, status=200)
 
 
 def getErrorMessage(message):

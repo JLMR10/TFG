@@ -5,9 +5,11 @@
     <script src='{% static "js/canvasBaseGame.js" %}'></script>
     <script src='{% static "js/canvasChipGame.js" %}'></script>
     <script src='{% static "js/canvasCharacterGame.js" %}'></script>
+    <script src='{% static "js/utilityMapGame.js" %}'></script>
 
     <link rel='stylesheet' href='{% static "/css/canvasStyle.css" %}'>
     <link rel='stylesheet' href='{% static "/css/game.css" %}'>
+    <link rel='stylesheet' href='{% static "/external/loading.css" %}'>
 {% endblock %}
 {% block breadcrumbschild %}
     <li class="breadcrumb-item active"><a href={% url 'mainMenu' %}>Main Menu</a></li>
@@ -19,27 +21,18 @@
             <div><h5>Game Name: {{ gameName }}</h5></div>
             <div class="map-menu card card-menu border-top-primary shadow h-100 py-2">
                 <div id="Tiles" class="img-container">
-                    <img class="menu-img" src="/static/Media/grass.jpg">
-                    <img class="menu-img" src="/static/Media/floor.jpg">
-                    <img class="menu-img" src="/static/Media/rock.jpg">
-                    <img class="menu-img" src="/static/Media/ground.jpg">
-                    <img class="menu-img" src="/static/Media/brick.jpg">
-                    <img class="menu-img" src="/static/Media/metal.jpg">
-                    <img class="menu-img" src="/static/Media/water.jpg">
-                    <img class="menu-img" src="/static/Media/wood.jpg">
-                    <img class="menu-img" src="/static/Media/magma.jpg">
-                    <img class="menu-img" src="/static/Media/door.jpg">
-                    <img class="menu-img" src="/static/Media/trash.png">
                 </div>
                 <hr class="hr-menu">
                 <div id="Chips" class="img-container">
-                    <img class="menu-chip" src="/static/Media/chest.png">
-                    <img class="menu-chip" src="/static/Media/trashBlue.png">
                 </div>
                 <hr class="hr-menu">
                 <div id="Characters" class="img-container">
-                    <img class="menu-character" src="/static/Media/goblin.png">
-                    <img class="menu-character" src="/static/Media/trashGreen.png">
+                </div>
+                <hr class="hr-menu">
+                <div id="UserCharacters" class="img-container">
+                    {% for index, character in characters.items %}
+                        <img src="/static/Media/{{ index }}character.png" id="{{ character.User }}" movement="{{ character.Move }}" class="menu-character" isUser="true"/>
+                    {% endfor %}
                 </div>
             </div>
             <div class="arrow-master">
@@ -86,6 +79,29 @@
             {% include 'chatBox.html' %}
         </div>
     </div>
+
+    <div class="loader-wrapper">
+      <span class="loader"><span class="loader-inner"></span></span>
+    </div>
+    <script>
+        $(window).on("load",function(){
+            $(".loader-wrapper").fadeOut("slow");
+        });
+        var pythonTiles = JSON.parse("{{ mapTiles }}".replaceAll('&#x27;','"').replaceAll('--','-'));
+        var pythonChips = JSON.parse("{{ mapChips }}".replaceAll('&#x27;','"').replaceAll('--','-'));
+        var pythonCharacters = JSON.parse("{{ mapCharacters }}".replaceAll('&#x27;','"').replaceAll('--','-'));
+        var pythonUserCharacters = JSON.parse("{{ characters }}".replaceAll('&#x27;','"').replaceAll('--','-'));
+        let menuTiles = JSON.parse("{{ menuTiles }}".replaceAll('&#x27;','"').replaceAll('--','-'));
+        let menuChips = JSON.parse("{{ menuChips }}".replaceAll('&#x27;','"').replaceAll('--','-'));
+        let menuCharacters = JSON.parse("{{ menuCharacters }}".replaceAll('&#x27;','"').replaceAll('--','-'));
+        let menuUserCharacters = "{{ characters }}";
+        const mapName = "{{ map }}";
+        const mapId = "{{ mapId }}";
+        const gameId = "{{ gameId }}";
+        var maxOrder = {{ maxOrder }};
+        renderMenu(menuTiles, menuChips, menuCharacters);
+        const csrftoken = $("input[name='csrfmiddlewaretoken']")[0].value ;
+    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"
             integrity="sha512-SxQulwFs2B38bmUJtBSo9tD07MDrtCbY8me3AOZ14tRknCPTeMDLvCQV4ekhs8R0o9QPnW5HQanKfveexVcwLA=="
