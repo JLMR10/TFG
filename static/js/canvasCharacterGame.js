@@ -219,9 +219,12 @@ function initCharacters() {
     var img = undefined;
     let responseKeys = Object.keys(pythonCharacters);
     let userPositions = [];
-    Object.keys(pythonUserCharacters).forEach(function (e) {
-        userPositions.push(pythonUserCharacters[e].Position);
-    })
+    if (pythonUserCharacters){
+        Object.keys(pythonUserCharacters).forEach(function (e) {
+            userPositions.push(pythonUserCharacters[e].Position);
+        })
+    }
+
 
 
 

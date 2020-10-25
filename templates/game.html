@@ -76,15 +76,19 @@
             </div>
             <div class="card shadow mb-4 turn-order">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Turn: userplaceholder</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Turns</h6>
                 </div>
                 <div class="card-body">
+                    {% if characters != "Empty" %}
                     <h7>Select the next player's turn:</h7>
                     <div class="turn-users">
                         {% for index, character in characters.items %}
                             <a class="card border-left-primary turn btn btn-sm btn-normal">{{character.Name}}</a>
                         {% endfor %}
                     </div>
+                    {% else %}
+                         <h7>Waiting for users</h7>
+                    {% endif %}
                 </div>
             </div>
 
