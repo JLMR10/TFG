@@ -8,6 +8,7 @@ var chipMouse = {
 var selectedChip;
 var initialC;
 const maxSizeChip = 50;
+var sendChip = false;
 
 $(function init() {
     chipCanvas = document.querySelector('#chipMap');
@@ -95,11 +96,12 @@ function Chip(x, y, h, w, img, id = undefined) {
         if(selectedChip != undefined && chipMouse.x != undefined && this.x + this.w > chipMouse.x && this.x < chipMouse.x  && this.y + this.h > chipMouse.y && this.y < chipMouse.y) {
             if(selectedChip.includes('trash')){
                 this.img = undefined;
-                this.id = undefined;
+                this.id = "Empty";
             }else{
                 this.img = selectedChip;
                 this.id = $("img[src$='" + selectedChip + "']")[0].id;
             }
+            sendChip = true;
             chipMouse.x = undefined;
             chipMouse.y = undefined;
         }
@@ -142,12 +144,25 @@ function animateChip() {
             tile.draw();
         })
     }else{
-        initialC=1
+        initialC+=1
         chipContext.clearRect(0,0,innerWidth,innerHeight);
         chipsArr.forEach(tile => {
             tile.update();
         })
+        if(initialC >= 100 && sendChip){
+            sendChipsArrayToSocket();
+            initialC = 1;
+        }
     }
 }
 
+function sendChipsArrayToSocket(){
+    socket.send(JSON.stringify({"chipsArray": chipsArr }));
+    sendChip = false;
+}
 
+function updateChipsArrAsyc(socketArr) {
+    if(socketArr){
+        socketArr.forEach(function(e, i){chipsArr[i].img = e.img;});
+    }
+}

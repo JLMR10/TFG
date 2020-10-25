@@ -95,7 +95,7 @@ function Chip(x, y, h, w, img, id = undefined) {
         if(selectedChip != undefined && chipMouse.x != undefined && this.x + this.w > chipMouse.x && this.x < chipMouse.x  && this.y + this.h > chipMouse.y && this.y < chipMouse.y) {
             if(selectedChip.includes('trash')){
                 this.img = undefined;
-                this.id = undefined;
+                this.id = "Empty";
             }else{
                 this.img = selectedChip;
                 this.id = $("img[src$='" + selectedChip + "']")[0].id;

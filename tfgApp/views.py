@@ -447,7 +447,8 @@ def saveGame(request):
     chips = data["chips"]
     characters = data["characters"]
     userCharacters = data["userCharacters"]
-    gameServices.updateUserCharacterPosition(gameId, userCharacters)
+    members = len(gameServices.getProperty(gameId, "Users").keys())-1
+    gameServices.updateUserCharacterPosition(gameId, userCharacters, members)
     version = versionServices.createVersionFromMap(name, mapId, order, tiles, chips, characters)
     mapServices.addVersion(version, mapId)
     response = {

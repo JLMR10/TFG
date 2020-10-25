@@ -3,11 +3,11 @@
     padding: 0px;
     display: flex;
     flex-direction: column;
-    margin-top: -2em;
+    margin-top: -4em;
 }
 
 .map-menu{
-    height: 23.2em !important;
+    height: 19.2em !important;
 }
 
 .left-panel .map-menu {
@@ -109,7 +109,7 @@
 }
 
 .turn{
-    padding-left: 2em;
+    padding-left: 1em;
     margin-top: 0.6em;
 }
 
@@ -128,5 +128,5 @@
 
 
 .arrow-user{
-    margin-top: 11.5em;
+    margin-top: 9em;
 }

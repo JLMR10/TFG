@@ -20,6 +20,8 @@ socket.onmessage = function(e){
     if(jsonData.message == undefined){
         if(jsonData.sender != me){
             updateTilesArrAsyc(jsonData.canvasArray);
+            updateChipsArrAsyc(jsonData.chipsArray);
+            updateCharactersArrAsyc(jsonData.charactersArray);
         }
     }else {
         if(jsonData.senderID != me){

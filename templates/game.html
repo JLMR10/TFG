@@ -18,17 +18,28 @@
 {% block content %}
     <div style="display: flex;justify-content: space-around;margin-top:4%">
         <div class="left-panel">
-            <div><h5>Game Name: {{ gameName }}</h5></div>
+            <div style="text-align: center; display: flex" class="flex-row">
+                <a class="name-map-menu" style="display: flex;margin-right: 1em">Game Name:</a>
+                <a style="display: flex">{{ gameName }}</a>
+            </div>
+            <div style="text-align: center; display: flex; margin-bottom: 1em" class="flex-row">
+                <a class="name-map-menu" style="display: flex;margin-right: 1.6em">Map Name:</a>
+                <a style="display: flex">{{ map }}</a>
+            </div>
             <div class="map-menu card card-menu border-top-primary shadow h-100 py-2">
+                <a class="name-map-menu"> Terrain </a>
                 <div id="Tiles" class="img-container">
                 </div>
                 <hr class="hr-menu">
+                <a class="name-map-menu"> Objects </a>
                 <div id="Chips" class="img-container">
                 </div>
                 <hr class="hr-menu">
+                <a class="name-map-menu"> NPCs </a>
                 <div id="Characters" class="img-container">
                 </div>
                 <hr class="hr-menu">
+                <a class="name-map-menu"> Characters </a>
                 <div id="UserCharacters" class="img-container">
                     {% for index, character in characters.items %}
                         <img src="/static/Media/{{ index }}character.png" id="{{ character.User }}" movement="{{ character.Move }}" class="menu-character" isUser="true"/>
@@ -37,6 +48,7 @@
             </div>
             <div class="arrow-master">
                 <div class="img-container">
+                    <a class="vertical-move name">Map controller</a>
                     <div class="vertical-move">
                         <img class="move-up" src="/static/Media/arrow.png">
                     </div>
@@ -92,8 +104,11 @@
         var pythonCharacters = JSON.parse("{{ mapCharacters }}".replaceAll('&#x27;','"').replaceAll('--','-'));
         var pythonUserCharacters = JSON.parse("{{ characters }}".replaceAll('&#x27;','"').replaceAll('--','-'));
         let menuTiles = JSON.parse("{{ menuTiles }}".replaceAll('&#x27;','"').replaceAll('--','-'));
+        menuTiles.push(["","trash.png"]);
         let menuChips = JSON.parse("{{ menuChips }}".replaceAll('&#x27;','"').replaceAll('--','-'));
+        menuChips.push(["","trashBlue.png"]);
         let menuCharacters = JSON.parse("{{ menuCharacters }}".replaceAll('&#x27;','"').replaceAll('--','-'));
+        menuCharacters.push(["","trashGreen.png"]);
         let menuUserCharacters = "{{ characters }}";
         const mapName = "{{ map }}";
         const mapId = "{{ mapId }}";

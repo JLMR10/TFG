@@ -166,7 +166,7 @@ function Character(x, y, h, w, img, color = 'black', maxMove = undefined, id = u
             if(selectedCharacter.includes('trash')){
                 this.img = undefined;
                 this.maxMove = undefined;
-                this.id = undefined;
+                this.id = "Empty";
             }else{
                 this.img = selectedCharacter;
                 this.maxMove = 3;
@@ -184,7 +184,7 @@ function Character(x, y, h, w, img, color = 'black', maxMove = undefined, id = u
                 var auxIndex = charactersArr.indexOf(draggedCharacter);
                 charactersArr[auxIndex].img = undefined;
                 charactersArr[auxIndex].maxMove = undefined;
-                charactersArr[auxIndex].id = undefined;
+                charactersArr[auxIndex].id = "Empty";
                 this.img = auxImg;
                 this.maxMove = auxMaxMove;
                 this.id = auxId;

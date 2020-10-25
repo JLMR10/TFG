@@ -9,6 +9,7 @@ var selectedCharacter;
 var draggedCharacter;
 var initialChar;
 const maxSizeCharacter = 50;
+var sendCharacter = false;
 
 $(function init() {
     characterCanvas = document.querySelector('#characterMap');
@@ -167,7 +168,7 @@ function Character(x, y, h, w, img, color = 'black', maxMove = undefined, id = u
             if(selectedCharacter.includes('trash')){
                 this.img = undefined;
                 this.maxMove = undefined;
-                this.id = undefined;
+                this.id = "Empty";
                 this.isUser = "false";
             }else{
                 this.img = selectedCharacter;
@@ -175,6 +176,7 @@ function Character(x, y, h, w, img, color = 'black', maxMove = undefined, id = u
                 this.id = $("img[src$='" + selectedCharacter + "']")[0].id;
                 this.isUser = $("img[src$='" + selectedCharacter + "']").attr('isuser');
             }
+            sendCharacter = true;
             characterMouse.x = undefined;
             characterMouse.y = undefined;
         }else if(characterMouse.x != undefined && this.x + this.w > characterMouse.x && this.x < characterMouse.x  && this.y + this.h > characterMouse.y && this.y < characterMouse.y){
@@ -188,7 +190,7 @@ function Character(x, y, h, w, img, color = 'black', maxMove = undefined, id = u
                 var auxIsUser = draggedCharacter.isUser;
                 charactersArr[auxIndex].img = undefined;
                 charactersArr[auxIndex].maxMove = undefined;
-                charactersArr[auxIndex].id = undefined;
+                charactersArr[auxIndex].id = "Empty";
                 charactersArr[auxIndex].isUser = "false";
                 this.img = auxImg;
                 this.maxMove = auxMaxMove;
@@ -198,6 +200,7 @@ function Character(x, y, h, w, img, color = 'black', maxMove = undefined, id = u
             }else{
                 draggedCharacter = undefined;
             }
+            sendCharacter = true;
             characterMouse.x = undefined;
             characterMouse.y = undefined;
         }
@@ -227,7 +230,7 @@ function initCharacters() {
             let index = i * maxSizeMap + j;
             if(userPositions.includes(index)) {
                 let subIndex = userPositions.indexOf(index);
-                charactersArr.push(new Character(x, y, h, w, "/static/Media/" + subIndex + '_character.png', 'black',pythonUserCharacters[subIndex + "_"].Move, pythonUserCharacters[subIndex + "_"].User));
+                charactersArr.push(new Character(x, y, h, w, "/static/Media/" + subIndex + '_character.png', 'black',pythonUserCharacters[subIndex + "_"].Move, pythonUserCharacters[subIndex + "_"].User, "true"));
             }else if(responseKeys.includes(index.toString())){
                 charactersArr.push(new Character(x, y, h, w, $("#" + pythonCharacters[index]).attr('src'), 'black',3, pythonCharacters[index] ));
             }else{
@@ -248,12 +251,30 @@ function animateCharacter() {
             tile.draw();
         })
     }else{
-        initialChar=1
+        initialChar+=1
         characterContext.clearRect(0,0,innerWidth,innerHeight);
         charactersArr.forEach(tile => {
             tile.update();
         })
+        if(initialChar >= 150 && sendCharacter){
+            sendCharactersArrayToSocket();
+            initialChar = 1;
+        }
     }
 }
 
+function sendCharactersArrayToSocket(){
+    socket.send(JSON.stringify({"charactersArray": charactersArr }));
+    sendChip = false;
+}
 
+function updateCharactersArrAsyc(socketArr) {
+    if(socketArr){
+        socketArr.forEach(function(e, i){
+            charactersArr[i].img = e.img;
+            charactersArr[i].isUser = e.isUser;
+            charactersArr[i].maxMove = e.maxMove;
+            charactersArr[i].id = e.id;
+        });
+    }
+}

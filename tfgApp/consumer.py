@@ -31,11 +31,17 @@ class ChatConsumer(AsyncConsumer):
         ##prueba = json.loads(front_text)
         if front_text is not None:
             loaded_dict_data = json.loads(front_text)
-            if loaded_dict_data.get("canvasArray") is not None:
+            if loaded_dict_data.get("canvasArray") is not None \
+                    or loaded_dict_data.get("chipsArray") is not None \
+                    or loaded_dict_data.get("charactersArray") is not None:
                 userId = self.scope["session"]["user"]["localId"]
-                array = loaded_dict_data.get("canvasArray")
+                canvasArray = loaded_dict_data.get("canvasArray")
+                chipsArray = loaded_dict_data.get("chipsArray")
+                charactersArray = loaded_dict_data.get("charactersArray")
                 myResponse = {
-                    "canvasArray": array,
+                    "canvasArray": canvasArray,
+                    "chipsArray": chipsArray,
+                    "charactersArray": charactersArray,
                     "sender": userId
                 }
 

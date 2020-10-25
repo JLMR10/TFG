@@ -95,7 +95,7 @@ function Tile(x, y, h, w, img, id) {
         if(selectedImg != undefined && mapMouse.x != undefined && this.x + this.w > mapMouse.x && this.x < mapMouse.x  && this.y + this.h > mapMouse.y && this.y < mapMouse.y) {
             if(selectedImg.includes('trash')){
                 this.img = undefined;
-                this.id = undefined
+                this.id = "Empty";
             }else{
                 this.img = selectedImg;
                 this.id = $("img[src$='" + selectedImg + "']")[0].id;
