@@ -119,7 +119,9 @@
 }
 
 
-
+.disabled-char{
+    opacity: 0.4;
+}
 
 
 
