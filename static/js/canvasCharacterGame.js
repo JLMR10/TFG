@@ -85,7 +85,7 @@ $(function init() {
                 $('img.menu-character-selected')[0].classList.remove("menu-character-selected");
             }
             selectedCharacter = undefined;
-        }else{
+        }else if(!this.classList.contains('disabled-char')){
             characterMouse.x = undefined;
             characterMouse.y = undefined;
             if($('img.menu-img-selected')[0] != undefined) {
@@ -103,10 +103,14 @@ $(function init() {
         }
     });
     $('img.menu-character, img.move-down, img.move-left, img.move-right, img.move-up').mouseover(function() {
-        this.classList.add("menu-character-over");
+        if(!this.classList.contains('disabled-char')) {
+            this.classList.add("menu-character-over");
+        }
     });
     $('img.menu-character, img.move-down, img.move-left, img.move-right, img.move-up').mouseleave(function() {
-        this.classList.remove("menu-character-over");
+        if(!this.classList.contains('disabled-char')) {
+            this.classList.remove("menu-character-over");
+        }
     });
     $('img.move-down, img.move-left, img.move-right, img.move-up').click(function() {
         switch (this.classList[0]){
@@ -166,6 +170,9 @@ function Character(x, y, h, w, img, color = 'black', maxMove = undefined, id = u
     this.update = function () {
         if(selectedCharacter != undefined && characterMouse.x != undefined && this.x + this.w > characterMouse.x && this.x < characterMouse.x  && this.y + this.h > characterMouse.y && this.y < characterMouse.y) {
             if(selectedCharacter.includes('trash')){
+                if(this.isUser == "true"){
+                    $("img[src$='" + this.img + "']").removeClass('disabled-char');
+                }
                 this.img = undefined;
                 this.maxMove = undefined;
                 this.id = "Empty";
@@ -175,6 +182,11 @@ function Character(x, y, h, w, img, color = 'black', maxMove = undefined, id = u
                 this.maxMove = parseInt($("img[src$='" + selectedCharacter + "']").attr('movement'));
                 this.id = $("img[src$='" + selectedCharacter + "']")[0].id;
                 this.isUser = $("img[src$='" + selectedCharacter + "']").attr('isuser');
+                if(this.isUser == "true"){
+                    $("img[src$='" + selectedCharacter + "']").addClass('disabled-char');
+                    $('img.menu-character-selected')[0].classList.remove("menu-character-selected");
+                    selectedCharacter = undefined;
+                }
             }
             sendCharacter = true;
             characterMouse.x = undefined;
