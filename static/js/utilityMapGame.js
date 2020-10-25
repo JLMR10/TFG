@@ -115,3 +115,28 @@ function createMenuImg(id, css, array) {
         document.getElementById(id).appendChild(elem);
     }
 }
+
+
+function giveTurn(character){
+    $("#"+character.id).css({"background-color":"aliceblue"});
+    user = character.id.split("_")[0];
+    pythonUsersTurns[user] = 1;
+    socket.send(JSON.stringify({"pythonUsersTurns": pythonUsersTurns , "userTurn": character.text}));
+}
+
+function endTurn(id){
+    $("#"+id+"_turn").css({"background-color":"white"});
+    user = id;
+    pythonUsersTurns[user] = 0;
+    let userTurnName = $("#"+id+"_turn").text();
+    socket.send(JSON.stringify({"pythonUsersTurns": pythonUsersTurns,"userTurn":userTurnName,"endTurn":true}));
+}
+
+function rolldice(number) {
+    let randomNumber = Math.ceil(Math.random()*number);
+    chatHolder.append("<div class='message py2'><span class='myMessages card border-right-primary'>You rolled a " + randomNumber + " with a d"+number + "</span></div>");
+    chatHolder[0].scrollTop = chatHolder[0].scrollHeight;
+    if(isMaster=="False"){
+        socket.send(JSON.stringify({"message": "Has rolled a " + randomNumber + " with a d"+number}))
+    }
+}

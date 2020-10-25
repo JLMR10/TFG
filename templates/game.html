@@ -78,20 +78,21 @@
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Turns</h6>
                 </div>
+                {% if characters != "Empty" %}
                 <div class="card-body">
-                    {% if characters != "Empty" %}
                     <h7>Select the next player's turn:</h7>
                     <div class="turn-users">
                         {% for index, character in characters.items %}
-                            <a class="card border-left-primary turn btn btn-sm btn-normal">{{character.Name}}</a>
+                            <a class="card border-left-primary turn btn btn-sm btn-normal" onclick="giveTurn(this)" id="{{ character.User }}_turn">{{character.Name}}</a>
                         {% endfor %}
                     </div>
-                    {% else %}
-                         <h7>Waiting for users</h7>
-                    {% endif %}
                 </div>
+                {% else %}
+                    <div class="card-body" style="display: table;text-align: center;width: 100%;height: 69%;">
+                        <h7 style="display: table-cell;vertical-align: middle;">Waiting for users</h7>
+                    </div>
+                {% endif %}
             </div>
-
             {% include 'chatBox.html' %}
         </div>
     </div>
@@ -106,7 +107,14 @@
         var pythonTiles = JSON.parse("{{ mapTiles }}".replaceAll('&#x27;','"').replaceAll('--','-'));
         var pythonChips = JSON.parse("{{ mapChips }}".replaceAll('&#x27;','"').replaceAll('--','-'));
         var pythonCharacters = JSON.parse("{{ mapCharacters }}".replaceAll('&#x27;','"').replaceAll('--','-'));
-        var pythonUserCharacters = JSON.parse("{{ characters }}".replaceAll('&#x27;','"').replaceAll('--','-'));
+        var pythonUserCharacters = undefined;
+        var pythonUsersTurns = {};
+        if("{{ characters }}" != "Empty"){
+            pythonUserCharacters = JSON.parse("{{ characters }}".replaceAll('&#x27;','"').replaceAll('--','-'));
+            Object.keys(pythonUserCharacters).forEach(function (e) {
+                pythonUsersTurns[pythonUserCharacters[e].User] = 0;
+            });
+        }
         let menuTiles = JSON.parse("{{ menuTiles }}".replaceAll('&#x27;','"').replaceAll('--','-'));
         menuTiles.push(["","trash.png"]);
         let menuChips = JSON.parse("{{ menuChips }}".replaceAll('&#x27;','"').replaceAll('--','-'));
@@ -120,6 +128,7 @@
         var maxOrder = {{ maxOrder }};
         renderMenu(menuTiles, menuChips, menuCharacters);
         const csrftoken = $("input[name='csrfmiddlewaretoken']")[0].value ;
+        const isMaster = "{{ isMaster }}";
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"

@@ -1,6 +1,12 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">Game chat</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Game chat </h6>
+        <div>
+            <a class="btn" style="height: 1em;margin-top: -1.3em"><i onclick="rolldice(20)" class="fas fa-dice-d20"
+                                                                     style="color:#ff0000b8"></i></a>
+            <a class="btn" style="height: 1em;margin-top: -1.3em"><i onclick="rolldice(6)" class="fas fa-dice-six"
+                                                                     style="color:#ff0000b8"></i></a>
+        </div>
     </div>
     <div class="card-body">
         <div class="chat-box">
@@ -14,7 +20,7 @@
                     <input type="text" id="id_message" name="newMessage" class="form-control"/>
                 </form>
                 <a href="#" id="send-message"
-                   class="save-map d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                   class="save-message d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                         class="fas fa-paper-plane fa-sm text-white-50"></i></a>
             </div>
         </div>

@@ -45,6 +45,12 @@ class ChatConsumer(AsyncConsumer):
                     "sender": userId
                 }
 
+            elif loaded_dict_data.get("pythonUsersTurns"):
+                myResponse = {
+                    "pythonUsersTurns": loaded_dict_data.get("pythonUsersTurns"),
+                    "userTurn": loaded_dict_data.get("userTurn"),
+                    "endTurn": loaded_dict_data.get("endTurn"),
+                }
             else:
                 msg = loaded_dict_data.get("message")
                 userId = self.scope["session"]["user"]["localId"]
@@ -57,7 +63,6 @@ class ChatConsumer(AsyncConsumer):
                     "username": users[userId],
                     "senderID": userId
                 }
-
             #broadcasts the message event to be sent
             await self.channel_layer.group_send(
                 self.game_id,

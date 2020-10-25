@@ -193,7 +193,9 @@ function Character(x, y, h, w, img, color = 'black', maxMove = undefined, id = u
             characterMouse.y = undefined;
         }else if(characterMouse.x != undefined && this.x + this.w > characterMouse.x && this.x < characterMouse.x  && this.y + this.h > characterMouse.y && this.y < characterMouse.y){
             if(draggedCharacter == undefined && selectedImg == undefined && selectedChip == undefined && this.img != undefined) {
-                draggedCharacter = this;
+                if(isMaster == "True" || (pythonUsersTurns[this.id] == 1 && this.id==me)){
+                    draggedCharacter = this;
+                }
             }else if(this.color == 'gold'){
                 var auxImg = draggedCharacter.img;
                 var auxMaxMove = draggedCharacter.maxMove;
@@ -204,11 +206,17 @@ function Character(x, y, h, w, img, color = 'black', maxMove = undefined, id = u
                 charactersArr[auxIndex].maxMove = undefined;
                 charactersArr[auxIndex].id = "Empty";
                 charactersArr[auxIndex].isUser = "false";
+                if(this.isUser == "true"){
+                    $("img[src$='" + this.img + "']").removeClass('disabled-char');
+                }
                 this.img = auxImg;
                 this.maxMove = auxMaxMove;
                 this.id = auxId;
                 this.isUser = auxIsUser;
                 draggedCharacter = undefined;
+                if(isMaster=="False"){
+                    endTurn(this.id);
+                }
             }else{
                 draggedCharacter = undefined;
             }
@@ -271,7 +279,7 @@ function animateCharacter() {
         charactersArr.forEach(tile => {
             tile.update();
         })
-        if(initialChar >= 150 && sendCharacter){
+        if(initialChar >= 100 && sendCharacter){
             sendCharactersArrayToSocket();
             initialChar = 1;
         }
@@ -280,7 +288,7 @@ function animateCharacter() {
 
 function sendCharactersArrayToSocket(){
     socket.send(JSON.stringify({"charactersArray": charactersArr }));
-    sendChip = false;
+    sendCharacter = false;
 }
 
 function updateCharactersArrAsyc(socketArr) {

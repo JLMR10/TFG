@@ -423,7 +423,8 @@ def gameView(request, gameId):
                 "chatMessages": chatMessages,
                 "gameCode": gameCode,
                 "gameName": gameName,
-                "characters": characters
+                "characters": characters,
+                "isMaster": isMaster,
             }
             ############################
             if isMaster:
