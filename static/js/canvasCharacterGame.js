@@ -253,6 +253,7 @@ function initCharacters() {
             let index = i * maxSizeMap + j;
             if(userPositions.includes(index)) {
                 let subIndex = userPositions.indexOf(index);
+                $("img[src$='/static/Media/" + subIndex + "_character.png']").addClass('disabled-char');
                 charactersArr.push(new Character(x, y, h, w, "/static/Media/" + subIndex + '_character.png', 'black',pythonUserCharacters[subIndex + "_"].Move, pythonUserCharacters[subIndex + "_"].User, "true"));
             }else if(responseKeys.includes(index.toString())){
                 charactersArr.push(new Character(x, y, h, w, $("#" + pythonCharacters[index]).attr('src'), 'black',3, pythonCharacters[index] ));

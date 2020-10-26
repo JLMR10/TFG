@@ -38,6 +38,7 @@
                 <a class="name-map-menu"> NPCs </a>
                 <div id="Characters" class="img-container">
                 </div>
+                {% if characters != "Empty" %}
                 <hr class="hr-menu">
                 <a class="name-map-menu"> Characters </a>
                 <div id="UserCharacters" class="img-container">
@@ -45,6 +46,7 @@
                         <img src="/static/Media/{{ index }}character.png" id="{{ character.User }}" movement="{{ character.Move }}" class="menu-character" isUser="true"/>
                     {% endfor %}
                 </div>
+                {% endif %}
             </div>
             <div class="arrow-master">
                 <div class="img-container">

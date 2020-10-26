@@ -2,6 +2,7 @@
 {% block scriptJS %}
     {% load static %}
     <link rel='stylesheet' href='{% static "/css/myMaps.css" %}'>
+    <link rel='stylesheet' href='{% static "/external/loading.css" %}'>
     <script src='{% static "js/select2.js" %}'></script>
 {% endblock %}
 {% block titulo %} <title>My Maps</title> {% endblock %}
@@ -18,7 +19,8 @@
                 <a class="boxMaps rounded" href="#" data-toggle="tooltip" title="{{ mapName }}"
                    onclick="changeValueMap('{{ mapId }}');">{{ mapName }}</a>
             {% endfor %}
-            <a class="boxMaps rounded" href="" data-toggle="modal" data-target="#ModalMaps"><i class="far fa-plus-square"></i> New map</a>
+            <a class="boxMaps rounded" href="" data-toggle="modal" data-target="#ModalMaps"><i
+                    class="far fa-plus-square"></i> New map</a>
         </div>
     </form>
     <div class="modal" tabindex="-1" role="dialog" id="ModalMaps">
@@ -51,9 +53,17 @@
             </div>
         </div>
     </div>
+    <div class="loader-wrapper">
+        <span class="loader"><span class="loader-inner"></span></span>
+    </div>
 
     {% load static %}
     <script src='{% static "js/changeFormAction.js" %}'></script>
+    <script>
+        $(window).on("load",function(){
+            $(".loader-wrapper").fadeOut("slow");
+        });
+    </script>
 {% endblock %}
 
 

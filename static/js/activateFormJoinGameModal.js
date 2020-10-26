@@ -132,6 +132,7 @@ $(function init() {
         let gameId = event.currentTarget[1].value;
         let characterMove = event.currentTarget[3].value;
         let characterName = event.currentTarget[5].value;
+        $(".loader-wrapper").fadeIn("slow");
         joinGameCharacterModal({"gameId":gameId, "characterName":characterName, "characterMove":characterMove})
 
     })
@@ -166,17 +167,18 @@ function joinGameModal(data) {
             if (jsonData.gameExist) {
                 $('#error-div').remove();
                 if (jsonData.isNewUser) {
-                    $('#joinGame').fadeOut("slow", function () {
-                        $('#joinGame').modal('hide');
-                    });
                     $('#joinGameCharacter').fadeIn("slow", function () {
                         $('#joinGameCharacter').modal('show');
+                    });
+                    $('#joinGame').fadeOut("slow", function () {
+                        $('#joinGame').modal('hide');
                     });
                     $('#gameId').attr("value", jsonData.gameId);
                 } else {
                     var loc = window.location;
                     var origin = loc.origin;
                     let url = origin + "/game/" + jsonData.gameId;
+                    $(".loader-wrapper").fadeIn("slow");
                     $(location).prop('href', url);
                 }
             } else {

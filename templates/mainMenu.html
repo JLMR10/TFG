@@ -4,6 +4,7 @@
     {% load static %}
     <script src='{% static "js/activateFormJoinGameModal.js" %}'></script>
     <link rel='stylesheet' href='{% static "/css/mainMenu.css" %}'>
+    <link rel='stylesheet' href='{% static "/external/loading.css" %}'>
 
 {% endblock %}
 
@@ -126,4 +127,20 @@
             </div>
         </div>
     </div>
+
+    <div class="loader-wrapper" style="display: none;">
+      <span class="loader"><span class="loader-inner"></span></span>
+    </div>
+    <script>
+        $('#ModalCreateGameForm').on("submit", function (e) {
+            e.preventDefault();
+            $(".loader-wrapper").fadeIn("slow");
+            this.submit();
+        });
+        $('#ModalMyGamesForm').on("submit", function (e) {
+            e.preventDefault();
+            $(".loader-wrapper").fadeIn("slow");
+            this.submit();
+        });
+    </script>
 {% endblock %}

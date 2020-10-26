@@ -12,12 +12,19 @@ document.getElementById('ModalMapForm').mapList.onchange = function() {
 };
 
 $(document).ready(function () {
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
     $('.select2-selection__rendered').css('color','#7d7d7d')
 })
 
 
 function changeValueMap(mapId) {
     document.getElementById("editMap").mapId.value = mapId;
+    $(".loader-wrapper").fadeIn("slow");
     document.forms['editMap'].submit();
 }
+
+$('#ModalMapForm').on("submit", function (e) {
+    e.preventDefault();
+    $(".loader-wrapper").fadeIn("slow");
+    this.submit();
+});
