@@ -85,7 +85,7 @@
                     <h7>Select the next player's turn:</h7>
                     <div class="turn-users">
                         {% for index, character in characters.items %}
-                            <a class="card border-left-primary turn btn btn-sm btn-normal" onclick="giveTurn(this)" id="{{ character.User }}_turn">{{character.Name}}</a>
+                            <a class="card border-left-primary turn btn btn-sm btn-normal" onclick="giveTurn(this)" id="{{ character.User }}_turn">{{ forloop.counter }} - {{character.Name}}</a>
                         {% endfor %}
                     </div>
                 </div>

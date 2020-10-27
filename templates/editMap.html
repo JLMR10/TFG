@@ -118,4 +118,11 @@
         fillVersionOrder(versionOrders);
         const csrftoken = $("input[name='csrfmiddlewaretoken']")[0].value ;
     </script>
+    <script>
+        $('#savePreviousModalForm').on("submit", function (e) {
+            e.preventDefault();
+            $(".loader-wrapper").fadeIn("slow");
+            this.submit();
+        });
+    </script>
 {% endblock %}

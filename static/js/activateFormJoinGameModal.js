@@ -132,7 +132,6 @@ $(function init() {
         let gameId = event.currentTarget[1].value;
         let characterMove = event.currentTarget[3].value;
         let characterName = event.currentTarget[5].value;
-        $(".loader-wrapper").fadeIn("slow");
         joinGameCharacterModal({"gameId":gameId, "characterName":characterName, "characterMove":characterMove})
 
     })
@@ -175,6 +174,7 @@ function joinGameModal(data) {
                     });
                     $('#gameId').attr("value", jsonData.gameId);
                 } else {
+                    $(".loader-wrapper").fadeIn("slow");
                     var loc = window.location;
                     var origin = loc.origin;
                     let url = origin + "/game/" + jsonData.gameId;
@@ -233,6 +233,7 @@ function joinGameCharacterModal(data) {
                     "    The game has reached the maximum number of users\n" +
                     "  </div>")
             }else{
+                $(".loader-wrapper").fadeIn("slow");
                 $('#error-div').remove();
                 var loc = window.location;
                 var origin = loc.origin;

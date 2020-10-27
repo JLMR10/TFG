@@ -1,0 +1,176 @@
+{
+  "Character" : {
+    "-M2Uh12dBtFiaJ4O5RxQChar" : {
+      "Image" : "goblin.png",
+      "Name" : "Goblin"
+    }
+  },
+  "CharacterList" : {
+    "-M2Uh12dBtFiaJ4O5RxQCharList" : {
+      "Position" : {
+        "1_" : "-M2Uh12dBtFiaJ4O5RxQChar"
+      }
+    },
+    "-M2Uh12dBtFiaJ4O5RxQCharList2" : {
+      "Position" : {
+        "2_" : "-M2Uh12dBtFiaJ4O5RxQChar"
+      }
+    },
+    "-M2Uh12dBtFiaJ4O5RxQCharList3" : {
+      "Position" : {
+        "3_" : "-M2Uh12dBtFiaJ4O5RxQChar"
+      }
+    }
+  },
+  "Chip" : {
+    "-M2Uh12dBtFiaJ4O5RxQ" : {
+      "Image" : "chest.png",
+      "Name" : "Chest"
+    }
+  },
+  "ChipList" : {
+    "-M2Ue5ExW2_umPuYRHDX" : {
+      "Position" : {
+        "2_" : "-M2Uh12dBtFiaJ4O5RxQ"
+      }
+    },
+    "-M2Ue5ExW2_umPuYRHDX2" : {
+      "Position" : {
+        "1_" : "-M2Uh12dBtFiaJ4O5RxQ"
+      }
+    },
+    "-M2Ue5ExW2_umPuYRHDX3" : {
+      "Position" : {
+        "3_" : "-M2Uh12dBtFiaJ4O5RxQ"
+      }
+    }
+  },
+  "Game" : {
+    "-M2Uh12dBtFiaJ4O5RxQGame" : {
+      "Characters" : "Empty",
+      "Code" : "Empty",
+      "Map" : "Empty",
+      "Name" : "Empty"
+    }
+  },
+  "Map" : {
+    "-M2UkUrIG3GC19lqpJD1" : {
+      "Name" : "DefaultMap",
+      "Versions" : {
+        "-M2UdXRL_ywJiL8tVNA2" : true,
+        "-M2UdXRL_ywJiL8tVNA3" : true,
+        "-M2UdXRL_ywJiL8tVNAz" : true
+      }
+	}
+  },
+  "Tile" : {
+    "-M2UgyPm2LKMece2swAd" : {
+      "Image" : "grass.jpg",
+      "Name" : "grass"
+    },
+    "-M2UhCmFkA4S9T8IHILZ" : {
+      "Image" : "water.jpg",
+      "Name" : "water"
+    },
+    "-M2UhCmFkA4S9T8IHIL2" : {
+      "Image" : "brick.jpg",
+      "Name" : "brick"
+    },
+    "-M2UhCmFkA4S9T8IHIL3" : {
+      "Image" : "door.jpg",
+      "Name" : "door"
+    },
+    "-M2UhCmFkA4S9T8IHIL4" : {
+      "Image" : "ground.jpg",
+      "Name" : "ground"
+    },
+    "-M2UhCmFkA4S9T8IHIL5" : {
+      "Image" : "magma.jpg",
+      "Name" : "magma"
+    },
+    "-M2UhCmFkA4S9T8IHIL6" : {
+      "Image" : "metal.jpg",
+      "Name" : "metal"
+    },
+    "-M2UhCmFkA4S9T8IHIL7" : {
+      "Image" : "rock.jpg",
+      "Name" : "rock"
+    },
+    "-M2UhCmFkA4S9T8IHIL8" : {
+      "Image" : "wood.jpg",
+      "Name" : "wood"
+    }
+  },
+  "TileList" : {
+    "-M2Ug2_ZPQV-Ch_wcnA2" : {
+      "Position" : {
+        "1_" : "-M2UgyPm2LKMece2swAd",
+        "5_" : "-M2UgyPm2LKMece2swAd"
+      }
+    },
+    "-M2Ug2_ZPQV-Ch_wcnA3" : {
+      "Position" : {
+        "1_" : "-M2UgyPm2LKMece2swAd",
+        "3_" : "-M2UhCmFkA4S9T8IHILZ"
+      }
+    },
+    "-M2Ug2_ZPQV-Ch_wcnAK" : {
+      "Position" : {
+        "0_" : "-M2UhCmFkA4S9T8IHILZ",
+        "1_" : "-M2UgyPm2LKMece2swAd",
+        "2_" : "-M2UhCmFkA4S9T8IHILZ",
+        "3_" : "-M2UgyPm2LKMece2swAd",
+        "4_" : "-M2UhCmFkA4S9T8IHILZ",
+        "5_" : "-M2UgyPm2LKMece2swAd"
+      }
+    }
+  },
+  "User" : {
+	"3U55MugYOfhI5oL7w97DIpBV6Ri2" : {
+      "Email" : "marmoltest@gmail.com",
+      "Name" : "José Luis Mármol Romero",
+      "Password" : ""
+    },
+    "3bAT9bTu5bPgDkOAyAi5GRVtbTQ2" : {
+      "Email" : "madera@test.test",
+      "Name" : "bronce",
+      "Password" : ""
+    },
+    "QNlQTRkTW9X5jGvTmId8DTLe88h2" : {
+      "Email" : "character@test.com",
+      "Name" : "characterusername",
+      "Password" : ""
+    },
+    "gXHwZDnmZUhOfm9un8VLt8UEgKB2" : {
+      "Email" : "chat@gmail.com",
+      "Name" : "ChatUser2",
+      "Password" : ""
+    }
+  },
+  "Version" : {
+    "-M2UdXRL_ywJiL8tVNA2" : {
+      "CharacterList" : "-M2Uh12dBtFiaJ4O5RxQCharList",
+      "ChipList" : "-M2Ue5ExW2_umPuYRHDX",
+      "Map" : "-M2UkUrIG3GC19lqpJD1",
+      "Name" : "DefaultMap_1",
+      "Order" : 1,
+      "TileList" : "-M2Ug2_ZPQV-Ch_wcnA2"
+    },
+    "-M2UdXRL_ywJiL8tVNA3" : {
+      "CharacterList" : "-M2Uh12dBtFiaJ4O5RxQCharList2",
+      "ChipList" : "-M2Ue5ExW2_umPuYRHDX2",
+      "Map" : "-M2UkUrIG3GC19lqpJD1",
+      "Name" : "DefaultMap_2",
+      "Order" : 2,
+      "TileList" : "-M2Ug2_ZPQV-Ch_wcnA3"
+    },
+    "-M2UdXRL_ywJiL8tVNAz" : {
+      "CharacterList" : "-M2Uh12dBtFiaJ4O5RxQCharList3",
+      "ChipList" : "-M2Ue5ExW2_umPuYRHDX3",
+      "Map" : "-M2UkUrIG3GC19lqpJD1",
+      "Name" : "DefaultMap_0",
+      "Order" : 0,
+      "TileList" : "-M2Ug2_ZPQV-Ch_wcnAK"
+    }
+  }
+}
